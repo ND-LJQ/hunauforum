@@ -1,0 +1,32 @@
+server:
+  port: 8761  #端口
+
+spring:
+  application:
+    name: eureka_server #应用名称
+  security: #权限验证
+    user:
+      name: root
+      password: 123
+
+
+#单一模式注册中心配置
+#eureka:
+#  instance:
+#    hostname: localhost #主机名称
+#  client:
+#    register-with-eureka: true  #是否将自身注册到注册中心 默认为true
+#    fetch-registry: true #是否从注册中心获取服务注册信息 默认为true
+#    service-url:
+#      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+
+
+#eureka配置 多注册中心  多个server之间相互注册
+eureka:
+  instance:
+    hostname: eureka
+    prefer-ip-address: true #是否使用Ip 地址注册  （可选）
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+  client:
+    service-url:
+      defaultZone: http://root:123@localhost:8762/eureka/  #相互注册  有安全验证之后需要增加用户名密码
