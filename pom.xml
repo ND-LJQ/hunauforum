@@ -8,6 +8,7 @@
   <modules>
     <module>eureka_server</module>
     <module>eureka_server2</module>
+    <module>forum_service_provider</module>
   </modules>
   <name>hunauforum Maven Webapp</name>
   <url>http://maven.apache.org</url>

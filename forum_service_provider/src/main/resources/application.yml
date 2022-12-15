@@ -1,0 +1,18 @@
+server:
+  port: 7070
+
+spring:
+  application:
+    name: serviceProvider
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+  client:
+    service-url:
+      defaultZone: http://root:123@localhost:8761/eureka/,http://root:123@localhost:8762/eureka/
+      #将provider注册到每个注册中心
+
+
+
