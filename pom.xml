@@ -9,8 +9,10 @@
     <module>eureka_server</module>
     <module>eureka_server2</module>
     <module>forum_service_provider</module>
+      <module>forum_server_consumer</module>
+    <module>forum_common</module>
   </modules>
-  <name>hunauforum Maven Webapp</name>
+  <name>hunauforum</name>
   <url>http://maven.apache.org</url>
 
   <parent>
@@ -43,6 +45,26 @@
       <artifactId>junit</artifactId>
       <version>3.8.1</version>
       <scope>test</scope>
+    </dependency>
+
+
+    <!-- mybatis boot starter 无需再使用mybatis.xml 所有配置均在application.properties中完成,另外在启动类中添加mapper扫描注解 -->
+    <dependency>
+      <groupId>org.mybatis.spring.boot</groupId>
+      <artifactId>mybatis-spring-boot-starter</artifactId>
+      <version>2.2.2</version>
+    </dependency>
+    <!-- 分页助手 使用boot-starter 相关配置信息在application.properties中配置 -->
+    <dependency>
+      <groupId>com.github.pagehelper</groupId>
+      <artifactId>pagehelper-spring-boot-starter</artifactId>
+      <version>1.4.2</version>
+    </dependency>
+    <!-- 连接池 -->
+    <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>druid</artifactId>
+      <version>1.2.9</version>
     </dependency>
   </dependencies>
   </dependencyManagement>

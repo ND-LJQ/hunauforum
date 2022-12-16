@@ -1,9 +1,45 @@
 server:
   port: 7070
 
+#spring:
+
 spring:
   application:
-    name: serviceProvider
+    name: serviceConsumer
+  cache:
+    redis:
+      cache-null-values: false
+      use-key-prefix: true
+  datasource:
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+    driverClassName: com.mysql.cj.jdbc.Driver
+    filters: stat,wall,log4j
+    initialSize: 5
+    maxActive: 200
+    maxPoolPreparedStatementPerConnectionSize: 20
+    maxWait: 60000
+    minIdle: 20
+    username: root
+    password: 123456
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://127.0.0.1:3306/hunauforum?useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true
+    useGlobalDataSourceStat: true
+
+  redis:
+    database: 0
+    host: 127.0.0.1
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        max-wait: -1ms
+        min-idle: 0
+    password: ''
+    port: 6379
+
+
+
+
 
 eureka:
   instance:
@@ -14,5 +50,19 @@ eureka:
       defaultZone: http://root:123@localhost:8761/eureka/,http://root:123@localhost:8762/eureka/
       #将provider注册到每个注册中心
 
+logging:
+  level:
+    org:
+      springframework: DEBUG
+
+mybatis:
+  type-aliases-package: com.dubbostore.bean
 
 
+page helper:
+  offsetAsPageNum: true
+  pageSizeZero: true
+  params: pageNum=pageHelperStart;pageSize=pageHelperRows;
+  reasonable: false
+  rowBoundsWithCount: true
+  supportMethodsArguments: false
