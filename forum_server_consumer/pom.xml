@@ -7,10 +7,10 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>forum_server_consumer</artifactId>
+    <artifactId>user_manager</artifactId>
     <packaging>jar</packaging>
 
-    <name>forum_server_consumer</name>
+    <name>user_manager</name>
     <url>http://maven.apache.org</url>
 
     <properties>

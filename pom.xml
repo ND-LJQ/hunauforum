@@ -8,7 +8,7 @@
   <modules>
     <module>eureka_server</module>
     <module>eureka_server2</module>
-    <module>forum_service_provider</module>
+    <module>user_manager</module>
       <module>forum_server_consumer</module>
     <module>forum_common</module>
   </modules>
@@ -66,6 +66,14 @@
       <artifactId>druid</artifactId>
       <version>1.2.9</version>
     </dependency>
+
+    <!-- 通用的 实体类与 service接口 -->
+    <dependency>
+      <groupId>edu.hunau</groupId>
+      <artifactId>forum_common</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+
   </dependencies>
   </dependencyManagement>
 

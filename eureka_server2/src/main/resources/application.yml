@@ -16,5 +16,6 @@ eureka:
     prefer-ip-address: true #是否使用Ip 地址注册  （可选）
     instance-id: ${spring.cloud.client.ip-address}:${server.port}
   client:
+    register-with-eureka: true  #是否将自身注册到注册中心 默认为true
     service-url:
       defaultZone: http://root:123@localhost:8761/eureka/  #相互注册  有安全验证之后需要增加用户名密码

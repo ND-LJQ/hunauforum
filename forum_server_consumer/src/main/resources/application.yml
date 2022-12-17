@@ -1,0 +1,16 @@
+server:
+  port: 9090
+
+spring:
+  application:
+    name: serviceConsumer
+
+
+#consumer微服务不提供服务 可以不用注册到注册中心 并设置去注册中心抓取服务信息的间隔时间
+eureka:
+ client:
+    register-with-eureka: false
+    registry-fetch-interval-seconds: 10
+    service-url:
+      defaultZone: http://root:123@localhost:8761/eureka/,http://root:123@localhost:8762/eureka/
+
