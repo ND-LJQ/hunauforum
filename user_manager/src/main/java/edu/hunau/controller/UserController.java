@@ -244,25 +244,13 @@ public class UserController {
         ForumUser user = new ForumUser();
         //将map中的值赋值给
         BeanUtils.populate(user, params.getParameterMap());
-
-        Map map = new BeanMap(user);
-        map.forEach((k,v)->{
-//            if(v.equals("")){
-//                map.replace(k,null);
-//            }
-            System.out.println(k+":"+v);
-        });
-        ForumUser newUser = new ForumUser();
-        BeanUtils.populate(newUser, map);
-        System.out.println(newUser.getBlog().equals(null));
-        System.out.println(newUser.getBlog().equals(""));
-//        if(this.userService.updateUserInfo(user)==1){
-//            back.setCode(UPDATE_SUCCESSFUL);
-//            back.setMessage("修改成功!");
-//        }else{
-//            back.setCode(UPDATE_SUCCESSFUL);
-//            back.setMessage("修改失败!系统繁忙,请稍后修改!");
-//        }
+        if(this.userService.updateUserInfo(user)==1){
+            back.setCode(UPDATE_SUCCESSFUL);
+            back.setMessage("修改成功!");
+        }else{
+            back.setCode(UPDATE_SUCCESSFUL);
+            back.setMessage("修改失败!系统繁忙,请稍后修改!");
+        }
         return JSON.toJSONString(back);
     }
 
