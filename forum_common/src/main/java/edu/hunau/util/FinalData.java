@@ -31,6 +31,23 @@ public class FinalData {
     public static final Integer REGISTER_SUCCESSFUL = 2002;
 
     /**
+     * 更新成功
+     */
+    public static final Integer UPDATE_SUCCESSFUL = 2003;
+
+    /**
+     * 查询成功
+     */
+    public static final Integer SELECT_SUCCESSFUL = 2004;
+
+    /**
+     * 删除成功
+     */
+    public static final Integer DELETE_SUCCESSFUL = 2004;
+
+
+
+    /**
      * 登录失败
      */
     public static final Integer LOGIN_FAILED = 4001;
@@ -39,4 +56,20 @@ public class FinalData {
      * 注册失败
      */
     public static final Integer REGISTER_FAILED = 4002;
+
+    /**
+     * 更新失败
+     */
+    public static final Integer UPDATE_FAILED = 4003;
+
+
+    /**
+     * 删除失败
+     */
+    public static final Integer DELETE_FAILED = 4004;
+
+    /**
+     * 查询失败
+     */
+    public static final Integer SELECT_FAILED = 4005;
 }

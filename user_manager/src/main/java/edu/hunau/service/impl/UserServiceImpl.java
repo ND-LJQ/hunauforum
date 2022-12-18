@@ -86,7 +86,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int updateUserInfo(ForumUser userInfo) throws Exception {
-        return 0;
+        return this.forumUserMapper.updateByPrimaryKeySelective(userInfo);
     }
 
     @Override

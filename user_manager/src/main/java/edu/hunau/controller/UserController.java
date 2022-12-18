@@ -2,11 +2,15 @@ package edu.hunau.controller;
 
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 import edu.hunau.entity.BackMessage;
 import edu.hunau.entity.ForumUser;
 import edu.hunau.service.UserService;
 import edu.hunau.util.DateUtil;
 import edu.hunau.util.TokenUtil;
+import org.apache.commons.beanutils.BeanMap;
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -187,6 +191,102 @@ public class UserController {
         }
         return JSON.toJSONString(back);
     }
+
+
+    /**
+     * 更改用户密码
+     *
+     * @param request 请求
+     * @return {@link String}
+     * @throws Exception 异常
+     */
+    @PostMapping(value = {"/changepwd"})
+    @ResponseBody
+    public String changeUserPwd(HttpServletRequest request) throws Exception{
+        MultipartHttpServletRequest params = (MultipartHttpServletRequest) request;
+        String password = params.getParameter("newPassword");
+        String userId = params.getParameter("userId");
+        ForumUser user = new ForumUser();
+        BackMessage back = new BackMessage();
+        user.setPassword(password);
+        user.setUserId(Integer.valueOf(userId));
+        Integer result =  this.userService.updateUserInfo(user);
+        if(result==1){
+            back.setCode(UPDATE_SUCCESSFUL);
+            back.setMessage("修改成功!");
+        }else{
+            back.setCode(UPDATE_FAILED);
+            back.setMessage("修改失败,服务器繁忙!");
+        }
+        return JSON.toJSONString(back);
+    }
+
+
+    /**
+     * 修改用户信息
+     *
+     * @param request 请求
+     * @return {@link String}
+     * @throws Exception 异常
+     */
+    @PostMapping(value = {"/changeinfo"})
+    @ResponseBody
+    public String changeUserInfo(HttpServletRequest request) throws Exception{
+        MultipartHttpServletRequest params = (MultipartHttpServletRequest) request;
+//        遍历Map的方法
+//        1.map的entry
+//        for(Map.Entry item : params.getParameterMap().entrySet()){
+//            item.getKey();
+//            item.getValue();
+//        }
+//        2.java8的lambda
+        BackMessage back = new BackMessage();
+        ForumUser user = new ForumUser();
+        //将map中的值赋值给
+        BeanUtils.populate(user, params.getParameterMap());
+
+        Map map = new BeanMap(user);
+        map.forEach((k,v)->{
+//            if(v.equals("")){
+//                map.replace(k,null);
+//            }
+            System.out.println(k+":"+v);
+        });
+        ForumUser newUser = new ForumUser();
+        BeanUtils.populate(newUser, map);
+        System.out.println(newUser.getBlog().equals(null));
+        System.out.println(newUser.getBlog().equals(""));
+//        if(this.userService.updateUserInfo(user)==1){
+//            back.setCode(UPDATE_SUCCESSFUL);
+//            back.setMessage("修改成功!");
+//        }else{
+//            back.setCode(UPDATE_SUCCESSFUL);
+//            back.setMessage("修改失败!系统繁忙,请稍后修改!");
+//        }
+        return JSON.toJSONString(back);
+    }
+
+    /**
+     * 获取用户信息
+     *
+     * @param userId 用户id
+     * @return {@link String}
+     * @throws Exception 异常
+     */
+    @GetMapping(value = {"/user/{userId}"})
+    public String getUserInfo(@PathVariable Integer userId ) throws Exception{
+        BackMessage back = new BackMessage();
+        ForumUser user = this.userService.queryUserById(Integer.valueOf(userId));
+        SimplePropertyPreFilter filter = new SimplePropertyPreFilter();
+        filter.getExcludes().add("password");
+        String userInfo = JSON.toJSONString(user,filter);
+        back.setData(JSONObject.parseObject(userInfo));
+        back.setCode(SELECT_SUCCESSFUL);
+        back.setMessage("查询成功!");
+        return JSON.toJSONString(back);
+    }
+
+
 
     //接受POST form-data格式的请求
     @PostMapping(value = {"/test"})

@@ -1,5 +1,7 @@
 package edu.hunau.entity;
 
+import org.springframework.data.annotation.Id;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -10,6 +12,7 @@ import java.util.Date;
  * @date 2022/12/17
  */
 public class ForumUser implements Serializable {
+
     private Integer userId;
 
     private String username;

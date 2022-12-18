@@ -29,6 +29,9 @@ public class IntercepterConfig implements WebMvcConfigurer {
         excludePath.add("/**/forumuser/test");
         excludePath.add("/**/forumuser/login/*");
         excludePath.add("/**/forumuser/register/*");
+        excludePath.add("/**/forumuser/changepwd/");
+        excludePath.add("/**/forumuser/user/*");
+        excludePath.add("/**/forumuser/changeinfo");
         registry.addInterceptor(tokenInterceptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns(excludePath);
