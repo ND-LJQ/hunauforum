@@ -8,9 +8,9 @@
   <modules>
     <module>eureka_server</module>
     <module>eureka_server2</module>
-    <module>user_manager</module>
-      <module>forum_server_consumer</module>
     <module>forum_common</module>
+      <module>users_manager</module>
+    <module>post_manager</module>
   </modules>
   <name>hunauforum</name>
   <url>http://maven.apache.org</url>

@@ -31,3 +31,6 @@ eureka:
     register-with-eureka: true
     service-url:
       defaultZone: http://root:123@localhost:8762/eureka/  #相互注册  有安全验证之后需要增加用户名密码
+  server:
+    enable-self-preservation: true #开启/关闭自我保护模式
+    eviction-interval-timer-in-ms: 60000 #清理间隔 单位毫秒
