@@ -46,6 +46,11 @@ public class FinalData {
     public static final Integer DELETE_SUCCESSFUL = 2004;
 
 
+    /**
+     * 插入成功
+     */
+    public static final Integer INSERT_SUCCESSFUL = 2005;
+
 
     /**
      * 登录失败
@@ -72,4 +77,9 @@ public class FinalData {
      * 查询失败
      */
     public static final Integer SELECT_FAILED = 4005;
+
+    /**
+     * 插入失败
+     */
+    public static final Integer INSERT_FAILED = 4006;
 }
