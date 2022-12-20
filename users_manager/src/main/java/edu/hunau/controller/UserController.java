@@ -4,6 +4,7 @@ package edu.hunau.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
+
 import edu.hunau.entity.BackMessage;
 import edu.hunau.entity.ForumUser;
 import edu.hunau.service.UserService;
@@ -26,6 +27,7 @@ import static edu.hunau.util.FinalData.*;
  * @author ND_LJQ
  * @date 2022/12/17
  */
+
 @RestController
 @RequestMapping("/forumuser")
 public class UserController {
@@ -43,6 +45,7 @@ public class UserController {
      * @return {@link ForumUser}
      * @throws Exception 异常
      */
+
     @PostMapping(value = {"/{userId}"})
     public ForumUser getUserInfoById(@PathVariable Integer userId ) throws Exception{
         return this.userService.queryUserById(userId);
@@ -56,6 +59,7 @@ public class UserController {
      * @return {@link String}
      * @throws Exception 异常
      */
+
     @PostMapping(value = {"/login/tel"})
     public String userLoginByTel(HttpServletRequest request) throws Exception{
         MultipartHttpServletRequest params =((MultipartHttpServletRequest) request);
@@ -88,6 +92,7 @@ public class UserController {
      * @return {@link String}
      * @throws Exception 异常
      */
+
     @PostMapping(value = {"/login/email"})
     @ResponseBody
     public String userLoginByEmail(HttpServletRequest request) throws Exception{
@@ -123,6 +128,7 @@ public class UserController {
      * @return {@link String}
      * @throws Exception 异常
      */
+
     @PostMapping(value = {"/register/mail"})
     @ResponseBody
     public String userRegisterByEmail(HttpServletRequest request) throws Exception{
@@ -162,6 +168,7 @@ public class UserController {
      * @return {@link String}
      * @throws Exception 异常
      */
+
     @PostMapping(value = {"/register/tel"})
     @ResponseBody
     public String userRegisterByTel(HttpServletRequest request) throws Exception{
@@ -202,6 +209,7 @@ public class UserController {
      * @return {@link String}
      * @throws Exception 异常
      */
+
     @PostMapping(value = {"/changepwd"})
     @ResponseBody
     public String changeUserPwd(HttpServletRequest request) throws Exception{
@@ -231,6 +239,7 @@ public class UserController {
      * @return {@link String}
      * @throws Exception 异常
      */
+
     @PostMapping(value = {"/changeinfo"})
     @ResponseBody
     public String changeUserInfo(HttpServletRequest request) throws Exception{
@@ -263,6 +272,7 @@ public class UserController {
      * @return {@link String}
      * @throws Exception 异常
      */
+
     @GetMapping(value = {"/user/{userId}"})
     public String getUserInfo(@PathVariable Integer userId ) throws Exception{
         BackMessage back = new BackMessage();
@@ -279,6 +289,7 @@ public class UserController {
 
 
     //接受POST form-data格式的请求
+
     @PostMapping(value = {"/test"})
     @ResponseBody
     public String test(HttpServletRequest request){
