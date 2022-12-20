@@ -2,9 +2,7 @@ package edu.hunau.service.impl;
 
 
 
-import edu.hunau.entity.ForumArticle;
-import edu.hunau.entity.ForumArticleExample;
-import edu.hunau.entity.ForumArticleWithBLOBs;
+import edu.hunau.entity.*;
 import edu.hunau.mapper.ForumArticleMapper;
 import edu.hunau.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +40,19 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public ForumArticleWithBLOBs queryQuestionBasicById(Integer questionId) throws Exception {
+        return this.forumArticleMapper.selectByPrimaryKey(questionId);
+    }
+
+    @Override
+    public List<ForumQuestion> queryQuestionBasicByUserId(Integer userId) throws Exception {
+        ForumQuestionExample example = new ForumQuestionExample();
+        ForumQuestionExample.Criteria criteria = example.createCriteria();
+//        criteria.add
+        return null;
+    }
+
+    @Override
     public ForumArticleWithBLOBs queryArticleContentById(Integer articleId) throws Exception {
         return this.forumArticleMapper.selectByPrimaryKey(articleId);
     }
@@ -49,6 +60,11 @@ public class PostServiceImpl implements PostService {
     @Override
     public Integer insertArticle(ForumArticleWithBLOBs article) throws Exception {
         return this.forumArticleMapper.insertSelective(article);
+    }
+
+    @Override
+    public Integer insertQuestion(ForumQuestionWithBLOBs question) throws Exception {
+        return null;
     }
 
     @Override

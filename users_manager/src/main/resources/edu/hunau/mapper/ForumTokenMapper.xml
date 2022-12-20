@@ -3,11 +3,11 @@
 <mapper namespace="edu.hunau.mapper.ForumTokenMapper">
   <resultMap id="BaseResultMap" type="edu.hunau.entity.ForumToken">
     <id column="token" jdbcType="VARCHAR" property="token" />
-    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
     <result column="device" jdbcType="VARCHAR" property="device" />
-    <result column="create_time" jdbcType="INTEGER" property="createTime" />
-    <result column="update_time" jdbcType="INTEGER" property="updateTime" />
-    <result column="expire_time" jdbcType="INTEGER" property="expireTime" />
+    <result column="create_time" jdbcType="DATE" property="createTime" />
+    <result column="update_time" jdbcType="DATE" property="updateTime" />
+    <result column="expire_time" jdbcType="DATE" property="expireTime" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -104,8 +104,8 @@
     insert into forum_token (token, user_id, device, 
       create_time, update_time, expire_time
       )
-    values (#{token,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, #{device,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=INTEGER}, #{updateTime,jdbcType=INTEGER}, #{expireTime,jdbcType=INTEGER}
+    values (#{token,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, #{device,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=DATE}, #{updateTime,jdbcType=DATE}, #{expireTime,jdbcType=DATE}
       )
   </insert>
   <insert id="insertSelective" parameterType="edu.hunau.entity.ForumToken">
@@ -135,19 +135,19 @@
         #{token,jdbcType=VARCHAR},
       </if>
       <if test="userId != null">
-        #{userId,jdbcType=INTEGER},
+        #{userId,jdbcType=BIGINT},
       </if>
       <if test="device != null">
         #{device,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
-        #{createTime,jdbcType=INTEGER},
+        #{createTime,jdbcType=DATE},
       </if>
       <if test="updateTime != null">
-        #{updateTime,jdbcType=INTEGER},
+        #{updateTime,jdbcType=DATE},
       </if>
       <if test="expireTime != null">
-        #{expireTime,jdbcType=INTEGER},
+        #{expireTime,jdbcType=DATE},
       </if>
     </trim>
   </insert>
@@ -164,19 +164,19 @@
         token = #{row.token,jdbcType=VARCHAR},
       </if>
       <if test="row.userId != null">
-        user_id = #{row.userId,jdbcType=INTEGER},
+        user_id = #{row.userId,jdbcType=BIGINT},
       </if>
       <if test="row.device != null">
         device = #{row.device,jdbcType=VARCHAR},
       </if>
       <if test="row.createTime != null">
-        create_time = #{row.createTime,jdbcType=INTEGER},
+        create_time = #{row.createTime,jdbcType=DATE},
       </if>
       <if test="row.updateTime != null">
-        update_time = #{row.updateTime,jdbcType=INTEGER},
+        update_time = #{row.updateTime,jdbcType=DATE},
       </if>
       <if test="row.expireTime != null">
-        expire_time = #{row.expireTime,jdbcType=INTEGER},
+        expire_time = #{row.expireTime,jdbcType=DATE},
       </if>
     </set>
     <if test="example != null">
@@ -186,11 +186,11 @@
   <update id="updateByExample" parameterType="map">
     update forum_token
     set token = #{row.token,jdbcType=VARCHAR},
-      user_id = #{row.userId,jdbcType=INTEGER},
+      user_id = #{row.userId,jdbcType=BIGINT},
       device = #{row.device,jdbcType=VARCHAR},
-      create_time = #{row.createTime,jdbcType=INTEGER},
-      update_time = #{row.updateTime,jdbcType=INTEGER},
-      expire_time = #{row.expireTime,jdbcType=INTEGER}
+      create_time = #{row.createTime,jdbcType=DATE},
+      update_time = #{row.updateTime,jdbcType=DATE},
+      expire_time = #{row.expireTime,jdbcType=DATE}
     <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -199,30 +199,30 @@
     update forum_token
     <set>
       <if test="userId != null">
-        user_id = #{userId,jdbcType=INTEGER},
+        user_id = #{userId,jdbcType=BIGINT},
       </if>
       <if test="device != null">
         device = #{device,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
-        create_time = #{createTime,jdbcType=INTEGER},
+        create_time = #{createTime,jdbcType=DATE},
       </if>
       <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=INTEGER},
+        update_time = #{updateTime,jdbcType=DATE},
       </if>
       <if test="expireTime != null">
-        expire_time = #{expireTime,jdbcType=INTEGER},
+        expire_time = #{expireTime,jdbcType=DATE},
       </if>
     </set>
     where token = #{token,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="edu.hunau.entity.ForumToken">
     update forum_token
-    set user_id = #{userId,jdbcType=INTEGER},
+    set user_id = #{userId,jdbcType=BIGINT},
       device = #{device,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=INTEGER},
-      update_time = #{updateTime,jdbcType=INTEGER},
-      expire_time = #{expireTime,jdbcType=INTEGER}
+      create_time = #{createTime,jdbcType=DATE},
+      update_time = #{updateTime,jdbcType=DATE},
+      expire_time = #{expireTime,jdbcType=DATE}
     where token = #{token,jdbcType=VARCHAR}
   </update>
 </mapper>

@@ -4,8 +4,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
+/**
+ * 发布管理
+ *
+ * @author ND_LJQ
+ * @date 2022/12/20
+ */
 @SpringBootApplication
-@EnableEurekaClient  //作为Eureka客户端 微服务
+@EnableEurekaClient
 public class PostManagerApp1 {
     public static void main(String[] args) {
         SpringApplication.run(PostManagerApp1.class,args);

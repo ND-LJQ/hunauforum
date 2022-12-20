@@ -8,6 +8,10 @@ import edu.hunau.entity.ForumArticle;
 import edu.hunau.entity.ForumArticleWithBLOBs;
 import edu.hunau.service.PostService;
 import edu.hunau.util.DateUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -23,6 +27,7 @@ import static edu.hunau.util.FinalData.*;
  * @author ND_LJQ
  * @date 2022/12/19
  */
+@Api(value = "/forumpost", tags = {"文章接口"})
 @RestController
 @RequestMapping("/forumpost")
 public class PostController {
@@ -39,6 +44,10 @@ public class PostController {
      * @return {@link String}
      * @throws Exception 异常
      */
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "path", dataType = "int", name = "articleId", value = "文章id", required = true)
+    })
+    @ApiOperation(value = "通过文章id来得到文章基础信息", notes = "通过文章id来得到文章基础信息", httpMethod = "GET")
     @GetMapping(value = {"/article/{articleId}"})
     public String getArticleBasicInfoByArticleId(@PathVariable Integer articleId) throws Exception{
         BackMessage backMessage = new BackMessage();
@@ -61,6 +70,10 @@ public class PostController {
      * @param articleId 文章id
      * @return {@link String}
      */
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "path", dataType = "int", name = "articleId", value = "文章id", required = true)
+    })
+    @ApiOperation(value = "通过id获取文章内容", notes = "通过id获取文章内容", httpMethod = "POST")
     @PostMapping(value = {"/article/{articleId}"})
     public String getArticleContentsById(@PathVariable Integer articleId) throws Exception{
         BackMessage backMessage = new BackMessage();
@@ -81,6 +94,10 @@ public class PostController {
      * @return {@link String}
      * @throws Exception 异常
      */
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "path", dataType = "int", name = "userId", value = "用户id", required = true)
+    })
+    @ApiOperation(value = "获取用户文章列表", notes = "获取用户文章列表", httpMethod = "GET")
     @GetMapping(value={"/article/user/{userId}"})
     public String getUserArticles(@PathVariable Integer userId) throws Exception{
         BackMessage backMessage = new BackMessage();
@@ -98,6 +115,10 @@ public class PostController {
      * @return {@link String}
      * @throws Exception 异常
      */
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "HttpServletRequest", name = "request", value = "请求", required = true)
+    })
+    @ApiOperation(value = "文章发布", notes = "文章发布", httpMethod = "POST")
     @PostMapping(value = {"/postings"})
     public String articlePublish(HttpServletRequest request) throws Exception{
         MultipartHttpServletRequest params = (MultipartHttpServletRequest) request;
@@ -129,6 +150,10 @@ public class PostController {
      * @return {@link String}
      * @throws Exception 异常
      */
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "path", dataType = "int", name = "articleId", value = "文章id", required = true)
+    })
+    @ApiOperation(value = "删除文章", notes = "删除文章", httpMethod = "GET")
     @GetMapping (value = {"/movearticle/{articleId}"})
     public String deleteArticle(@PathVariable Integer articleId) throws Exception{
         ForumArticleWithBLOBs article = new ForumArticleWithBLOBs();
@@ -140,6 +165,9 @@ public class PostController {
         backMessage.setCode(DELETE_SUCCESSFUL);
         return JSON.toJSONString(backMessage);
     }
+
+
+//    public String
 
 
 }

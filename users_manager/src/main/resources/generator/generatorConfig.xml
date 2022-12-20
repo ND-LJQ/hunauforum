@@ -94,7 +94,8 @@
         <!-- <table tableName="risk_model_order" domainObjectName="DSRiskModelOrder" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
          <table tableName="tel_bill_record" domainObjectName="DSTelBillRecord" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
         <table tableName="forum_token"></table>
-<!--        <table tableName="ljq_article"></table>-->
+        <table tableName="forum_user"></table>
+<!--        <table tableName="forum_audit"></table>-->
 <!--        <table tableName="ljq_cache"></table>-->
 <!--        <table tableName="ljq_comment"></table>-->
 <!--        <table tableName="ljq_follow"></table>-->

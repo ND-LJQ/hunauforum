@@ -31,7 +31,7 @@ swagger:
   enable: true
   application-name: ${spring.application.name}
   application-version: 1.0
-  application-description: springfox swagger 3.0
+  application-description: springfox swagger
   try-host: http://localhost:${server.port}
 
   redis:
@@ -90,3 +90,23 @@ page helper:
   reasonable: false
   rowBoundsWithCount: true
   supportMethodsArguments: false
+# UidGenerator
+# 初始时间, 默认:"2019-02-20"
+uid:
+  epochStr: 2020-05-08
+  # 时间位, 默认:30
+  timeBits: 41
+  # 机器位, 默认:16
+  workerBits: 10
+  # 序列号, 默认:7
+  seqBits: 12
+  # 是否容忍时钟回拨, 默认:true
+  enableBackward: true
+  # RingBuffer size扩容参数, 可提高UID生成的吞吐量, 默认:3
+  CachedUidGenerator:
+    boostPower: 3
+    # 指定何时向RingBuffer中填充UID, 取值为百分比(0, 100), 默认为50
+    paddingFactor: 50
+
+
+

@@ -43,7 +43,7 @@ public interface UserService {
      * @return int
      * @throws Exception 异常
      */
-    public int insertLoginToken(Integer userId,String token) throws Exception;
+    public int insertLoginToken(Long userId,String token) throws Exception;
 
 
 
@@ -57,7 +57,7 @@ public interface UserService {
      * @return {@link PageInfo}<{@link ForumUser}>
      * @throws Exception 异常
      */
-    public PageInfo<ForumUser> queryUserByPage(Integer pageNum,Integer pageSize) throws Exception;
+    public PageInfo<ForumUser> queryUserByPage(Integer pageNum, Integer pageSize) throws Exception;
 
 
     /**
@@ -67,7 +67,7 @@ public interface UserService {
      * @return {@link ForumUser}
      * @throws Exception 异常
      */
-    public ForumUser queryUserById(Integer userId) throws Exception;
+    public ForumUser queryUserById(Long userId) throws Exception;
 
 
     /**
@@ -108,6 +108,6 @@ public interface UserService {
      * @return int
      * @throws Exception 异常
      */
-    public int updateUserToken(Integer userId) throws Exception;
+    public int updateUserToken(Long userId) throws Exception;
 
 }

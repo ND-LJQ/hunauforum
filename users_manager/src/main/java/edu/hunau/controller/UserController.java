@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 
+import com.github.yitter.idgen.YitIdHelper;
 import edu.hunau.entity.BackMessage;
 import edu.hunau.entity.ForumUser;
 import edu.hunau.service.UserService;
@@ -35,7 +36,7 @@ public class UserController {
     @Autowired
     private RestTemplate restTemplate;
     @Autowired
-    private UserService userService;
+    private  UserService userService;
     TokenUtil tokenUtil = new TokenUtil();
 
     DateUtil dateUtil = new DateUtil();
@@ -47,8 +48,8 @@ public class UserController {
      */
 
     @PostMapping(value = {"/{userId}"})
-    public ForumUser getUserInfoById(@PathVariable Integer userId ) throws Exception{
-        return this.userService.queryUserById(userId);
+    public ForumUser getUserInfoById(@PathVariable String userId ) throws Exception{
+        return this.userService.queryUserById(Long.valueOf(userId));
     }
 
 
@@ -142,9 +143,11 @@ public class UserController {
             back.setMessage("注册失败,该邮箱已被注册!");
             return JSON.toJSONString(back);
         }
-
+        long newId = YitIdHelper.nextId();
         Date date = dateUtil.getNowSqlDate();
+
         ForumUser user = new ForumUser();
+        user.setUserId(newId);
         user.setEmail(email);
         user.setPassword(password);
         user.setCreateTime(date);
@@ -219,7 +222,7 @@ public class UserController {
         ForumUser user = new ForumUser();
         BackMessage back = new BackMessage();
         user.setPassword(password);
-        user.setUserId(Integer.valueOf(userId));
+        user.setUserId(Long.valueOf(userId));
         Integer result =  this.userService.updateUserInfo(user);
         if(result==1){
             back.setCode(UPDATE_SUCCESSFUL);
@@ -274,9 +277,11 @@ public class UserController {
      */
 
     @GetMapping(value = {"/user/{userId}"})
-    public String getUserInfo(@PathVariable Integer userId ) throws Exception{
+    public String getUserInfo(@PathVariable String userId ) throws Exception{
+        long newId = YitIdHelper.nextId();
+        System.out.println(newId);
         BackMessage back = new BackMessage();
-        ForumUser user = this.userService.queryUserById(Integer.valueOf(userId));
+        ForumUser user = this.userService.queryUserById(Long.valueOf(userId));
         SimplePropertyPreFilter filter = new SimplePropertyPreFilter();
         filter.getExcludes().add("password");
         String userInfo = JSON.toJSONString(user,filter);

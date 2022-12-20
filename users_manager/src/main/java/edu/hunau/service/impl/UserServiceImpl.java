@@ -1,6 +1,7 @@
 package edu.hunau.service.impl;
 
 import com.github.pagehelper.PageHelper;
+
 import com.github.pagehelper.PageInfo;
 import edu.hunau.entity.ForumToken;
 import edu.hunau.entity.ForumUser;
@@ -46,7 +47,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int insertLoginToken(Integer userId,String token) throws Exception {
+    public int insertLoginToken(Long userId,String token) throws Exception {
         ForumToken forumToken = new ForumToken();
         forumToken.setToken(token);
         forumToken.setUserId(userId);
@@ -67,8 +68,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ForumUser queryUserById(Integer userId) throws Exception {
-        return  this.forumUserMapper.selectByPrimaryKey(userId);
+    public ForumUser queryUserById(Long userId) throws Exception {
+        return this.forumUserMapper.selectByPrimaryKey(userId) ;
     }
 
     @Override
@@ -90,7 +91,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int updateUserToken(Integer userId) throws Exception {
+    public int updateUserToken(Long userId) throws Exception {
         return 0;
     }
 }
