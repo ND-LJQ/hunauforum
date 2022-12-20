@@ -3,15 +3,8 @@ package edu.hunau.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-/**
- * 论坛用户
- *
- * @author ND_LJQ
- * @date 2022/12/17
- */
 public class ForumUser implements Serializable {
-
-    private Integer userId;
+    private Long userId;
 
     private String username;
 
@@ -75,11 +68,11 @@ public class ForumUser implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public Integer getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

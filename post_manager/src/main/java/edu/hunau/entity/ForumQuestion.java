@@ -1,11 +1,12 @@
 package edu.hunau.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class ForumQuestion implements Serializable {
-    private Integer questionId;
+    private Long questionId;
 
-    private Integer userId;
+    private Long userId;
 
     private String title;
 
@@ -23,27 +24,29 @@ public class ForumQuestion implements Serializable {
 
     private Integer lastAnswerTime;
 
-    private Integer createTime;
+    private Date createTime;
 
-    private Integer updateTime;
+    private Date updateTime;
 
-    private Integer deleteTime;
+    private Date deleteTime;
+
+    private Integer deleteStatus;
 
     private static final long serialVersionUID = 1L;
 
-    public Integer getQuestionId() {
+    public Long getQuestionId() {
         return questionId;
     }
 
-    public void setQuestionId(Integer questionId) {
+    public void setQuestionId(Long questionId) {
         this.questionId = questionId;
     }
 
-    public Integer getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
@@ -111,28 +114,36 @@ public class ForumQuestion implements Serializable {
         this.lastAnswerTime = lastAnswerTime;
     }
 
-    public Integer getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Integer createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 
-    public Integer getUpdateTime() {
+    public Date getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Integer updateTime) {
+    public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
 
-    public Integer getDeleteTime() {
+    public Date getDeleteTime() {
         return deleteTime;
     }
 
-    public void setDeleteTime(Integer deleteTime) {
+    public void setDeleteTime(Date deleteTime) {
         this.deleteTime = deleteTime;
+    }
+
+    public Integer getDeleteStatus() {
+        return deleteStatus;
+    }
+
+    public void setDeleteStatus(Integer deleteStatus) {
+        this.deleteStatus = deleteStatus;
     }
 
     @Override
@@ -154,6 +165,7 @@ public class ForumQuestion implements Serializable {
         sb.append(", createTime=").append(createTime);
         sb.append(", updateTime=").append(updateTime);
         sb.append(", deleteTime=").append(deleteTime);
+        sb.append(", deleteStatus=").append(deleteStatus);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

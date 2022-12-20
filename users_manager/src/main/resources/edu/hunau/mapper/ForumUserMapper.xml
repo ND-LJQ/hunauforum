@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="edu.hunau.mapper.ForumUserMapper">
   <resultMap id="BaseResultMap" type="edu.hunau.entity.ForumUser">
-    <id column="user_id" jdbcType="INTEGER" property="userId" />
+    <id column="user_id" jdbcType="BIGINT" property="userId" />
     <result column="username" jdbcType="VARCHAR" property="username" />
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="avatar" jdbcType="VARCHAR" property="avatar" />
@@ -113,33 +113,33 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from forum_user
-    where user_id = #{userId,jdbcType=INTEGER}
+    where user_id = #{userId,jdbcType=BIGINT}
   </select>
   <select id="selectAll"  resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from forum_user
   </select>
-  <select id="selectByEmail" parameterType="java.lang.String"  resultMap="BaseResultMap">
+  <select id="selectByEmail" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from forum_user
     where email = #{email,jdbcType=VARCHAR}
   </select>
-  <select id="selectByTel" parameterType="java.lang.String"  resultMap="BaseResultMap">
+  <select id="selectByTel" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from forum_user
-    where Tel = #{tel,jdbcType=VARCHAR}
+    where tel = #{tel,jdbcType=INTEGER}
   </select>
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from forum_user
-    where user_id = #{userId,jdbcType=INTEGER}
+    where user_id = #{userId,jdbcType=BIGINT}
   </delete>
   <delete id="deleteByExample" parameterType="edu.hunau.entity.ForumUserExample">
     delete from forum_user
@@ -159,7 +159,7 @@
       company, location, create_time, 
       update_time, disable_time, tel, 
       qq_number)
-    values (#{userId,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+    values (#{userId,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
       #{avatar,jdbcType=VARCHAR}, #{cover,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{createIp,jdbcType=VARCHAR}, #{createLocation,jdbcType=VARCHAR}, #{lastLoginTime,jdbcType=DATE}, 
       #{lastLoginIp,jdbcType=VARCHAR}, #{lastLoginLocation,jdbcType=VARCHAR}, #{followerCount,jdbcType=INTEGER}, 
@@ -270,7 +270,7 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="userId != null">
-        #{userId,jdbcType=INTEGER},
+        #{userId,jdbcType=BIGINT},
       </if>
       <if test="username != null">
         #{username,jdbcType=VARCHAR},
@@ -374,7 +374,7 @@
     update forum_user
     <set>
       <if test="row.userId != null">
-        user_id = #{row.userId,jdbcType=INTEGER},
+        user_id = #{row.userId,jdbcType=BIGINT},
       </if>
       <if test="row.username != null">
         username = #{row.username,jdbcType=VARCHAR},
@@ -473,7 +473,7 @@
   </update>
   <update id="updateByExample" parameterType="map">
     update forum_user
-    set user_id = #{row.userId,jdbcType=INTEGER},
+    set user_id = #{row.userId,jdbcType=BIGINT},
       username = #{row.username,jdbcType=VARCHAR},
       email = #{row.email,jdbcType=VARCHAR},
       avatar = #{row.avatar,jdbcType=VARCHAR},
@@ -602,7 +602,7 @@
         qq_number = #{qqNumber,jdbcType=INTEGER},
       </if>
     </set>
-    where user_id = #{userId,jdbcType=INTEGER}
+    where user_id = #{userId,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="edu.hunau.entity.ForumUser">
     update forum_user
@@ -636,6 +636,6 @@
       disable_time = #{disableTime,jdbcType=DATE},
       tel = #{tel,jdbcType=INTEGER},
       qq_number = #{qqNumber,jdbcType=INTEGER}
-    where user_id = #{userId,jdbcType=INTEGER}
+    where user_id = #{userId,jdbcType=BIGINT}
   </update>
 </mapper>

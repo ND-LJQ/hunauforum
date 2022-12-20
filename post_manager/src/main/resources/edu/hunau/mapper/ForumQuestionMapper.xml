@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="edu.hunau.mapper.ForumQuestionMapper">
   <resultMap id="BaseResultMap" type="edu.hunau.entity.ForumQuestion">
-    <id column="question_id" jdbcType="INTEGER" property="questionId" />
-    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <id column="question_id" jdbcType="BIGINT" property="questionId" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="comment_count" jdbcType="INTEGER" property="commentCount" />
     <result column="answer_count" jdbcType="INTEGER" property="answerCount" />
@@ -12,9 +12,10 @@
     <result column="vote_up_count" jdbcType="INTEGER" property="voteUpCount" />
     <result column="vote_down_count" jdbcType="INTEGER" property="voteDownCount" />
     <result column="last_answer_time" jdbcType="INTEGER" property="lastAnswerTime" />
-    <result column="create_time" jdbcType="INTEGER" property="createTime" />
-    <result column="update_time" jdbcType="INTEGER" property="updateTime" />
-    <result column="delete_time" jdbcType="INTEGER" property="deleteTime" />
+    <result column="create_time" jdbcType="DATE" property="createTime" />
+    <result column="update_time" jdbcType="DATE" property="updateTime" />
+    <result column="delete_time" jdbcType="DATE" property="deleteTime" />
+    <result column="delete_status" jdbcType="INTEGER" property="deleteStatus" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="edu.hunau.entity.ForumQuestionWithBLOBs">
     <result column="content_markdown" jdbcType="LONGVARCHAR" property="contentMarkdown" />
@@ -80,7 +81,8 @@
   </sql>
   <sql id="Base_Column_List">
     question_id, user_id, title, comment_count, answer_count, follower_count, vote_count, 
-    vote_up_count, vote_down_count, last_answer_time, create_time, update_time, delete_time
+    vote_up_count, vote_down_count, last_answer_time, create_time, update_time, delete_time, 
+    delete_status
   </sql>
   <sql id="Blob_Column_List">
     content_markdown, content_rendered
@@ -115,17 +117,17 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
     select 
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
     from forum_question
-    where question_id = #{questionId,jdbcType=INTEGER}
+    where question_id = #{questionId,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from forum_question
-    where question_id = #{questionId,jdbcType=INTEGER}
+    where question_id = #{questionId,jdbcType=BIGINT}
   </delete>
   <delete id="deleteByExample" parameterType="edu.hunau.entity.ForumQuestionExample">
     delete from forum_question
@@ -138,14 +140,14 @@
       comment_count, answer_count, follower_count, 
       vote_count, vote_up_count, vote_down_count, 
       last_answer_time, create_time, update_time, 
-      delete_time, content_markdown, content_rendered
-      )
-    values (#{questionId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
+      delete_time, delete_status, content_markdown, 
+      content_rendered)
+    values (#{questionId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, 
       #{commentCount,jdbcType=INTEGER}, #{answerCount,jdbcType=INTEGER}, #{followerCount,jdbcType=INTEGER}, 
       #{voteCount,jdbcType=INTEGER}, #{voteUpCount,jdbcType=INTEGER}, #{voteDownCount,jdbcType=INTEGER}, 
-      #{lastAnswerTime,jdbcType=INTEGER}, #{createTime,jdbcType=INTEGER}, #{updateTime,jdbcType=INTEGER}, 
-      #{deleteTime,jdbcType=INTEGER}, #{contentMarkdown,jdbcType=LONGVARCHAR}, #{contentRendered,jdbcType=LONGVARCHAR}
-      )
+      #{lastAnswerTime,jdbcType=INTEGER}, #{createTime,jdbcType=DATE}, #{updateTime,jdbcType=DATE}, 
+      #{deleteTime,jdbcType=DATE}, #{deleteStatus,jdbcType=INTEGER}, #{contentMarkdown,jdbcType=LONGVARCHAR}, 
+      #{contentRendered,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="edu.hunau.entity.ForumQuestionWithBLOBs">
     insert into forum_question
@@ -189,6 +191,9 @@
       <if test="deleteTime != null">
         delete_time,
       </if>
+      <if test="deleteStatus != null">
+        delete_status,
+      </if>
       <if test="contentMarkdown != null">
         content_markdown,
       </if>
@@ -198,10 +203,10 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="questionId != null">
-        #{questionId,jdbcType=INTEGER},
+        #{questionId,jdbcType=BIGINT},
       </if>
       <if test="userId != null">
-        #{userId,jdbcType=INTEGER},
+        #{userId,jdbcType=BIGINT},
       </if>
       <if test="title != null">
         #{title,jdbcType=VARCHAR},
@@ -228,13 +233,16 @@
         #{lastAnswerTime,jdbcType=INTEGER},
       </if>
       <if test="createTime != null">
-        #{createTime,jdbcType=INTEGER},
+        #{createTime,jdbcType=DATE},
       </if>
       <if test="updateTime != null">
-        #{updateTime,jdbcType=INTEGER},
+        #{updateTime,jdbcType=DATE},
       </if>
       <if test="deleteTime != null">
-        #{deleteTime,jdbcType=INTEGER},
+        #{deleteTime,jdbcType=DATE},
+      </if>
+      <if test="deleteStatus != null">
+        #{deleteStatus,jdbcType=INTEGER},
       </if>
       <if test="contentMarkdown != null">
         #{contentMarkdown,jdbcType=LONGVARCHAR},
@@ -254,10 +262,10 @@
     update forum_question
     <set>
       <if test="row.questionId != null">
-        question_id = #{row.questionId,jdbcType=INTEGER},
+        question_id = #{row.questionId,jdbcType=BIGINT},
       </if>
       <if test="row.userId != null">
-        user_id = #{row.userId,jdbcType=INTEGER},
+        user_id = #{row.userId,jdbcType=BIGINT},
       </if>
       <if test="row.title != null">
         title = #{row.title,jdbcType=VARCHAR},
@@ -284,13 +292,16 @@
         last_answer_time = #{row.lastAnswerTime,jdbcType=INTEGER},
       </if>
       <if test="row.createTime != null">
-        create_time = #{row.createTime,jdbcType=INTEGER},
+        create_time = #{row.createTime,jdbcType=DATE},
       </if>
       <if test="row.updateTime != null">
-        update_time = #{row.updateTime,jdbcType=INTEGER},
+        update_time = #{row.updateTime,jdbcType=DATE},
       </if>
       <if test="row.deleteTime != null">
-        delete_time = #{row.deleteTime,jdbcType=INTEGER},
+        delete_time = #{row.deleteTime,jdbcType=DATE},
+      </if>
+      <if test="row.deleteStatus != null">
+        delete_status = #{row.deleteStatus,jdbcType=INTEGER},
       </if>
       <if test="row.contentMarkdown != null">
         content_markdown = #{row.contentMarkdown,jdbcType=LONGVARCHAR},
@@ -305,8 +316,8 @@
   </update>
   <update id="updateByExampleWithBLOBs" parameterType="map">
     update forum_question
-    set question_id = #{row.questionId,jdbcType=INTEGER},
-      user_id = #{row.userId,jdbcType=INTEGER},
+    set question_id = #{row.questionId,jdbcType=BIGINT},
+      user_id = #{row.userId,jdbcType=BIGINT},
       title = #{row.title,jdbcType=VARCHAR},
       comment_count = #{row.commentCount,jdbcType=INTEGER},
       answer_count = #{row.answerCount,jdbcType=INTEGER},
@@ -315,9 +326,10 @@
       vote_up_count = #{row.voteUpCount,jdbcType=INTEGER},
       vote_down_count = #{row.voteDownCount,jdbcType=INTEGER},
       last_answer_time = #{row.lastAnswerTime,jdbcType=INTEGER},
-      create_time = #{row.createTime,jdbcType=INTEGER},
-      update_time = #{row.updateTime,jdbcType=INTEGER},
-      delete_time = #{row.deleteTime,jdbcType=INTEGER},
+      create_time = #{row.createTime,jdbcType=DATE},
+      update_time = #{row.updateTime,jdbcType=DATE},
+      delete_time = #{row.deleteTime,jdbcType=DATE},
+      delete_status = #{row.deleteStatus,jdbcType=INTEGER},
       content_markdown = #{row.contentMarkdown,jdbcType=LONGVARCHAR},
       content_rendered = #{row.contentRendered,jdbcType=LONGVARCHAR}
     <if test="example != null">
@@ -326,8 +338,8 @@
   </update>
   <update id="updateByExample" parameterType="map">
     update forum_question
-    set question_id = #{row.questionId,jdbcType=INTEGER},
-      user_id = #{row.userId,jdbcType=INTEGER},
+    set question_id = #{row.questionId,jdbcType=BIGINT},
+      user_id = #{row.userId,jdbcType=BIGINT},
       title = #{row.title,jdbcType=VARCHAR},
       comment_count = #{row.commentCount,jdbcType=INTEGER},
       answer_count = #{row.answerCount,jdbcType=INTEGER},
@@ -336,9 +348,10 @@
       vote_up_count = #{row.voteUpCount,jdbcType=INTEGER},
       vote_down_count = #{row.voteDownCount,jdbcType=INTEGER},
       last_answer_time = #{row.lastAnswerTime,jdbcType=INTEGER},
-      create_time = #{row.createTime,jdbcType=INTEGER},
-      update_time = #{row.updateTime,jdbcType=INTEGER},
-      delete_time = #{row.deleteTime,jdbcType=INTEGER}
+      create_time = #{row.createTime,jdbcType=DATE},
+      update_time = #{row.updateTime,jdbcType=DATE},
+      delete_time = #{row.deleteTime,jdbcType=DATE},
+      delete_status = #{row.deleteStatus,jdbcType=INTEGER}
     <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -347,7 +360,7 @@
     update forum_question
     <set>
       <if test="userId != null">
-        user_id = #{userId,jdbcType=INTEGER},
+        user_id = #{userId,jdbcType=BIGINT},
       </if>
       <if test="title != null">
         title = #{title,jdbcType=VARCHAR},
@@ -374,13 +387,16 @@
         last_answer_time = #{lastAnswerTime,jdbcType=INTEGER},
       </if>
       <if test="createTime != null">
-        create_time = #{createTime,jdbcType=INTEGER},
+        create_time = #{createTime,jdbcType=DATE},
       </if>
       <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=INTEGER},
+        update_time = #{updateTime,jdbcType=DATE},
       </if>
       <if test="deleteTime != null">
-        delete_time = #{deleteTime,jdbcType=INTEGER},
+        delete_time = #{deleteTime,jdbcType=DATE},
+      </if>
+      <if test="deleteStatus != null">
+        delete_status = #{deleteStatus,jdbcType=INTEGER},
       </if>
       <if test="contentMarkdown != null">
         content_markdown = #{contentMarkdown,jdbcType=LONGVARCHAR},
@@ -389,11 +405,11 @@
         content_rendered = #{contentRendered,jdbcType=LONGVARCHAR},
       </if>
     </set>
-    where question_id = #{questionId,jdbcType=INTEGER}
+    where question_id = #{questionId,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="edu.hunau.entity.ForumQuestionWithBLOBs">
     update forum_question
-    set user_id = #{userId,jdbcType=INTEGER},
+    set user_id = #{userId,jdbcType=BIGINT},
       title = #{title,jdbcType=VARCHAR},
       comment_count = #{commentCount,jdbcType=INTEGER},
       answer_count = #{answerCount,jdbcType=INTEGER},
@@ -402,16 +418,17 @@
       vote_up_count = #{voteUpCount,jdbcType=INTEGER},
       vote_down_count = #{voteDownCount,jdbcType=INTEGER},
       last_answer_time = #{lastAnswerTime,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=INTEGER},
-      update_time = #{updateTime,jdbcType=INTEGER},
-      delete_time = #{deleteTime,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=DATE},
+      update_time = #{updateTime,jdbcType=DATE},
+      delete_time = #{deleteTime,jdbcType=DATE},
+      delete_status = #{deleteStatus,jdbcType=INTEGER},
       content_markdown = #{contentMarkdown,jdbcType=LONGVARCHAR},
       content_rendered = #{contentRendered,jdbcType=LONGVARCHAR}
-    where question_id = #{questionId,jdbcType=INTEGER}
+    where question_id = #{questionId,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="edu.hunau.entity.ForumQuestion">
     update forum_question
-    set user_id = #{userId,jdbcType=INTEGER},
+    set user_id = #{userId,jdbcType=BIGINT},
       title = #{title,jdbcType=VARCHAR},
       comment_count = #{commentCount,jdbcType=INTEGER},
       answer_count = #{answerCount,jdbcType=INTEGER},
@@ -420,9 +437,10 @@
       vote_up_count = #{voteUpCount,jdbcType=INTEGER},
       vote_down_count = #{voteDownCount,jdbcType=INTEGER},
       last_answer_time = #{lastAnswerTime,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=INTEGER},
-      update_time = #{updateTime,jdbcType=INTEGER},
-      delete_time = #{deleteTime,jdbcType=INTEGER}
-    where question_id = #{questionId,jdbcType=INTEGER}
+      create_time = #{createTime,jdbcType=DATE},
+      update_time = #{updateTime,jdbcType=DATE},
+      delete_time = #{deleteTime,jdbcType=DATE},
+      delete_status = #{deleteStatus,jdbcType=INTEGER}
+    where question_id = #{questionId,jdbcType=BIGINT}
   </update>
 </mapper>

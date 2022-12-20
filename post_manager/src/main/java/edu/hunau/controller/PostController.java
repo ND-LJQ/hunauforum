@@ -3,6 +3,7 @@ package edu.hunau.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
+import com.github.yitter.idgen.YitIdHelper;
 import edu.hunau.entity.BackMessage;
 import edu.hunau.entity.ForumArticle;
 import edu.hunau.entity.ForumArticleWithBLOBs;
@@ -95,13 +96,13 @@ public class PostController {
      * @throws Exception 异常
      */
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "path", dataType = "int", name = "userId", value = "用户id", required = true)
+            @ApiImplicitParam(paramType = "path", dataType = "String", name = "userId", value = "用户id", required = true)
     })
     @ApiOperation(value = "获取用户文章列表", notes = "获取用户文章列表", httpMethod = "GET")
     @GetMapping(value={"/article/user/{userId}"})
-    public String getUserArticles(@PathVariable Integer userId) throws Exception{
+    public String getUserArticles(@PathVariable String userId) throws Exception{
         BackMessage backMessage = new BackMessage();
-        List<ForumArticle> userArticles = this.postService.queryArticleBasicByUserId(userId);
+        List<ForumArticle> userArticles = this.postService.queryArticleBasicByUserId(Integer.valueOf(userId));
         backMessage.setCode(SELECT_SUCCESSFUL);
         backMessage.setMessage("查询成功!");
         backMessage.setData(userArticles);
@@ -130,7 +131,8 @@ public class PostController {
         article.setCreateTime(dateUtil.getNowSqlDate());
         article.setTitle(title);
         article.setContentMarkdown(content);
-        article.setUserId(Integer.valueOf(userId));
+        article.setUserId(Long.valueOf(userId));
+        article.setArticleId(YitIdHelper.nextId());
         if (this.postService.insertArticle(article)==1){
             //获得插入后的文章id
             System.out.println(article.getArticleId());
@@ -158,7 +160,7 @@ public class PostController {
     public String deleteArticle(@PathVariable Integer articleId) throws Exception{
         ForumArticleWithBLOBs article = new ForumArticleWithBLOBs();
         BackMessage backMessage = new BackMessage();
-        article.setArticleId(articleId);
+        article.setArticleId(Long.valueOf(articleId));
         article.setDeleteStatus(1);
         this.postService.deleteArticle(article);
         backMessage.setMessage("删除成功!");

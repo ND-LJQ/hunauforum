@@ -25,7 +25,7 @@ public class PostServiceImpl implements PostService {
     public List<ForumArticle> queryArticleBasicById(Integer articleId) throws Exception {
         ForumArticleExample article = new ForumArticleExample();
         ForumArticleExample.Criteria criteria = article.createCriteria();
-        criteria.andUserIdEqualTo(articleId);
+        criteria.andUserIdEqualTo(Long.valueOf(articleId));
         List<ForumArticle> articles= forumArticleMapper.selectByExample(article);
         return articles;
     }
@@ -34,14 +34,14 @@ public class PostServiceImpl implements PostService {
     public List<ForumArticle> queryArticleBasicByUserId(Integer userId) throws Exception {
         ForumArticleExample articleInfo = new ForumArticleExample();
         ForumArticleExample.Criteria criteria = articleInfo.createCriteria();
-        criteria.andUserIdEqualTo(userId);
+        criteria.andUserIdEqualTo(Long.valueOf(userId));
         List<ForumArticle> articles = forumArticleMapper.selectByExample(articleInfo);
         return articles;
     }
 
     @Override
     public ForumArticleWithBLOBs queryQuestionBasicById(Integer questionId) throws Exception {
-        return this.forumArticleMapper.selectByPrimaryKey(questionId);
+        return this.forumArticleMapper.selectByPrimaryKey(Long.valueOf(questionId));
     }
 
     @Override
@@ -54,7 +54,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public ForumArticleWithBLOBs queryArticleContentById(Integer articleId) throws Exception {
-        return this.forumArticleMapper.selectByPrimaryKey(articleId);
+        return this.forumArticleMapper.selectByPrimaryKey(Long.valueOf(articleId));
     }
 
     @Override

@@ -1,6 +1,8 @@
 package edu.hunau.entity;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 public class ForumQuestionExample {
@@ -104,6 +106,32 @@ public class ForumQuestionExample {
             criteria.add(new Criterion(condition, value1, value2));
         }
 
+        protected void addCriterionForJDBCDate(String condition, Date value, String property) {
+            if (value == null) {
+                throw new RuntimeException("Value for " + property + " cannot be null");
+            }
+            addCriterion(condition, new java.sql.Date(value.getTime()), property);
+        }
+
+        protected void addCriterionForJDBCDate(String condition, List<Date> values, String property) {
+            if (values == null || values.size() == 0) {
+                throw new RuntimeException("Value list for " + property + " cannot be null or empty");
+            }
+            List<java.sql.Date> dateList = new ArrayList<>();
+            Iterator<Date> iter = values.iterator();
+            while (iter.hasNext()) {
+                dateList.add(new java.sql.Date(iter.next().getTime()));
+            }
+            addCriterion(condition, dateList, property);
+        }
+
+        protected void addCriterionForJDBCDate(String condition, Date value1, Date value2, String property) {
+            if (value1 == null || value2 == null) {
+                throw new RuntimeException("Between values for " + property + " cannot be null");
+            }
+            addCriterion(condition, new java.sql.Date(value1.getTime()), new java.sql.Date(value2.getTime()), property);
+        }
+
         public Criteria andQuestionIdIsNull() {
             addCriterion("question_id is null");
             return (Criteria) this;
@@ -114,52 +142,52 @@ public class ForumQuestionExample {
             return (Criteria) this;
         }
 
-        public Criteria andQuestionIdEqualTo(Integer value) {
+        public Criteria andQuestionIdEqualTo(Long value) {
             addCriterion("question_id =", value, "questionId");
             return (Criteria) this;
         }
 
-        public Criteria andQuestionIdNotEqualTo(Integer value) {
+        public Criteria andQuestionIdNotEqualTo(Long value) {
             addCriterion("question_id <>", value, "questionId");
             return (Criteria) this;
         }
 
-        public Criteria andQuestionIdGreaterThan(Integer value) {
+        public Criteria andQuestionIdGreaterThan(Long value) {
             addCriterion("question_id >", value, "questionId");
             return (Criteria) this;
         }
 
-        public Criteria andQuestionIdGreaterThanOrEqualTo(Integer value) {
+        public Criteria andQuestionIdGreaterThanOrEqualTo(Long value) {
             addCriterion("question_id >=", value, "questionId");
             return (Criteria) this;
         }
 
-        public Criteria andQuestionIdLessThan(Integer value) {
+        public Criteria andQuestionIdLessThan(Long value) {
             addCriterion("question_id <", value, "questionId");
             return (Criteria) this;
         }
 
-        public Criteria andQuestionIdLessThanOrEqualTo(Integer value) {
+        public Criteria andQuestionIdLessThanOrEqualTo(Long value) {
             addCriterion("question_id <=", value, "questionId");
             return (Criteria) this;
         }
 
-        public Criteria andQuestionIdIn(List<Integer> values) {
+        public Criteria andQuestionIdIn(List<Long> values) {
             addCriterion("question_id in", values, "questionId");
             return (Criteria) this;
         }
 
-        public Criteria andQuestionIdNotIn(List<Integer> values) {
+        public Criteria andQuestionIdNotIn(List<Long> values) {
             addCriterion("question_id not in", values, "questionId");
             return (Criteria) this;
         }
 
-        public Criteria andQuestionIdBetween(Integer value1, Integer value2) {
+        public Criteria andQuestionIdBetween(Long value1, Long value2) {
             addCriterion("question_id between", value1, value2, "questionId");
             return (Criteria) this;
         }
 
-        public Criteria andQuestionIdNotBetween(Integer value1, Integer value2) {
+        public Criteria andQuestionIdNotBetween(Long value1, Long value2) {
             addCriterion("question_id not between", value1, value2, "questionId");
             return (Criteria) this;
         }
@@ -174,52 +202,52 @@ public class ForumQuestionExample {
             return (Criteria) this;
         }
 
-        public Criteria andUserIdEqualTo(Integer value) {
+        public Criteria andUserIdEqualTo(Long value) {
             addCriterion("user_id =", value, "userId");
             return (Criteria) this;
         }
 
-        public Criteria andUserIdNotEqualTo(Integer value) {
+        public Criteria andUserIdNotEqualTo(Long value) {
             addCriterion("user_id <>", value, "userId");
             return (Criteria) this;
         }
 
-        public Criteria andUserIdGreaterThan(Integer value) {
+        public Criteria andUserIdGreaterThan(Long value) {
             addCriterion("user_id >", value, "userId");
             return (Criteria) this;
         }
 
-        public Criteria andUserIdGreaterThanOrEqualTo(Integer value) {
+        public Criteria andUserIdGreaterThanOrEqualTo(Long value) {
             addCriterion("user_id >=", value, "userId");
             return (Criteria) this;
         }
 
-        public Criteria andUserIdLessThan(Integer value) {
+        public Criteria andUserIdLessThan(Long value) {
             addCriterion("user_id <", value, "userId");
             return (Criteria) this;
         }
 
-        public Criteria andUserIdLessThanOrEqualTo(Integer value) {
+        public Criteria andUserIdLessThanOrEqualTo(Long value) {
             addCriterion("user_id <=", value, "userId");
             return (Criteria) this;
         }
 
-        public Criteria andUserIdIn(List<Integer> values) {
+        public Criteria andUserIdIn(List<Long> values) {
             addCriterion("user_id in", values, "userId");
             return (Criteria) this;
         }
 
-        public Criteria andUserIdNotIn(List<Integer> values) {
+        public Criteria andUserIdNotIn(List<Long> values) {
             addCriterion("user_id not in", values, "userId");
             return (Criteria) this;
         }
 
-        public Criteria andUserIdBetween(Integer value1, Integer value2) {
+        public Criteria andUserIdBetween(Long value1, Long value2) {
             addCriterion("user_id between", value1, value2, "userId");
             return (Criteria) this;
         }
 
-        public Criteria andUserIdNotBetween(Integer value1, Integer value2) {
+        public Criteria andUserIdNotBetween(Long value1, Long value2) {
             addCriterion("user_id not between", value1, value2, "userId");
             return (Criteria) this;
         }
@@ -724,53 +752,53 @@ public class ForumQuestionExample {
             return (Criteria) this;
         }
 
-        public Criteria andCreateTimeEqualTo(Integer value) {
-            addCriterion("create_time =", value, "createTime");
+        public Criteria andCreateTimeEqualTo(Date value) {
+            addCriterionForJDBCDate("create_time =", value, "createTime");
             return (Criteria) this;
         }
 
-        public Criteria andCreateTimeNotEqualTo(Integer value) {
-            addCriterion("create_time <>", value, "createTime");
+        public Criteria andCreateTimeNotEqualTo(Date value) {
+            addCriterionForJDBCDate("create_time <>", value, "createTime");
             return (Criteria) this;
         }
 
-        public Criteria andCreateTimeGreaterThan(Integer value) {
-            addCriterion("create_time >", value, "createTime");
+        public Criteria andCreateTimeGreaterThan(Date value) {
+            addCriterionForJDBCDate("create_time >", value, "createTime");
             return (Criteria) this;
         }
 
-        public Criteria andCreateTimeGreaterThanOrEqualTo(Integer value) {
-            addCriterion("create_time >=", value, "createTime");
+        public Criteria andCreateTimeGreaterThanOrEqualTo(Date value) {
+            addCriterionForJDBCDate("create_time >=", value, "createTime");
             return (Criteria) this;
         }
 
-        public Criteria andCreateTimeLessThan(Integer value) {
-            addCriterion("create_time <", value, "createTime");
+        public Criteria andCreateTimeLessThan(Date value) {
+            addCriterionForJDBCDate("create_time <", value, "createTime");
             return (Criteria) this;
         }
 
-        public Criteria andCreateTimeLessThanOrEqualTo(Integer value) {
-            addCriterion("create_time <=", value, "createTime");
+        public Criteria andCreateTimeLessThanOrEqualTo(Date value) {
+            addCriterionForJDBCDate("create_time <=", value, "createTime");
             return (Criteria) this;
         }
 
-        public Criteria andCreateTimeIn(List<Integer> values) {
-            addCriterion("create_time in", values, "createTime");
+        public Criteria andCreateTimeIn(List<Date> values) {
+            addCriterionForJDBCDate("create_time in", values, "createTime");
             return (Criteria) this;
         }
 
-        public Criteria andCreateTimeNotIn(List<Integer> values) {
-            addCriterion("create_time not in", values, "createTime");
+        public Criteria andCreateTimeNotIn(List<Date> values) {
+            addCriterionForJDBCDate("create_time not in", values, "createTime");
             return (Criteria) this;
         }
 
-        public Criteria andCreateTimeBetween(Integer value1, Integer value2) {
-            addCriterion("create_time between", value1, value2, "createTime");
+        public Criteria andCreateTimeBetween(Date value1, Date value2) {
+            addCriterionForJDBCDate("create_time between", value1, value2, "createTime");
             return (Criteria) this;
         }
 
-        public Criteria andCreateTimeNotBetween(Integer value1, Integer value2) {
-            addCriterion("create_time not between", value1, value2, "createTime");
+        public Criteria andCreateTimeNotBetween(Date value1, Date value2) {
+            addCriterionForJDBCDate("create_time not between", value1, value2, "createTime");
             return (Criteria) this;
         }
 
@@ -784,53 +812,53 @@ public class ForumQuestionExample {
             return (Criteria) this;
         }
 
-        public Criteria andUpdateTimeEqualTo(Integer value) {
-            addCriterion("update_time =", value, "updateTime");
+        public Criteria andUpdateTimeEqualTo(Date value) {
+            addCriterionForJDBCDate("update_time =", value, "updateTime");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateTimeNotEqualTo(Integer value) {
-            addCriterion("update_time <>", value, "updateTime");
+        public Criteria andUpdateTimeNotEqualTo(Date value) {
+            addCriterionForJDBCDate("update_time <>", value, "updateTime");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateTimeGreaterThan(Integer value) {
-            addCriterion("update_time >", value, "updateTime");
+        public Criteria andUpdateTimeGreaterThan(Date value) {
+            addCriterionForJDBCDate("update_time >", value, "updateTime");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateTimeGreaterThanOrEqualTo(Integer value) {
-            addCriterion("update_time >=", value, "updateTime");
+        public Criteria andUpdateTimeGreaterThanOrEqualTo(Date value) {
+            addCriterionForJDBCDate("update_time >=", value, "updateTime");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateTimeLessThan(Integer value) {
-            addCriterion("update_time <", value, "updateTime");
+        public Criteria andUpdateTimeLessThan(Date value) {
+            addCriterionForJDBCDate("update_time <", value, "updateTime");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateTimeLessThanOrEqualTo(Integer value) {
-            addCriterion("update_time <=", value, "updateTime");
+        public Criteria andUpdateTimeLessThanOrEqualTo(Date value) {
+            addCriterionForJDBCDate("update_time <=", value, "updateTime");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateTimeIn(List<Integer> values) {
-            addCriterion("update_time in", values, "updateTime");
+        public Criteria andUpdateTimeIn(List<Date> values) {
+            addCriterionForJDBCDate("update_time in", values, "updateTime");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateTimeNotIn(List<Integer> values) {
-            addCriterion("update_time not in", values, "updateTime");
+        public Criteria andUpdateTimeNotIn(List<Date> values) {
+            addCriterionForJDBCDate("update_time not in", values, "updateTime");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateTimeBetween(Integer value1, Integer value2) {
-            addCriterion("update_time between", value1, value2, "updateTime");
+        public Criteria andUpdateTimeBetween(Date value1, Date value2) {
+            addCriterionForJDBCDate("update_time between", value1, value2, "updateTime");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateTimeNotBetween(Integer value1, Integer value2) {
-            addCriterion("update_time not between", value1, value2, "updateTime");
+        public Criteria andUpdateTimeNotBetween(Date value1, Date value2) {
+            addCriterionForJDBCDate("update_time not between", value1, value2, "updateTime");
             return (Criteria) this;
         }
 
@@ -844,53 +872,113 @@ public class ForumQuestionExample {
             return (Criteria) this;
         }
 
-        public Criteria andDeleteTimeEqualTo(Integer value) {
-            addCriterion("delete_time =", value, "deleteTime");
+        public Criteria andDeleteTimeEqualTo(Date value) {
+            addCriterionForJDBCDate("delete_time =", value, "deleteTime");
             return (Criteria) this;
         }
 
-        public Criteria andDeleteTimeNotEqualTo(Integer value) {
-            addCriterion("delete_time <>", value, "deleteTime");
+        public Criteria andDeleteTimeNotEqualTo(Date value) {
+            addCriterionForJDBCDate("delete_time <>", value, "deleteTime");
             return (Criteria) this;
         }
 
-        public Criteria andDeleteTimeGreaterThan(Integer value) {
-            addCriterion("delete_time >", value, "deleteTime");
+        public Criteria andDeleteTimeGreaterThan(Date value) {
+            addCriterionForJDBCDate("delete_time >", value, "deleteTime");
             return (Criteria) this;
         }
 
-        public Criteria andDeleteTimeGreaterThanOrEqualTo(Integer value) {
-            addCriterion("delete_time >=", value, "deleteTime");
+        public Criteria andDeleteTimeGreaterThanOrEqualTo(Date value) {
+            addCriterionForJDBCDate("delete_time >=", value, "deleteTime");
             return (Criteria) this;
         }
 
-        public Criteria andDeleteTimeLessThan(Integer value) {
-            addCriterion("delete_time <", value, "deleteTime");
+        public Criteria andDeleteTimeLessThan(Date value) {
+            addCriterionForJDBCDate("delete_time <", value, "deleteTime");
             return (Criteria) this;
         }
 
-        public Criteria andDeleteTimeLessThanOrEqualTo(Integer value) {
-            addCriterion("delete_time <=", value, "deleteTime");
+        public Criteria andDeleteTimeLessThanOrEqualTo(Date value) {
+            addCriterionForJDBCDate("delete_time <=", value, "deleteTime");
             return (Criteria) this;
         }
 
-        public Criteria andDeleteTimeIn(List<Integer> values) {
-            addCriterion("delete_time in", values, "deleteTime");
+        public Criteria andDeleteTimeIn(List<Date> values) {
+            addCriterionForJDBCDate("delete_time in", values, "deleteTime");
             return (Criteria) this;
         }
 
-        public Criteria andDeleteTimeNotIn(List<Integer> values) {
-            addCriterion("delete_time not in", values, "deleteTime");
+        public Criteria andDeleteTimeNotIn(List<Date> values) {
+            addCriterionForJDBCDate("delete_time not in", values, "deleteTime");
             return (Criteria) this;
         }
 
-        public Criteria andDeleteTimeBetween(Integer value1, Integer value2) {
-            addCriterion("delete_time between", value1, value2, "deleteTime");
+        public Criteria andDeleteTimeBetween(Date value1, Date value2) {
+            addCriterionForJDBCDate("delete_time between", value1, value2, "deleteTime");
             return (Criteria) this;
         }
 
-        public Criteria andDeleteTimeNotBetween(Integer value1, Integer value2) {
-            addCriterion("delete_time not between", value1, value2, "deleteTime");
+        public Criteria andDeleteTimeNotBetween(Date value1, Date value2) {
+            addCriterionForJDBCDate("delete_time not between", value1, value2, "deleteTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeleteStatusIsNull() {
+            addCriterion("delete_status is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeleteStatusIsNotNull() {
+            addCriterion("delete_status is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeleteStatusEqualTo(Integer value) {
+            addCriterion("delete_status =", value, "deleteStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeleteStatusNotEqualTo(Integer value) {
+            addCriterion("delete_status <>", value, "deleteStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeleteStatusGreaterThan(Integer value) {
+            addCriterion("delete_status >", value, "deleteStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeleteStatusGreaterThanOrEqualTo(Integer value) {
+            addCriterion("delete_status >=", value, "deleteStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeleteStatusLessThan(Integer value) {
+            addCriterion("delete_status <", value, "deleteStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeleteStatusLessThanOrEqualTo(Integer value) {
+            addCriterion("delete_status <=", value, "deleteStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeleteStatusIn(List<Integer> values) {
+            addCriterion("delete_status in", values, "deleteStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeleteStatusNotIn(List<Integer> values) {
+            addCriterion("delete_status not in", values, "deleteStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeleteStatusBetween(Integer value1, Integer value2) {
+            addCriterion("delete_status between", value1, value2, "deleteStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeleteStatusNotBetween(Integer value1, Integer value2) {
+            addCriterion("delete_status not between", value1, value2, "deleteStatus");
             return (Criteria) this;
         }
     }
