@@ -7,7 +7,7 @@ import com.github.yitter.idgen.YitIdHelper;
 import edu.hunau.entity.BackMessage;
 import edu.hunau.entity.ForumArticle;
 import edu.hunau.entity.ForumArticleWithBLOBs;
-import edu.hunau.service.PostService;
+import edu.hunau.service.ArticleService;
 import edu.hunau.util.DateUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -15,7 +15,6 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -31,10 +30,10 @@ import static edu.hunau.util.FinalData.*;
 @Api(value = "/forumpost", tags = {"文章接口"})
 @RestController
 @RequestMapping("/forumpost")
-public class PostController {
+public class ArticleController {
 
     @Autowired
-    private PostService postService;
+    private ArticleService articleService;
 
     DateUtil dateUtil = new DateUtil();
 
@@ -53,7 +52,7 @@ public class PostController {
     public String getArticleBasicInfoByArticleId(@PathVariable Integer articleId) throws Exception{
         BackMessage backMessage = new BackMessage();
         try{
-            ForumArticle article = this.postService.queryArticleBasicById(articleId).get(0);
+            ForumArticle article = this.articleService.queryArticleBasicById(articleId).get(0);
             backMessage.setMessage("查询成功!");
             backMessage.setCode(SELECT_SUCCESSFUL);
             backMessage.setData(article);
@@ -78,7 +77,7 @@ public class PostController {
     @PostMapping(value = {"/article/{articleId}"})
     public String getArticleContentsById(@PathVariable Integer articleId) throws Exception{
         BackMessage backMessage = new BackMessage();
-        ForumArticleWithBLOBs forumArticleWithBLOBs = this.postService.queryArticleContentById(articleId);
+        ForumArticleWithBLOBs forumArticleWithBLOBs = this.articleService.queryArticleContentById(articleId);
         SimplePropertyPreFilter filter = new SimplePropertyPreFilter();
         filter.getIncludes().add("contentRendered");
         String content = JSON.toJSONString(forumArticleWithBLOBs,filter);
@@ -102,7 +101,7 @@ public class PostController {
     @GetMapping(value={"/article/user/{userId}"})
     public String getUserArticles(@PathVariable String userId) throws Exception{
         BackMessage backMessage = new BackMessage();
-        List<ForumArticle> userArticles = this.postService.queryArticleBasicByUserId(Integer.valueOf(userId));
+        List<ForumArticle> userArticles = this.articleService.queryArticleBasicByUserId(Integer.valueOf(userId));
         backMessage.setCode(SELECT_SUCCESSFUL);
         backMessage.setMessage("查询成功!");
         backMessage.setData(userArticles);
@@ -122,18 +121,17 @@ public class PostController {
     @ApiOperation(value = "文章发布", notes = "文章发布", httpMethod = "POST")
     @PostMapping(value = {"/postings"})
     public String articlePublish(HttpServletRequest request) throws Exception{
-        MultipartHttpServletRequest params = (MultipartHttpServletRequest) request;
         BackMessage backMessage = new BackMessage();
-        String userId = params.getParameter("userId");
-        String content = params.getParameter("content");
-        String title = params.getParameter("title");
+        String userId = request.getParameter("userId");
+        String content = request.getParameter("content");
+        String title = request.getParameter("title");
         ForumArticleWithBLOBs article = new ForumArticleWithBLOBs();
         article.setCreateTime(dateUtil.getNowSqlDate());
         article.setTitle(title);
         article.setContentMarkdown(content);
         article.setUserId(Long.valueOf(userId));
         article.setArticleId(YitIdHelper.nextId());
-        if (this.postService.insertArticle(article)==1){
+        if (this.articleService.insertArticle(article)==1){
             //获得插入后的文章id
             System.out.println(article.getArticleId());
             backMessage.setCode(INSERT_SUCCESSFUL);
@@ -162,7 +160,7 @@ public class PostController {
         BackMessage backMessage = new BackMessage();
         article.setArticleId(Long.valueOf(articleId));
         article.setDeleteStatus(1);
-        this.postService.deleteArticle(article);
+        this.articleService.deleteArticle(article);
         backMessage.setMessage("删除成功!");
         backMessage.setCode(DELETE_SUCCESSFUL);
         return JSON.toJSONString(backMessage);
@@ -171,5 +169,42 @@ public class PostController {
 
 //    public String
 
+
+    /**
+     * 修改文章内容
+     *
+     * @param request 请求
+     * @return {@link String}
+     */
+    @PostMapping(value = {"/changearticlemain"})
+    public String changeArticleBasic(HttpServletRequest request){
+        BackMessage backMessage = new BackMessage();
+        String articleId = request.getParameter("articleId");
+        String content = request.getParameter("content");
+        String title = request.getParameter("title");
+        ForumArticleWithBLOBs article = new ForumArticleWithBLOBs();
+        article.setArticleId(Long.valueOf(articleId));
+
+        if(title != null && title.equals("")){
+            article.setTitle(title);
+        }
+
+        if(content != null && content.equals("")){
+            article.setContentMarkdown(content);
+        }
+
+
+        article.setUpdateTime(dateUtil.getNowSqlDate());
+        try {
+            this.articleService.updateArticleBasicById(article);
+            backMessage.setCode(UPDATE_SUCCESSFUL);
+            backMessage.setMessage("更新成功!");
+        } catch (Exception e) {
+            backMessage.setCode(UPDATE_FAILED);
+            backMessage.setMessage("更新失败,请检查参数格式");
+            return JSON.toJSONString(backMessage);
+        }
+        return JSON.toJSONString(backMessage);
+    }
 
 }

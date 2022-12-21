@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="edu.hunau.mapper.ForumArticleMapper">
-  <resultMap id="BaseResultMap" type="edu.hunau.entity.ForumArticle">
-    <id column="article_id" jdbcType="BIGINT" property="articleId" />
+<mapper namespace="edu.hunau.mapper.ForumCommentMapper">
+  <resultMap id="BaseResultMap" type="edu.hunau.entity.ForumComment">
+    <id column="comment_id" jdbcType="BIGINT" property="commentId" />
+    <result column="commentable_id" jdbcType="BIGINT" property="commentableId" />
+    <result column="commentable_type" jdbcType="INTEGER" property="commentableType" />
     <result column="user_id" jdbcType="BIGINT" property="userId" />
-    <result column="title" jdbcType="VARCHAR" property="title" />
-    <result column="comment_count" jdbcType="INTEGER" property="commentCount" />
-    <result column="follower_count" jdbcType="INTEGER" property="followerCount" />
+    <result column="reply_count" jdbcType="INTEGER" property="replyCount" />
     <result column="vote_count" jdbcType="INTEGER" property="voteCount" />
     <result column="vote_up_count" jdbcType="INTEGER" property="voteUpCount" />
     <result column="vote_down_count" jdbcType="INTEGER" property="voteDownCount" />
     <result column="create_time" jdbcType="DATE" property="createTime" />
     <result column="update_time" jdbcType="DATE" property="updateTime" />
     <result column="delete_time" jdbcType="DATE" property="deleteTime" />
-    <result column="audit_status" jdbcType="INTEGER" property="auditStatus" />
-    <result column="delete_status" jdbcType="INTEGER" property="deleteStatus" />
+    <result column="parent_id" jdbcType="BIGINT" property="parentId" />
   </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="edu.hunau.entity.ForumArticleWithBLOBs">
-    <result column="content_markdown" jdbcType="LONGVARCHAR" property="contentMarkdown" />
-    <result column="content_rendered" jdbcType="LONGVARCHAR" property="contentRendered" />
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="edu.hunau.entity.ForumComment">
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -79,13 +77,13 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    article_id, user_id, title, comment_count, follower_count, vote_count, vote_up_count, 
-    vote_down_count, create_time, update_time, delete_time, audit_status, delete_status
+    comment_id, commentable_id, commentable_type, user_id, reply_count, vote_count, vote_up_count, 
+    vote_down_count, create_time, update_time, delete_time, parent_id
   </sql>
   <sql id="Blob_Column_List">
-    content_markdown, content_rendered
+    content
   </sql>
-  <select id="selectByExampleWithBLOBs" parameterType="edu.hunau.entity.ForumArticleExample" resultMap="ResultMapWithBLOBs">
+  <select id="selectByExampleWithBLOBs" parameterType="edu.hunau.entity.ForumCommentExample" resultMap="ResultMapWithBLOBs">
     select
     <if test="distinct">
       distinct
@@ -93,7 +91,7 @@
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    from forum_article
+    from forum_comment
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -101,13 +99,13 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByExample" parameterType="edu.hunau.entity.ForumArticleExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="edu.hunau.entity.ForumCommentExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from forum_article
+    from forum_comment
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -120,50 +118,48 @@
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    from forum_article
-    where article_id = #{articleId,jdbcType=BIGINT}
+    from forum_comment
+    where comment_id = #{commentId,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from forum_article
-    where article_id = #{articleId,jdbcType=BIGINT}
+    delete from forum_comment
+    where comment_id = #{commentId,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="edu.hunau.entity.ForumArticleExample">
-    delete from forum_article
+  <delete id="deleteByExample" parameterType="edu.hunau.entity.ForumCommentExample">
+    delete from forum_comment
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="edu.hunau.entity.ForumArticleWithBLOBs">
-    insert into forum_article (article_id, user_id, title, 
-      comment_count, follower_count, vote_count, 
+  <insert id="insert" parameterType="edu.hunau.entity.ForumComment">
+    insert into forum_comment (comment_id, commentable_id, commentable_type, 
+      user_id, reply_count, vote_count, 
       vote_up_count, vote_down_count, create_time, 
-      update_time, delete_time, audit_status, 
-      delete_status, content_markdown, content_rendered
-      )
-    values (#{articleId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, 
-      #{commentCount,jdbcType=INTEGER}, #{followerCount,jdbcType=INTEGER}, #{voteCount,jdbcType=INTEGER}, 
+      update_time, delete_time, parent_id, 
+      content)
+    values (#{commentId,jdbcType=BIGINT}, #{commentableId,jdbcType=BIGINT}, #{commentableType,jdbcType=INTEGER}, 
+      #{userId,jdbcType=BIGINT}, #{replyCount,jdbcType=INTEGER}, #{voteCount,jdbcType=INTEGER}, 
       #{voteUpCount,jdbcType=INTEGER}, #{voteDownCount,jdbcType=INTEGER}, #{createTime,jdbcType=DATE}, 
-      #{updateTime,jdbcType=DATE}, #{deleteTime,jdbcType=DATE}, #{auditStatus,jdbcType=INTEGER}, 
-      #{deleteStatus,jdbcType=INTEGER}, #{contentMarkdown,jdbcType=LONGVARCHAR}, #{contentRendered,jdbcType=LONGVARCHAR}
-      )
+      #{updateTime,jdbcType=DATE}, #{deleteTime,jdbcType=DATE}, #{parentId,jdbcType=BIGINT}, 
+      #{content,jdbcType=LONGVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="edu.hunau.entity.ForumArticleWithBLOBs">
-    insert into forum_article
+  <insert id="insertSelective" parameterType="edu.hunau.entity.ForumComment">
+    insert into forum_comment
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="articleId != null">
-        article_id,
+      <if test="commentId != null">
+        comment_id,
+      </if>
+      <if test="commentableId != null">
+        commentable_id,
+      </if>
+      <if test="commentableType != null">
+        commentable_type,
       </if>
       <if test="userId != null">
         user_id,
       </if>
-      <if test="title != null">
-        title,
-      </if>
-      <if test="commentCount != null">
-        comment_count,
-      </if>
-      <if test="followerCount != null">
-        follower_count,
+      <if test="replyCount != null">
+        reply_count,
       </if>
       <if test="voteCount != null">
         vote_count,
@@ -183,34 +179,28 @@
       <if test="deleteTime != null">
         delete_time,
       </if>
-      <if test="auditStatus != null">
-        audit_status,
+      <if test="parentId != null">
+        parent_id,
       </if>
-      <if test="deleteStatus != null">
-        delete_status,
-      </if>
-      <if test="contentMarkdown != null">
-        content_markdown,
-      </if>
-      <if test="contentRendered != null">
-        content_rendered,
+      <if test="content != null">
+        content,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="articleId != null">
-        #{articleId,jdbcType=BIGINT},
+      <if test="commentId != null">
+        #{commentId,jdbcType=BIGINT},
+      </if>
+      <if test="commentableId != null">
+        #{commentableId,jdbcType=BIGINT},
+      </if>
+      <if test="commentableType != null">
+        #{commentableType,jdbcType=INTEGER},
       </if>
       <if test="userId != null">
         #{userId,jdbcType=BIGINT},
       </if>
-      <if test="title != null">
-        #{title,jdbcType=VARCHAR},
-      </if>
-      <if test="commentCount != null">
-        #{commentCount,jdbcType=INTEGER},
-      </if>
-      <if test="followerCount != null">
-        #{followerCount,jdbcType=INTEGER},
+      <if test="replyCount != null">
+        #{replyCount,jdbcType=INTEGER},
       </if>
       <if test="voteCount != null">
         #{voteCount,jdbcType=INTEGER},
@@ -230,43 +220,37 @@
       <if test="deleteTime != null">
         #{deleteTime,jdbcType=DATE},
       </if>
-      <if test="auditStatus != null">
-        #{auditStatus,jdbcType=INTEGER},
+      <if test="parentId != null">
+        #{parentId,jdbcType=BIGINT},
       </if>
-      <if test="deleteStatus != null">
-        #{deleteStatus,jdbcType=INTEGER},
-      </if>
-      <if test="contentMarkdown != null">
-        #{contentMarkdown,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="contentRendered != null">
-        #{contentRendered,jdbcType=LONGVARCHAR},
+      <if test="content != null">
+        #{content,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="edu.hunau.entity.ForumArticleExample" resultType="java.lang.Long">
-    select count(*) from forum_article
+  <select id="countByExample" parameterType="edu.hunau.entity.ForumCommentExample" resultType="java.lang.Long">
+    select count(*) from forum_comment
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update forum_article
+    update forum_comment
     <set>
-      <if test="row.articleId != null">
-        article_id = #{row.articleId,jdbcType=BIGINT},
+      <if test="row.commentId != null">
+        comment_id = #{row.commentId,jdbcType=BIGINT},
+      </if>
+      <if test="row.commentableId != null">
+        commentable_id = #{row.commentableId,jdbcType=BIGINT},
+      </if>
+      <if test="row.commentableType != null">
+        commentable_type = #{row.commentableType,jdbcType=INTEGER},
       </if>
       <if test="row.userId != null">
         user_id = #{row.userId,jdbcType=BIGINT},
       </if>
-      <if test="row.title != null">
-        title = #{row.title,jdbcType=VARCHAR},
-      </if>
-      <if test="row.commentCount != null">
-        comment_count = #{row.commentCount,jdbcType=INTEGER},
-      </if>
-      <if test="row.followerCount != null">
-        follower_count = #{row.followerCount,jdbcType=INTEGER},
+      <if test="row.replyCount != null">
+        reply_count = #{row.replyCount,jdbcType=INTEGER},
       </if>
       <if test="row.voteCount != null">
         vote_count = #{row.voteCount,jdbcType=INTEGER},
@@ -286,17 +270,11 @@
       <if test="row.deleteTime != null">
         delete_time = #{row.deleteTime,jdbcType=DATE},
       </if>
-      <if test="row.auditStatus != null">
-        audit_status = #{row.auditStatus,jdbcType=INTEGER},
+      <if test="row.parentId != null">
+        parent_id = #{row.parentId,jdbcType=BIGINT},
       </if>
-      <if test="row.deleteStatus != null">
-        delete_status = #{row.deleteStatus,jdbcType=INTEGER},
-      </if>
-      <if test="row.contentMarkdown != null">
-        content_markdown = #{row.contentMarkdown,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="row.contentRendered != null">
-        content_rendered = #{row.contentRendered,jdbcType=LONGVARCHAR},
+      <if test="row.content != null">
+        content = #{row.content,jdbcType=LONGVARCHAR},
       </if>
     </set>
     <if test="example != null">
@@ -304,59 +282,56 @@
     </if>
   </update>
   <update id="updateByExampleWithBLOBs" parameterType="map">
-    update forum_article
-    set article_id = #{row.articleId,jdbcType=BIGINT},
+    update forum_comment
+    set comment_id = #{row.commentId,jdbcType=BIGINT},
+      commentable_id = #{row.commentableId,jdbcType=BIGINT},
+      commentable_type = #{row.commentableType,jdbcType=INTEGER},
       user_id = #{row.userId,jdbcType=BIGINT},
-      title = #{row.title,jdbcType=VARCHAR},
-      comment_count = #{row.commentCount,jdbcType=INTEGER},
-      follower_count = #{row.followerCount,jdbcType=INTEGER},
+      reply_count = #{row.replyCount,jdbcType=INTEGER},
       vote_count = #{row.voteCount,jdbcType=INTEGER},
       vote_up_count = #{row.voteUpCount,jdbcType=INTEGER},
       vote_down_count = #{row.voteDownCount,jdbcType=INTEGER},
       create_time = #{row.createTime,jdbcType=DATE},
       update_time = #{row.updateTime,jdbcType=DATE},
       delete_time = #{row.deleteTime,jdbcType=DATE},
-      audit_status = #{row.auditStatus,jdbcType=INTEGER},
-      delete_status = #{row.deleteStatus,jdbcType=INTEGER},
-      content_markdown = #{row.contentMarkdown,jdbcType=LONGVARCHAR},
-      content_rendered = #{row.contentRendered,jdbcType=LONGVARCHAR}
+      parent_id = #{row.parentId,jdbcType=BIGINT},
+      content = #{row.content,jdbcType=LONGVARCHAR}
     <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update forum_article
-    set article_id = #{row.articleId,jdbcType=BIGINT},
+    update forum_comment
+    set comment_id = #{row.commentId,jdbcType=BIGINT},
+      commentable_id = #{row.commentableId,jdbcType=BIGINT},
+      commentable_type = #{row.commentableType,jdbcType=INTEGER},
       user_id = #{row.userId,jdbcType=BIGINT},
-      title = #{row.title,jdbcType=VARCHAR},
-      comment_count = #{row.commentCount,jdbcType=INTEGER},
-      follower_count = #{row.followerCount,jdbcType=INTEGER},
+      reply_count = #{row.replyCount,jdbcType=INTEGER},
       vote_count = #{row.voteCount,jdbcType=INTEGER},
       vote_up_count = #{row.voteUpCount,jdbcType=INTEGER},
       vote_down_count = #{row.voteDownCount,jdbcType=INTEGER},
       create_time = #{row.createTime,jdbcType=DATE},
       update_time = #{row.updateTime,jdbcType=DATE},
       delete_time = #{row.deleteTime,jdbcType=DATE},
-      audit_status = #{row.auditStatus,jdbcType=INTEGER},
-      delete_status = #{row.deleteStatus,jdbcType=INTEGER}
+      parent_id = #{row.parentId,jdbcType=BIGINT}
     <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="edu.hunau.entity.ForumArticleWithBLOBs">
-    update forum_article
+  <update id="updateByPrimaryKeySelective" parameterType="edu.hunau.entity.ForumComment">
+    update forum_comment
     <set>
+      <if test="commentableId != null">
+        commentable_id = #{commentableId,jdbcType=BIGINT},
+      </if>
+      <if test="commentableType != null">
+        commentable_type = #{commentableType,jdbcType=INTEGER},
+      </if>
       <if test="userId != null">
         user_id = #{userId,jdbcType=BIGINT},
       </if>
-      <if test="title != null">
-        title = #{title,jdbcType=VARCHAR},
-      </if>
-      <if test="commentCount != null">
-        comment_count = #{commentCount,jdbcType=INTEGER},
-      </if>
-      <if test="followerCount != null">
-        follower_count = #{followerCount,jdbcType=INTEGER},
+      <if test="replyCount != null">
+        reply_count = #{replyCount,jdbcType=INTEGER},
       </if>
       <if test="voteCount != null">
         vote_count = #{voteCount,jdbcType=INTEGER},
@@ -376,53 +351,44 @@
       <if test="deleteTime != null">
         delete_time = #{deleteTime,jdbcType=DATE},
       </if>
-      <if test="auditStatus != null">
-        audit_status = #{auditStatus,jdbcType=INTEGER},
+      <if test="parentId != null">
+        parent_id = #{parentId,jdbcType=BIGINT},
       </if>
-      <if test="deleteStatus != null">
-        delete_status = #{deleteStatus,jdbcType=INTEGER},
-      </if>
-      <if test="contentMarkdown != null">
-        content_markdown = #{contentMarkdown,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="contentRendered != null">
-        content_rendered = #{contentRendered,jdbcType=LONGVARCHAR},
+      <if test="content != null">
+        content = #{content,jdbcType=LONGVARCHAR},
       </if>
     </set>
-    where article_id = #{articleId,jdbcType=BIGINT}
+    where comment_id = #{commentId,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="edu.hunau.entity.ForumArticleWithBLOBs">
-    update forum_article
-    set user_id = #{userId,jdbcType=BIGINT},
-      title = #{title,jdbcType=VARCHAR},
-      comment_count = #{commentCount,jdbcType=INTEGER},
-      follower_count = #{followerCount,jdbcType=INTEGER},
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="edu.hunau.entity.ForumComment">
+    update forum_comment
+    set commentable_id = #{commentableId,jdbcType=BIGINT},
+      commentable_type = #{commentableType,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=BIGINT},
+      reply_count = #{replyCount,jdbcType=INTEGER},
       vote_count = #{voteCount,jdbcType=INTEGER},
       vote_up_count = #{voteUpCount,jdbcType=INTEGER},
       vote_down_count = #{voteDownCount,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=DATE},
       update_time = #{updateTime,jdbcType=DATE},
       delete_time = #{deleteTime,jdbcType=DATE},
-      audit_status = #{auditStatus,jdbcType=INTEGER},
-      delete_status = #{deleteStatus,jdbcType=INTEGER},
-      content_markdown = #{contentMarkdown,jdbcType=LONGVARCHAR},
-      content_rendered = #{contentRendered,jdbcType=LONGVARCHAR}
-    where article_id = #{articleId,jdbcType=BIGINT}
+      parent_id = #{parentId,jdbcType=BIGINT},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where comment_id = #{commentId,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="edu.hunau.entity.ForumArticle">
-    update forum_article
-    set user_id = #{userId,jdbcType=BIGINT},
-      title = #{title,jdbcType=VARCHAR},
-      comment_count = #{commentCount,jdbcType=INTEGER},
-      follower_count = #{followerCount,jdbcType=INTEGER},
+  <update id="updateByPrimaryKey" parameterType="edu.hunau.entity.ForumComment">
+    update forum_comment
+    set commentable_id = #{commentableId,jdbcType=BIGINT},
+      commentable_type = #{commentableType,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=BIGINT},
+      reply_count = #{replyCount,jdbcType=INTEGER},
       vote_count = #{voteCount,jdbcType=INTEGER},
       vote_up_count = #{voteUpCount,jdbcType=INTEGER},
       vote_down_count = #{voteDownCount,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=DATE},
       update_time = #{updateTime,jdbcType=DATE},
       delete_time = #{deleteTime,jdbcType=DATE},
-      audit_status = #{auditStatus,jdbcType=INTEGER},
-      delete_status = #{deleteStatus,jdbcType=INTEGER}
-    where article_id = #{articleId,jdbcType=BIGINT}
+      parent_id = #{parentId,jdbcType=BIGINT}
+    where comment_id = #{commentId,jdbcType=BIGINT}
   </update>
 </mapper>

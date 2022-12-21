@@ -38,7 +38,7 @@ public class IntercepterConfig implements WebMvcConfigurer {
         registry.addInterceptor(tokenInterceptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns(excludePath);
-        //除了登陆接口其他所有接口都需要token验证
+//        除了登陆接口其他所有接口都需要token验证
         WebMvcConfigurer.super.addInterceptors(registry);
     }
 

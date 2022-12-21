@@ -1,9 +1,6 @@
 package edu.hunau.service;
 
-import edu.hunau.entity.ForumArticle;
-import edu.hunau.entity.ForumArticleWithBLOBs;
-import edu.hunau.entity.ForumQuestion;
-import edu.hunau.entity.ForumQuestionWithBLOBs;
+import edu.hunau.entity.*;
 
 import java.util.List;
 
@@ -13,7 +10,7 @@ import java.util.List;
  * @author ND_LJQ
  * @date 2022/12/19
  */
-public interface PostService {
+public interface ArticleService {
 
 
 //    SELECT-START
@@ -36,23 +33,6 @@ public interface PostService {
      */
     public List<ForumArticle> queryArticleBasicByUserId(Integer userId) throws Exception;
 
-    /**
-     * 基本通过id查询问题
-     *
-     * @param questionId 问题id
-     * @return {@link ForumQuestion}
-     * @throws Exception 异常
-     */
-    public ForumArticleWithBLOBs queryQuestionBasicById(Integer questionId) throws Exception;
-
-    /**
-     * 基本用户id查询问题
-     *
-     * @param userId 用户id
-     * @return {@link List}<{@link ForumQuestion}>
-     * @throws Exception 异常
-     */
-    public List<ForumQuestion> queryQuestionBasicByUserId(Integer userId) throws  Exception;
 
     /**
      * 通过id查询文章内容
@@ -76,16 +56,6 @@ public interface PostService {
     public Integer insertArticle(ForumArticleWithBLOBs article) throws Exception;
 
 
-    /**
-     * 插入问题
-     *
-     * @param question 问题
-     * @return {@link Integer}
-     * @throws Exception 异常
-     */
-    public Integer insertQuestion(ForumQuestionWithBLOBs question) throws Exception;
-
-
 
 //    DELETE-START
 
@@ -97,4 +67,27 @@ public interface PostService {
      * @throws Exception 异常
      */
     public Integer deleteArticle(ForumArticleWithBLOBs article) throws Exception;
+
+
+
+//    UPDATE-START
+
+
+    /**
+     * 更新文章内容
+     *
+     * @param article 文章
+     * @return {@link Integer}
+     * @throws Exception 异常
+     */
+    public Integer updateArticleBasicById(ForumArticleWithBLOBs article) throws Exception;
+
+    /**
+     * 更新文章其他属性
+     *
+     * @param article 文章
+     * @return {@link Integer}
+     * @throws Exception 异常
+     */
+    public Integer updateArticleExtraById(ForumArticle article) throws Exception;
 }

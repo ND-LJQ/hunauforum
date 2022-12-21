@@ -33,7 +33,7 @@ swagger:
 
   redis:
     database: 0
-    host: 127.0.0.1
+    host: 192.168.64.120
     lettuce:
       pool:
         max-active: 8
@@ -41,6 +41,8 @@ swagger:
         max-wait: -1ms
         min-idle: 0
     password: ''
+    # 连接超时时间
+    timeout: 3000
     port: 6379
 
 

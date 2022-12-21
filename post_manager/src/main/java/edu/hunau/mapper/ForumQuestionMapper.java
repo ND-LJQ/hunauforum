@@ -14,7 +14,7 @@ public interface ForumQuestionMapper {
 
     int deleteByExample(ForumQuestionExample example);
 
-    int deleteByPrimaryKey(Integer questionId);
+    int deleteByPrimaryKey(Long questionId);
 
     int insert(ForumQuestionWithBLOBs row);
 
@@ -24,7 +24,7 @@ public interface ForumQuestionMapper {
 
     List<ForumQuestion> selectByExample(ForumQuestionExample example);
 
-    ForumQuestionWithBLOBs selectByPrimaryKey(Integer questionId);
+    ForumQuestionWithBLOBs selectByPrimaryKey(Long questionId);
 
     int updateByExampleSelective(@Param("row") ForumQuestionWithBLOBs row, @Param("example") ForumQuestionExample example);
 

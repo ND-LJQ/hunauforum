@@ -63,9 +63,8 @@ public class UserController {
 
     @PostMapping(value = {"/login/tel"})
     public String userLoginByTel(HttpServletRequest request) throws Exception{
-        MultipartHttpServletRequest params =((MultipartHttpServletRequest) request);
-        String tel = params.getParameter("tel");
-        String password = params.getParameter("password");
+        String tel = request.getParameter("tel");
+        String password = request.getParameter("password");
         ForumUser user = this.userService.queryUserByTel(tel);
         BackMessage back = new BackMessage();
         if(user!=null){
@@ -97,9 +96,11 @@ public class UserController {
     @PostMapping(value = {"/login/email"})
     @ResponseBody
     public String userLoginByEmail(HttpServletRequest request) throws Exception{
-        MultipartHttpServletRequest params =((MultipartHttpServletRequest) request);
-        String email = params.getParameter("email");
-        String password = params.getParameter("password");
+        String email = request.getParameter("email");
+        System.out.println(email);
+
+        String password = request.getParameter("password");
+        System.out.println(password);
         ForumUser user = this.userService.queryUserByEmail(email);
         BackMessage back = new BackMessage();
         if(user!=null){
@@ -133,9 +134,10 @@ public class UserController {
     @PostMapping(value = {"/register/mail"})
     @ResponseBody
     public String userRegisterByEmail(HttpServletRequest request) throws Exception{
-        MultipartHttpServletRequest params =((MultipartHttpServletRequest) request);
-        String email = params.getParameter("email");
-        String password = params.getParameter("password");
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        System.out.println(email);
+        System.out.println(password);
         ForumUser checkUser = this.userService.queryUserByEmail(email);
         BackMessage back = new BackMessage();
         if(checkUser!=null){
@@ -175,9 +177,8 @@ public class UserController {
     @PostMapping(value = {"/register/tel"})
     @ResponseBody
     public String userRegisterByTel(HttpServletRequest request) throws Exception{
-        MultipartHttpServletRequest params =((MultipartHttpServletRequest) request);
-        Integer tel = Integer.parseInt(params.getParameter("tel"));
-        String password = params.getParameter("password");
+        Integer tel = Integer.parseInt(request.getParameter("tel"));
+        String password = request.getParameter("password");
         ForumUser checkUser = this.userService.queryUserByTel(String.valueOf(tel));
         BackMessage back = new BackMessage();
         if(checkUser!=null){
@@ -216,9 +217,8 @@ public class UserController {
     @PostMapping(value = {"/changepwd"})
     @ResponseBody
     public String changeUserPwd(HttpServletRequest request) throws Exception{
-        MultipartHttpServletRequest params = (MultipartHttpServletRequest) request;
-        String password = params.getParameter("newPassword");
-        String userId = params.getParameter("userId");
+        String password = request.getParameter("newPassword");
+        String userId = request.getParameter("userId");
         ForumUser user = new ForumUser();
         BackMessage back = new BackMessage();
         user.setPassword(password);
@@ -246,7 +246,6 @@ public class UserController {
     @PostMapping(value = {"/changeinfo"})
     @ResponseBody
     public String changeUserInfo(HttpServletRequest request) throws Exception{
-        MultipartHttpServletRequest params = (MultipartHttpServletRequest) request;
 //        遍历Map的方法
 //        1.map的entry
 //        for(Map.Entry item : params.getParameterMap().entrySet()){
@@ -257,7 +256,7 @@ public class UserController {
         BackMessage back = new BackMessage();
         ForumUser user = new ForumUser();
         //将map中的值赋值给
-        BeanUtils.populate(user, params.getParameterMap());
+        BeanUtils.populate(user, request.getParameterMap());
         if(this.userService.updateUserInfo(user)==1){
             back.setCode(UPDATE_SUCCESSFUL);
             back.setMessage("修改成功!");
@@ -279,7 +278,6 @@ public class UserController {
     @GetMapping(value = {"/user/{userId}"})
     public String getUserInfo(@PathVariable String userId ) throws Exception{
         long newId = YitIdHelper.nextId();
-        System.out.println(newId);
         BackMessage back = new BackMessage();
         ForumUser user = this.userService.queryUserById(Long.valueOf(userId));
         SimplePropertyPreFilter filter = new SimplePropertyPreFilter();

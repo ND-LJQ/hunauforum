@@ -4,7 +4,7 @@ package edu.hunau.service.impl;
 
 import edu.hunau.entity.*;
 import edu.hunau.mapper.ForumArticleMapper;
-import edu.hunau.service.PostService;
+import edu.hunau.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +17,7 @@ import java.util.List;
  * @date 2022/12/19
  */
 @Service
-public class PostServiceImpl implements PostService {
+public class ArticleServiceImpl implements ArticleService {
     @Autowired
     private ForumArticleMapper forumArticleMapper;
 
@@ -39,18 +39,7 @@ public class PostServiceImpl implements PostService {
         return articles;
     }
 
-    @Override
-    public ForumArticleWithBLOBs queryQuestionBasicById(Integer questionId) throws Exception {
-        return this.forumArticleMapper.selectByPrimaryKey(Long.valueOf(questionId));
-    }
 
-    @Override
-    public List<ForumQuestion> queryQuestionBasicByUserId(Integer userId) throws Exception {
-        ForumQuestionExample example = new ForumQuestionExample();
-        ForumQuestionExample.Criteria criteria = example.createCriteria();
-//        criteria.add
-        return null;
-    }
 
     @Override
     public ForumArticleWithBLOBs queryArticleContentById(Integer articleId) throws Exception {
@@ -62,13 +51,19 @@ public class PostServiceImpl implements PostService {
         return this.forumArticleMapper.insertSelective(article);
     }
 
-    @Override
-    public Integer insertQuestion(ForumQuestionWithBLOBs question) throws Exception {
-        return null;
-    }
 
     @Override
     public Integer deleteArticle(ForumArticleWithBLOBs article) throws Exception {
         return this.forumArticleMapper.updateByPrimaryKeySelective(article);
+    }
+
+    @Override
+    public Integer updateArticleBasicById(ForumArticleWithBLOBs article) throws Exception {
+        return this.forumArticleMapper.updateByPrimaryKeySelective(article);
+    }
+
+    @Override
+    public Integer updateArticleExtraById(ForumArticle article) throws Exception {
+        return this.forumArticleMapper.updateByPrimaryKey(article);
     }
 }
