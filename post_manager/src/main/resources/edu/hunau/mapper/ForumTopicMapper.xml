@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.hunau.mapper.ForumTopicMapper">
+  <resultMap id="BaseResultMap" type="edu.hunau.entity.ForumTopic">
+    <id column="topic_id" jdbcType="BIGINT" property="topicId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="cover" jdbcType="VARCHAR" property="cover" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="article_count" jdbcType="INTEGER" property="articleCount" />
+    <result column="question_count" jdbcType="INTEGER" property="questionCount" />
+    <result column="follower_count" jdbcType="INTEGER" property="followerCount" />
+    <result column="delete_time" jdbcType="DATE" property="deleteTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    topic_id, name, cover, description, article_count, question_count, follower_count, 
+    delete_time
+  </sql>
+  <select id="selectByExample" parameterType="edu.hunau.entity.ForumTopicExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from forum_topic
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from forum_topic
+    where topic_id = #{topicId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from forum_topic
+    where topic_id = #{topicId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="edu.hunau.entity.ForumTopicExample">
+    delete from forum_topic
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="edu.hunau.entity.ForumTopic">
+    insert into forum_topic (topic_id, name, cover, 
+      description, article_count, question_count, 
+      follower_count, delete_time)
+    values (#{topicId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{cover,jdbcType=VARCHAR}, 
+      #{description,jdbcType=VARCHAR}, #{articleCount,jdbcType=INTEGER}, #{questionCount,jdbcType=INTEGER}, 
+      #{followerCount,jdbcType=INTEGER}, #{deleteTime,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="edu.hunau.entity.ForumTopic">
+    insert into forum_topic
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="topicId != null">
+        topic_id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="cover != null">
+        cover,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="articleCount != null">
+        article_count,
+      </if>
+      <if test="questionCount != null">
+        question_count,
+      </if>
+      <if test="followerCount != null">
+        follower_count,
+      </if>
+      <if test="deleteTime != null">
+        delete_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="topicId != null">
+        #{topicId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="cover != null">
+        #{cover,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="articleCount != null">
+        #{articleCount,jdbcType=INTEGER},
+      </if>
+      <if test="questionCount != null">
+        #{questionCount,jdbcType=INTEGER},
+      </if>
+      <if test="followerCount != null">
+        #{followerCount,jdbcType=INTEGER},
+      </if>
+      <if test="deleteTime != null">
+        #{deleteTime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="edu.hunau.entity.ForumTopicExample" resultType="java.lang.Long">
+    select count(*) from forum_topic
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update forum_topic
+    <set>
+      <if test="row.topicId != null">
+        topic_id = #{row.topicId,jdbcType=BIGINT},
+      </if>
+      <if test="row.name != null">
+        name = #{row.name,jdbcType=VARCHAR},
+      </if>
+      <if test="row.cover != null">
+        cover = #{row.cover,jdbcType=VARCHAR},
+      </if>
+      <if test="row.description != null">
+        description = #{row.description,jdbcType=VARCHAR},
+      </if>
+      <if test="row.articleCount != null">
+        article_count = #{row.articleCount,jdbcType=INTEGER},
+      </if>
+      <if test="row.questionCount != null">
+        question_count = #{row.questionCount,jdbcType=INTEGER},
+      </if>
+      <if test="row.followerCount != null">
+        follower_count = #{row.followerCount,jdbcType=INTEGER},
+      </if>
+      <if test="row.deleteTime != null">
+        delete_time = #{row.deleteTime,jdbcType=DATE},
+      </if>
+    </set>
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update forum_topic
+    set topic_id = #{row.topicId,jdbcType=BIGINT},
+      name = #{row.name,jdbcType=VARCHAR},
+      cover = #{row.cover,jdbcType=VARCHAR},
+      description = #{row.description,jdbcType=VARCHAR},
+      article_count = #{row.articleCount,jdbcType=INTEGER},
+      question_count = #{row.questionCount,jdbcType=INTEGER},
+      follower_count = #{row.followerCount,jdbcType=INTEGER},
+      delete_time = #{row.deleteTime,jdbcType=DATE}
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="edu.hunau.entity.ForumTopic">
+    update forum_topic
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="cover != null">
+        cover = #{cover,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="articleCount != null">
+        article_count = #{articleCount,jdbcType=INTEGER},
+      </if>
+      <if test="questionCount != null">
+        question_count = #{questionCount,jdbcType=INTEGER},
+      </if>
+      <if test="followerCount != null">
+        follower_count = #{followerCount,jdbcType=INTEGER},
+      </if>
+      <if test="deleteTime != null">
+        delete_time = #{deleteTime,jdbcType=DATE},
+      </if>
+    </set>
+    where topic_id = #{topicId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="edu.hunau.entity.ForumTopic">
+    update forum_topic
+    set name = #{name,jdbcType=VARCHAR},
+      cover = #{cover,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      article_count = #{articleCount,jdbcType=INTEGER},
+      question_count = #{questionCount,jdbcType=INTEGER},
+      follower_count = #{followerCount,jdbcType=INTEGER},
+      delete_time = #{deleteTime,jdbcType=DATE}
+    where topic_id = #{topicId,jdbcType=BIGINT}
+  </update>
+</mapper>
