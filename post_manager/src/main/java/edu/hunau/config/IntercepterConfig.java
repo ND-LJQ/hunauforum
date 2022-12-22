@@ -16,30 +16,30 @@ import java.util.List;
  */
 @Component
 public class IntercepterConfig implements WebMvcConfigurer {
-    private TokenInterceptor tokenInterceptor;
-
-    /**
-     * 拦截器配置
-     *
-     * @param tokenInterceptor 令牌拦截器
-     */
-    public IntercepterConfig(TokenInterceptor tokenInterceptor){
-        this.tokenInterceptor = tokenInterceptor;
-    }
-    @Override
-    public void addInterceptors(InterceptorRegistry registry){
-        List<String> excludePath = new ArrayList<>();
-
-        excludePath.add("/**/forumpost/article/*");
-        excludePath.add("/**/forumpost/article/user/*");
-        excludePath.add("/**/forumpost/postings");
-        excludePath.add("/**/forumpost/movearticle/*");
-
-        registry.addInterceptor(tokenInterceptor)
-                .addPathPatterns("/**")
-                .excludePathPatterns(excludePath);
-//        除了登陆接口其他所有接口都需要token验证
-        WebMvcConfigurer.super.addInterceptors(registry);
-    }
+//    private TokenInterceptor tokenInterceptor;
+//
+//    /**
+//     * 拦截器配置
+//     *
+//     * @param tokenInterceptor 令牌拦截器
+//     */
+//    public IntercepterConfig(TokenInterceptor tokenInterceptor){
+//        this.tokenInterceptor = tokenInterceptor;
+//    }
+//    @Override
+//    public void addInterceptors(InterceptorRegistry registry){
+//        List<String> excludePath = new ArrayList<>();
+//
+//        excludePath.add("/**/forumpost/article/*");
+//        excludePath.add("/**/forumpost/article/user/*");
+//        excludePath.add("/**/forumpost/postings");
+//        excludePath.add("/**/forumpost/movearticle/*");
+//
+//        registry.addInterceptor(tokenInterceptor)
+//                .addPathPatterns("/**")
+//                .excludePathPatterns(excludePath);
+////        除了登陆接口其他所有接口都需要token验证
+//        WebMvcConfigurer.super.addInterceptors(registry);
+//    }
 
 }

@@ -28,28 +28,28 @@ public class IntercepterConfig implements WebMvcConfigurer {
     }
 
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry){
-        List<String> excludePath = new ArrayList<>();
-        //登录
-        excludePath.add("/**/forumuser/test");
-        excludePath.add("/**/forumuser/login/*");
-        excludePath.add("/**/forumuser/login/email");;
-        excludePath.add("/**/forumuser/register/*");
-        excludePath.add("/**/forumuser/changepwd/");
-        excludePath.add("/**/forumuser/user/*");
-        excludePath.add("/**/forumuser/changeinfo");
-       // 跨域拦截器
-
-        registry.addInterceptor(corsInterceptor)
-                .addPathPatterns("/**");
-
-        registry.addInterceptor(tokenInterceptor)
-                .addPathPatterns("/**")
-                .excludePathPatterns(excludePath);
-        //除了登陆接口其他所有接口都需要token验证
-        WebMvcConfigurer.super.addInterceptors(registry);
-
-    }
+//    @Override
+//    public void addInterceptors(InterceptorRegistry registry){
+//        List<String> excludePath = new ArrayList<>();
+//        //登录
+//        excludePath.add("/**/forumuser/test");
+//        excludePath.add("/**/forumuser/login/*");
+//        excludePath.add("/**/forumuser/login/email");;
+//        excludePath.add("/**/forumuser/register/*");
+//        excludePath.add("/**/forumuser/changepwd/");
+//        excludePath.add("/**/forumuser/user/*");
+//        excludePath.add("/**/forumuser/changeinfo");
+//       // 跨域拦截器
+//
+//        registry.addInterceptor(corsInterceptor)
+//                .addPathPatterns("/**");
+//
+//        registry.addInterceptor(tokenInterceptor)
+//                .addPathPatterns("/**")
+//                .excludePathPatterns(excludePath);
+//        //除了登陆接口其他所有接口都需要token验证
+//        WebMvcConfigurer.super.addInterceptors(registry);
+//
+//    }
 
 }

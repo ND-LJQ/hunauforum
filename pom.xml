@@ -11,6 +11,7 @@
     <module>forum_common</module>
       <module>users_manager</module>
     <module>post_manager</module>
+    <module>forum_consumer</module>
   </modules>
   <name>hunauforum</name>
   <url>http://maven.apache.org</url>

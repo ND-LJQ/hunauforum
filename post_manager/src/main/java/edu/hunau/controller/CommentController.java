@@ -6,6 +6,10 @@ import edu.hunau.entity.BackMessage;
 import edu.hunau.entity.ForumComment;
 import edu.hunau.service.CommentService;
 import edu.hunau.util.DateUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +25,7 @@ import static edu.hunau.util.FinalData.*;
  * @author ND_LJQ
  * @date 2022/12/21
  */
+@Api(value = "/forumpost", tags = {"评论控制器"})
 @RestController
 @RequestMapping("/forumpost")
 public class CommentController {
@@ -35,6 +40,10 @@ public class CommentController {
      * @param commentableId 请求
      * @return {@link String}
      */
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "path", dataType = "string", name = "commentableId", value = "请求", required = true)
+    })
+    @ApiOperation(value = "获取文章/问题/回答的评论", notes = "获取文章/问题/回答的评论", httpMethod = "GET")
     @GetMapping(value = {"/getcomments/{commentableId}"})
     public String getComment(@PathVariable String commentableId){
         BackMessage backMessage = new BackMessage();
@@ -58,6 +67,10 @@ public class CommentController {
      * @return {@link String}
      * @throws Exception 异常
      */
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "HttpServletRequest", name = "request", value = "请求", required = true)
+    })
+    @ApiOperation(value = "发布评论", notes = "发布评论", httpMethod = "POST")
     @PostMapping(value = {"/postcomment"})
     public String commentPost(HttpServletRequest request) throws Exception{
         BackMessage backMessage = new BackMessage();
@@ -95,6 +108,10 @@ public class CommentController {
      * @param commentId 评论id
      * @return {@link String}
      */
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "path", dataType = "string", name = "commentId", value = "评论id", required = true)
+    })
+    @ApiOperation(value = "删除评论", notes = "删除评论", httpMethod = "DELETE")
     @DeleteMapping(value = {"/commentdelete/{commentId}"})
     public String commentDelete(@PathVariable String commentId) {
         BackMessage backMessage = new BackMessage();
@@ -117,6 +134,10 @@ public class CommentController {
      * @param request 请求
      * @return {@link String}
      */
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "HttpServletRequest", name = "request", value = "请求", required = true)
+    })
+    @ApiOperation(value = "修改评论", notes = "修改评论", httpMethod = "POST")
     @PostMapping(value = {"/changecomment"})
     public String changeComment (HttpServletRequest request){
         String commentId = request.getParameter("commentId");

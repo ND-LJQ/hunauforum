@@ -30,7 +30,7 @@ import static edu.hunau.util.FinalData.*;
  * @author ND_LJQ
  * @date 2022/12/19
  */
-@Api(value = "/forumpost", tags = {"文章接口"})
+@Api(value = "/forumpost", tags = {"public String"})
 @RestController
 @RequestMapping("/forumpost")
 public class ArticleController {
@@ -102,7 +102,7 @@ public class ArticleController {
      * @throws Exception 异常
      */
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "path", dataType = "String", name = "userId", value = "用户id", required = true)
+            @ApiImplicitParam(paramType = "path", dataType = "string", name = "userId", value = "用户id", required = true)
     })
     @ApiOperation(value = "获取用户文章列表", notes = "获取用户文章列表", httpMethod = "GET")
     @GetMapping(value={"/article/user/{userId}"})
@@ -121,6 +121,10 @@ public class ArticleController {
      * @param request 请求
      * @return {@link String}
      */
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "HttpServletRequest", name = "request", value = "请求", required = true)
+    })
+    @ApiOperation(value = "文章发布", notes = "文章发布", httpMethod = "POST")
     @PostMapping(value = {"/postings"})
     public String articlePublish(HttpServletRequest request) {
         BackMessage backMessage = new BackMessage();
@@ -186,6 +190,10 @@ public class ArticleController {
      * @param request 请求
      * @return {@link String}
      */
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "HttpServletRequest", name = "request", value = "请求", required = true)
+    })
+    @ApiOperation(value = "修改文章内容", notes = "修改文章内容", httpMethod = "POST")
     @PostMapping(value = {"/changearticlemain"})
     public String changeArticleBasic(HttpServletRequest request){
         BackMessage backMessage = new BackMessage();

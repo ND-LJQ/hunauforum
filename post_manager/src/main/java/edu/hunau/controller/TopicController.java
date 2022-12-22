@@ -9,6 +9,10 @@ import edu.hunau.entity.ForumArticle;
 import edu.hunau.entity.ForumTopic;
 import edu.hunau.service.ArticleService;
 import edu.hunau.service.TopicService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +30,7 @@ import static edu.hunau.util.FinalData.*;
  * @author ND_LJQ
  * @date 2022/12/22
  */
+@Api(value = "/forumtopic", tags = {"主题控业务层"})
 @RestController
 @RequestMapping(value = {"/forumtopic"})
 public class TopicController {
@@ -36,6 +41,10 @@ public class TopicController {
     @Autowired
     private ArticleService articleService;
 
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "HttpServletRequest", name = "request", value = "", required = true)
+    })
+    @ApiOperation(value = "", notes = "", httpMethod = "POST")
     @PostMapping(value = {"/createtopic"})
     public String createTopic(HttpServletRequest request) throws Exception {
         BackMessage backMessage = new BackMessage();
@@ -65,6 +74,10 @@ public class TopicController {
      * @return {@link String}
      * @throws Exception 异常
      */
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "path", dataType = "string", name = "topicId", value = "请求", required = true)
+    })
+    @ApiOperation(value = "移除话题", notes = "移除话题", httpMethod = "DELETE")
     @DeleteMapping(value = {"/movetopic/{topicId}"})
     public String moveTopic(@PathVariable String topicId){
         BackMessage backMessage = new BackMessage();
@@ -88,6 +101,10 @@ public class TopicController {
      * @return {@link String}
      * @throws Exception 异常
      */
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "HttpServletRequest", name = "request", value = "请求", required = true)
+    })
+    @ApiOperation(value = "改变主题信息", notes = "改变主题信息", httpMethod = "POST")
     @PostMapping(value = {"/changetopic"})
     public String changeTopicInfo(HttpServletRequest request) throws Exception{
         BackMessage backMessage = new BackMessage();
@@ -114,6 +131,10 @@ public class TopicController {
      * @return {@link String}
      * @throws Exception 异常
      */
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "HttpServletRequest", name = "request", value = "请求", required = true)
+    })
+    @ApiOperation(value = "分页查询主题下的文章", notes = "分页查询主题下的文章", httpMethod = "POST")
     @PostMapping(value = {"/gettopicarticle"})
     public String getTopicAllArticle(HttpServletRequest request) throws Exception{
         BackMessage backMessage = new BackMessage();
@@ -133,6 +154,10 @@ public class TopicController {
     }
 
 
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "HttpServletRequest", name = "request", value = "", required = true)
+    })
+    @ApiOperation(value = "", notes = "", httpMethod = "GET")
     @GetMapping(value = {"/gettopic"})
     public String getAllTopic(HttpServletRequest request) throws Exception{
         BackMessage backMessage = new BackMessage();
@@ -143,6 +168,10 @@ public class TopicController {
         return JSON.toJSONString(backMessage);
     }
 
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "path", dataType = "string", name = "topicId", value = "", required = true)
+    })
+    @ApiOperation(value = "", notes = "", httpMethod = "GET")
     @GetMapping(value = {"/gettopic/{topicId}"})
     public String getTopicInfo(@PathVariable String topicId) throws Exception {
         BackMessage backMessage = new BackMessage();
