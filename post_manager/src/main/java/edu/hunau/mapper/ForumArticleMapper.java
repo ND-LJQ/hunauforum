@@ -37,4 +37,6 @@ public interface ForumArticleMapper {
     int updateByPrimaryKeyWithBLOBs(ForumArticleWithBLOBs row);
 
     int updateByPrimaryKey(ForumArticle row);
+
+    List<ForumArticle> selectTopicArticleByPrimaryKey(Long topicId);
 }

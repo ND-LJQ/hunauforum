@@ -2,8 +2,11 @@ package edu.hunau.service.impl;
 
 
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import edu.hunau.entity.*;
 import edu.hunau.mapper.ForumArticleMapper;
+import edu.hunau.mapper.ForumTopicMapper;
 import edu.hunau.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +23,9 @@ import java.util.List;
 public class ArticleServiceImpl implements ArticleService {
     @Autowired
     private ForumArticleMapper forumArticleMapper;
+
+    @Autowired
+    private ForumTopicMapper forumTopicMapper;
 
     @Override
     public List<ForumArticle> queryArticleBasicById(Integer articleId) throws Exception {
@@ -44,6 +50,17 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public ForumArticleWithBLOBs queryArticleContentById(Integer articleId) throws Exception {
         return this.forumArticleMapper.selectByPrimaryKey(Long.valueOf(articleId));
+    }
+
+    @Override
+    public PageInfo<ForumArticle> selectAllTopicArticlePage(String topicId, Integer pageNum, Integer pageSize) throws Exception {
+        if(pageNum == null||pageNum == 0){
+            pageNum = 1;
+        }
+        PageHelper.startPage(pageNum,pageSize);
+        List<ForumArticle> articles = this.forumArticleMapper.selectTopicArticleByPrimaryKey(Long.valueOf(topicId));
+        PageInfo<ForumArticle> pageInfo = new PageInfo<>(articles);
+        return pageInfo;
     }
 
     @Override

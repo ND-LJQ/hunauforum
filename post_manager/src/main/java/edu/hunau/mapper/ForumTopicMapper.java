@@ -1,10 +1,14 @@
 package edu.hunau.mapper;
 
+import edu.hunau.entity.ForumArticle;
 import edu.hunau.entity.ForumTopic;
 import edu.hunau.entity.ForumTopicExample;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+@Mapper
 public interface ForumTopicMapper {
     long countByExample(ForumTopicExample example);
 
@@ -20,6 +24,8 @@ public interface ForumTopicMapper {
 
     ForumTopic selectByPrimaryKey(Long topicId);
 
+    List<ForumTopic> selectAllTopic();
+
     int updateByExampleSelective(@Param("row") ForumTopic row, @Param("example") ForumTopicExample example);
 
     int updateByExample(@Param("row") ForumTopic row, @Param("example") ForumTopicExample example);
@@ -27,4 +33,6 @@ public interface ForumTopicMapper {
     int updateByPrimaryKeySelective(ForumTopic row);
 
     int updateByPrimaryKey(ForumTopic row);
+
+
 }

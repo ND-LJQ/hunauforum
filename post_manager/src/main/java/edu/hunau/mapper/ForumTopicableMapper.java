@@ -3,8 +3,11 @@ package edu.hunau.mapper;
 import edu.hunau.entity.ForumTopicable;
 import edu.hunau.entity.ForumTopicableExample;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+@Mapper
 public interface ForumTopicableMapper {
     long countByExample(ForumTopicableExample example);
 
@@ -19,4 +22,6 @@ public interface ForumTopicableMapper {
     int updateByExampleSelective(@Param("row") ForumTopicable row, @Param("example") ForumTopicableExample example);
 
     int updateByExample(@Param("row") ForumTopicable row, @Param("example") ForumTopicableExample example);
+
+
 }

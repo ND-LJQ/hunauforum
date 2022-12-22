@@ -1,5 +1,6 @@
 package edu.hunau.service;
 
+import com.github.pagehelper.PageInfo;
 import edu.hunau.entity.*;
 
 import java.util.List;
@@ -42,6 +43,19 @@ public interface ArticleService {
      * @throws Exception 异常
      */
     public ForumArticleWithBLOBs queryArticleContentById(Integer articleId) throws Exception;
+
+
+    /**
+     * 选择所有主题文章页面
+     * 选择所有话题下的文章
+     *
+     * @param topicId  主题id
+     * @param pageNum  第n页
+     * @param pageSize 页面大小
+     * @return {@link PageInfo}<{@link ForumArticle}>
+     * @throws Exception 异常
+     */
+    public PageInfo<ForumArticle> selectAllTopicArticlePage(String topicId,Integer pageNum,Integer pageSize) throws Exception;
 
 
 //    INSERT-START

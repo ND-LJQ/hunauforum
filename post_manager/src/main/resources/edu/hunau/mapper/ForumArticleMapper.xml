@@ -250,6 +250,14 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
+  <select id="selectTopicArticleByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap" >
+    SELECT
+      *
+    FROM
+      forum_article
+    WHERE
+        article_id IN ( SELECT topicable_id FROM forum_topicable WHERE topic_id = #{topic_id,jdbcType=BIGINT} )
+  </select>
   <update id="updateByExampleSelective" parameterType="map">
     update forum_article
     <set>

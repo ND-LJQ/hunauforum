@@ -41,7 +41,7 @@ public class TokenInterceptor implements HandlerInterceptor {
         try {
             JSONObject json = new JSONObject();
             json.put("success", "false");
-            json.put("msg", "认证失败，未通过拦截器");
+            json.put("msg", "认证失败，请求头中未包含token或参数错误");
             json.put("code", "500");
             response.getWriter().append(json.toJSONString());
             System.out.println("认证失败，未通过拦截器");

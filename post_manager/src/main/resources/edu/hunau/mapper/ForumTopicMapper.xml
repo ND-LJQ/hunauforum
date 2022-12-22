@@ -93,6 +93,11 @@
     from forum_topic
     where topic_id = #{topicId,jdbcType=BIGINT}
   </select>
+  <select id="selectAllTopic"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from forum_topic
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from forum_topic
     where topic_id = #{topicId,jdbcType=BIGINT}
@@ -172,6 +177,8 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
+
+
   <update id="updateByExampleSelective" parameterType="map">
     update forum_topic
     <set>

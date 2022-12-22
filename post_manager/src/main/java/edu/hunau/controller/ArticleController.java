@@ -7,7 +7,9 @@ import com.github.yitter.idgen.YitIdHelper;
 import edu.hunau.entity.BackMessage;
 import edu.hunau.entity.ForumArticle;
 import edu.hunau.entity.ForumArticleWithBLOBs;
+import edu.hunau.entity.ForumTopicable;
 import edu.hunau.service.ArticleService;
+import edu.hunau.service.TopicService;
 import edu.hunau.util.DateUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Date;
 import java.util.List;
 
 import static edu.hunau.util.FinalData.*;
@@ -34,6 +37,10 @@ public class ArticleController {
 
     @Autowired
     private ArticleService articleService;
+
+
+    @Autowired
+    private TopicService topicService;
 
     DateUtil dateUtil = new DateUtil();
 
@@ -113,32 +120,35 @@ public class ArticleController {
      *
      * @param request 请求
      * @return {@link String}
-     * @throws Exception 异常
      */
-    @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query", dataType = "HttpServletRequest", name = "request", value = "请求", required = true)
-    })
-    @ApiOperation(value = "文章发布", notes = "文章发布", httpMethod = "POST")
     @PostMapping(value = {"/postings"})
-    public String articlePublish(HttpServletRequest request) throws Exception{
+    public String articlePublish(HttpServletRequest request) {
         BackMessage backMessage = new BackMessage();
         String userId = request.getParameter("userId");
         String content = request.getParameter("content");
         String title = request.getParameter("title");
+        String topicId = request.getParameter("topicId");
+        Long articleId = YitIdHelper.nextId();
+        Date nowDate = dateUtil.getNowSqlDate();
         ForumArticleWithBLOBs article = new ForumArticleWithBLOBs();
-        article.setCreateTime(dateUtil.getNowSqlDate());
+        ForumTopicable topicable = new ForumTopicable();
+        article.setCreateTime(nowDate);
         article.setTitle(title);
         article.setContentMarkdown(content);
         article.setUserId(Long.valueOf(userId));
-        article.setArticleId(YitIdHelper.nextId());
-        if (this.articleService.insertArticle(article)==1){
-            //获得插入后的文章id
-            System.out.println(article.getArticleId());
+        article.setArticleId(articleId);
+        topicable.setTopicableId(articleId);
+        topicable.setTopicId(Long.valueOf(topicId));
+        topicable.setCreateTime(nowDate);
+        try {
+            this.articleService.insertArticle(article);
+            this.topicService.insertTopicAble(topicable);
             backMessage.setCode(INSERT_SUCCESSFUL);
             backMessage.setMessage("发布成功!");
-        }else {
+        } catch (Exception e) {
             backMessage.setCode(INSERT_FAILED);
-            backMessage.setMessage("发布失败,服务器繁忙,请稍后再试...");
+            backMessage.setMessage("发布失败,请检查参数格式是否正确!");
+            return JSON.toJSONString(backMessage);
         }
         return JSON.toJSONString(backMessage);
     }
