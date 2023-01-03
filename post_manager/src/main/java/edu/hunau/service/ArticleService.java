@@ -23,7 +23,7 @@ public interface ArticleService {
      * @return int
      * @throws Exception 异常
      */
-    public List<ForumArticle> queryArticleBasicById(Integer articleId) throws Exception;
+    public ForumArticleWithBLOBs queryArticleBasicById(Integer articleId) throws Exception;
 
     /**
      * 通过用户id查询文章
@@ -57,6 +57,14 @@ public interface ArticleService {
      */
     public PageInfo<ForumArticle> selectAllTopicArticlePage(String topicId,Integer pageNum,Integer pageSize) throws Exception;
 
+    /**
+     * 分页请求文章
+     *
+     * @param pageNum  页面num
+     * @param pageSize 页面大小
+     * @return {@link PageInfo}<{@link ForumArticle}>
+     */
+    public PageInfo<ForumArticle> selectAllArticlePage(Integer pageNum,Integer pageSize);
 
 //    INSERT-START
 

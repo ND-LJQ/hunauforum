@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class ForumArticle implements Serializable {
+    private String userName;
+
     private Long articleId;
 
     private Long userId;
@@ -31,6 +33,14 @@ public class ForumArticle implements Serializable {
     private Integer deleteStatus;
 
     private static final long serialVersionUID = 1L;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
     public Long getArticleId() {
         return articleId;

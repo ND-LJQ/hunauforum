@@ -53,6 +53,11 @@ public class FinalData {
 
 
     /**
+     * 令牌有效
+     */
+    public static final Integer TOKEN_EFFECTIVE = 2006;
+
+    /**
      * 登录失败
      */
     public static final Integer LOGIN_FAILED = 4001;
@@ -82,4 +87,21 @@ public class FinalData {
      * 插入失败
      */
     public static final Integer INSERT_FAILED = 4006;
+
+    /**
+     * 令牌无效
+     */
+    public static final Integer TOKEN_INEFFECTIVE = 4006;
+
+
+    /**
+     * 图像保存路径
+     */
+    public static final String IMAGES_SAVE_PATH = "D:\\WorkSpace\\StudySpace\\Study-WORK\\Java\\Project\\hunauforum\\images";
+
+    /**
+     * 视频保存路径
+     */
+    public static final String VIDEO_SAVE_PATH = "D:\\WorkSpace\\StudySpace\\Study-WORK\\Java\\Project\\hunauforum\\video";
+
 }

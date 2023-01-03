@@ -110,4 +110,5 @@ public interface UserService {
      */
     public int updateUserToken(Long userId) throws Exception;
 
+
 }

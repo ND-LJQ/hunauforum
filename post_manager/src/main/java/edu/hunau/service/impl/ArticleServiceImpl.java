@@ -28,12 +28,8 @@ public class ArticleServiceImpl implements ArticleService {
     private ForumTopicMapper forumTopicMapper;
 
     @Override
-    public List<ForumArticle> queryArticleBasicById(Integer articleId) throws Exception {
-        ForumArticleExample article = new ForumArticleExample();
-        ForumArticleExample.Criteria criteria = article.createCriteria();
-        criteria.andUserIdEqualTo(Long.valueOf(articleId));
-        List<ForumArticle> articles= forumArticleMapper.selectByExample(article);
-        return articles;
+    public ForumArticleWithBLOBs queryArticleBasicById(Integer articleId) throws Exception {
+        return forumArticleMapper.selectByPrimaryKey(Long.valueOf(articleId));
     }
 
     @Override
@@ -59,6 +55,17 @@ public class ArticleServiceImpl implements ArticleService {
         }
         PageHelper.startPage(pageNum,pageSize);
         List<ForumArticle> articles = this.forumArticleMapper.selectTopicArticleByPrimaryKey(Long.valueOf(topicId));
+        PageInfo<ForumArticle> pageInfo = new PageInfo<>(articles);
+        return pageInfo;
+    }
+
+    @Override
+    public PageInfo<ForumArticle> selectAllArticlePage(Integer pageNum, Integer pageSize) {
+        if(pageNum == null||pageNum == 0){
+            pageNum = 1;
+        }
+        PageHelper.startPage(pageNum,pageSize);
+        List<ForumArticle> articles = this.forumArticleMapper.selectAll();
         PageInfo<ForumArticle> pageInfo = new PageInfo<>(articles);
         return pageInfo;
     }

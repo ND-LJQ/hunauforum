@@ -123,6 +123,22 @@
     from forum_article
     where article_id = #{articleId,jdbcType=BIGINT}
   </select>
+  <select id="selectAll" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    SELECT
+      u.headline,
+      u.user_id,
+      u.username,
+      a.article_id,
+      u.avatar,
+      a.title,
+      a.vote_down_Count,
+      a.vote_up_count,
+      a.comment_count,
+      a.follower_count
+    FROM
+      forum_article AS a
+        JOIN forum_user AS u ON a.user_id = u.user_id
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from forum_article
     where article_id = #{articleId,jdbcType=BIGINT}

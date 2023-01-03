@@ -39,4 +39,7 @@ public interface ForumArticleMapper {
     int updateByPrimaryKey(ForumArticle row);
 
     List<ForumArticle> selectTopicArticleByPrimaryKey(Long topicId);
+
+
+    List<ForumArticle> selectAll();
 }

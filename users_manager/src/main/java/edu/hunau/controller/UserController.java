@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Date;
+import java.util.Map;
 
 import static edu.hunau.util.FinalData.*;
 
@@ -97,10 +98,7 @@ public class UserController {
     @ResponseBody
     public String userLoginByEmail(HttpServletRequest request) throws Exception{
         String email = request.getParameter("email");
-        System.out.println(email);
-
         String password = request.getParameter("password");
-        System.out.println(password);
         ForumUser user = this.userService.queryUserByEmail(email);
         BackMessage back = new BackMessage();
         if(user!=null){
@@ -109,6 +107,7 @@ public class UserController {
                 back.setCode(LOGIN_SUCCESSFUL);
                 back.setMessage("登录成功!");
                 back.setToken(token);
+                back.setData(user);
                 this.userService.insertLoginToken(user.getUserId(),token);
                 return JSON.toJSONString(back);
             }
@@ -205,6 +204,22 @@ public class UserController {
         return JSON.toJSONString(back);
     }
 
+
+    @GetMapping(value = {"/queryToken/{token}"})
+    public String checkToken(@PathVariable String token){
+        BackMessage backMessage = new BackMessage();
+        System.out.println(token);
+        Boolean result = TokenUtil.verify(token);
+        if (result){
+            backMessage.setCode(TOKEN_EFFECTIVE);
+            backMessage.setMessage("登录信息有效");
+            return JSON.toJSONString(backMessage);
+        }else {
+            backMessage.setCode(TOKEN_INEFFECTIVE);
+            backMessage.setMessage("登录信息失效,请重新登录");
+            return JSON.toJSONString(backMessage);
+        }
+    }
 
     /**
      * 更改用户密码

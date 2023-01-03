@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.hunau.mapper.ForumImageMapper">
+  <resultMap id="BaseResultMap" type="edu.hunau.entity.ForumImage">
+    <id column="key" jdbcType="BIGINT" property="key" />
+    <result column="filename" jdbcType="VARCHAR" property="filename" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="item_type" jdbcType="CHAR" property="itemType" />
+    <result column="item_id" jdbcType="BIGINT" property="itemId" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="img_absolute_path" jdbcType="VARCHAR" property="imgAbsolutePath" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    key, filename, create_time, item_type, item_id, user_id, img_absolute_path
+  </sql>
+  <select id="selectByExample" parameterType="edu.hunau.entity.ForumImageExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from forum_image
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from forum_image
+    where key = #{key,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from forum_image
+    where key = #{key,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="edu.hunau.entity.ForumImageExample">
+    delete from forum_image
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="edu.hunau.entity.ForumImage">
+    insert into forum_image (key, filename, create_time, 
+      item_type, item_id, user_id, 
+      img_absolute_path)
+    values (#{key,jdbcType=BIGINT}, #{filename,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{itemType,jdbcType=CHAR}, #{itemId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, 
+      #{imgAbsolutePath,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="edu.hunau.entity.ForumImage">
+    insert into forum_image
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="key != null">
+        key,
+      </if>
+      <if test="filename != null">
+        filename,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="itemType != null">
+        item_type,
+      </if>
+      <if test="itemId != null">
+        item_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="imgAbsolutePath != null">
+        img_absolute_path,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="key != null">
+        #{key,jdbcType=BIGINT},
+      </if>
+      <if test="filename != null">
+        #{filename,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="itemType != null">
+        #{itemType,jdbcType=CHAR},
+      </if>
+      <if test="itemId != null">
+        #{itemId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="imgAbsolutePath != null">
+        #{imgAbsolutePath,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="edu.hunau.entity.ForumImageExample" resultType="java.lang.Long">
+    select count(*) from forum_image
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update forum_image
+    <set>
+      <if test="row.key != null">
+        key = #{row.key,jdbcType=BIGINT},
+      </if>
+      <if test="row.filename != null">
+        filename = #{row.filename,jdbcType=VARCHAR},
+      </if>
+      <if test="row.createTime != null">
+        create_time = #{row.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="row.itemType != null">
+        item_type = #{row.itemType,jdbcType=CHAR},
+      </if>
+      <if test="row.itemId != null">
+        item_id = #{row.itemId,jdbcType=BIGINT},
+      </if>
+      <if test="row.userId != null">
+        user_id = #{row.userId,jdbcType=BIGINT},
+      </if>
+      <if test="row.imgAbsolutePath != null">
+        img_absolute_path = #{row.imgAbsolutePath,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update forum_image
+    set key = #{row.key,jdbcType=BIGINT},
+      filename = #{row.filename,jdbcType=VARCHAR},
+      create_time = #{row.createTime,jdbcType=TIMESTAMP},
+      item_type = #{row.itemType,jdbcType=CHAR},
+      item_id = #{row.itemId,jdbcType=BIGINT},
+      user_id = #{row.userId,jdbcType=BIGINT},
+      img_absolute_path = #{row.imgAbsolutePath,jdbcType=VARCHAR}
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="edu.hunau.entity.ForumImage">
+    update forum_image
+    <set>
+      <if test="filename != null">
+        filename = #{filename,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="itemType != null">
+        item_type = #{itemType,jdbcType=CHAR},
+      </if>
+      <if test="itemId != null">
+        item_id = #{itemId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="imgAbsolutePath != null">
+        img_absolute_path = #{imgAbsolutePath,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where key = #{key,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="edu.hunau.entity.ForumImage">
+    update forum_image
+    set filename = #{filename,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      item_type = #{itemType,jdbcType=CHAR},
+      item_id = #{itemId,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=BIGINT},
+      img_absolute_path = #{imgAbsolutePath,jdbcType=VARCHAR}
+    where key = #{key,jdbcType=BIGINT}
+  </update>
+</mapper>

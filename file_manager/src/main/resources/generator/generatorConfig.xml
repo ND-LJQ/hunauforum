@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<!--<generatorConfiguration>-->
+<!--    <properties resource="generator.properties"/>-->
+<!--    <context id="MySqlContext" targetRuntime="MyBatis3" defaultModelType="flat">-->
+<!--        <property name="beginningDelimiter" value="`"/>-->
+<!--        <property name="endingDelimiter" value="`"/>-->
+<!--        <property name="javaFileEncoding" value="UTF-8"/>-->
+<!--        &lt;!&ndash; 为模型生成序列化方法&ndash;&gt;-->
+<!--        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>-->
+<!--        &lt;!&ndash; 为生成的Java模型创建一个toString方法 &ndash;&gt;-->
+<!--        <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>-->
+<!--        &lt;!&ndash;可以自定义生成model的代码注释&ndash;&gt;-->
+<!--        &lt;!&ndash;<commentGenerator type="com.macro.mall.tiny.mbg.CommentGenerator">&ndash;&gt;-->
+<!--        &lt;!&ndash;&lt;!&ndash; 是否去除自动生成的注释 true：是 ： false:否 &ndash;&gt;&ndash;&gt;-->
+<!--        &lt;!&ndash;<property name="suppressAllComments" value="true"/>&ndash;&gt;-->
+<!--        &lt;!&ndash;<property name="suppressDate" value="true"/>&ndash;&gt;-->
+<!--        &lt;!&ndash;<property name="addRemarkComments" value="true"/>&ndash;&gt;-->
+<!--        &lt;!&ndash;</commentGenerator>&ndash;&gt;-->
+<!--        &lt;!&ndash;配置数据库连接&ndash;&gt;-->
+<!--        <jdbcConnection driverClass="${jdbc.driverClass}"-->
+<!--                        connectionURL="${jdbc.connectionURL}"-->
+<!--                        userId="${jdbc.userId}"-->
+<!--                        password="${jdbc.password}">-->
+<!--            &lt;!&ndash;解决mysql驱动升级到8.0后不生成指定数据库代码的问题&ndash;&gt;-->
+<!--            <property name="nullCatalogMeansCurrent" value="true"/>-->
+<!--        </jdbcConnection>-->
+<!--        &lt;!&ndash;指定生成model的路径&ndash;&gt;-->
+<!--        <javaModelGenerator targetPackage="com.example.shop.mbg.model"-->
+<!--                            targetProject="D:\IdeaProjects\my-shop-v1\src\main\java"/>-->
+<!--        &lt;!&ndash;指定生成mapper.xml的路径&ndash;&gt;-->
+<!--        <sqlMapGenerator targetPackage="com.example.shop.mbg.mapper"-->
+<!--                         targetProject="D:\IdeaProjects\my-shop-v1\src\main\resources"/>-->
+<!--        &lt;!&ndash;指定生成mapper接口的的路径&ndash;&gt;-->
+<!--        <javaClientGenerator type="XMLMAPPER" targetPackage="com.example.shop.mbg.mapper"-->
+<!--                             targetProject="D:\IdeaProjects\my-shop-v1\src\main\java"/>-->
+<!--        &lt;!&ndash;生成全部表tableName设为%&ndash;&gt;-->
+<!--        <table tableName="pms_brand">-->
+<!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+<!--        </table>-->
+<!--    </context>-->
+<!--</generatorConfiguration>-->
+
+<generatorConfiguration>
+    <!-- 数据库驱动:选择你的本地硬盘上面的数据库驱动包-->
+    <classPathEntry location="C:\Users\ND_LJQ\.m2\repository\mysql\mysql-connector-java\8.0.16\mysql-connector-java-8.0.16.jar"/>
+    <context id="DB2Tables" targetRuntime="MyBatis3">
+        <!-- JavaBean 实现 序列化 接口 -->
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
+        <!-- 生成toString -->
+        <plugin type="org.mybatis.generator.plugins.ToStringPlugin" />
+        <!-- optional，旨在创建class时，对注释进行控制 -->
+        <commentGenerator>
+            <property name="suppressDate" value="true"/>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+        <!--数据库链接URL，用户名、密码 -->
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/hunauforum?serverTimezone=UTC&amp;charactorEncoding=utf-8"
+                        userId="root"
+                        password="123456">
+        </jdbcConnection>
+        <!-- 类型转换 -->
+        <javaTypeResolver >
+            <!-- 是否使用bigDecimal,
+                false: 把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer(默认)
+                true:  把JDBC DECIMAL 和 NUMERIC 类型解析为java.math.BigDecimal
+            -->
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+        <!-- 生成模型的包名和位置-->
+        <javaModelGenerator targetPackage="edu.hunau.entity" targetProject="src/main/java">
+            <!-- 默认false 是否允许子包 -->
+            <property name="enableSubPackages" value="true" />
+            <!-- 默认false 是否对model添加 构造函数 -->
+            <property name="constructorBased" value="false"/>
+            <!-- 默认false 建立的Model对象是否 不可改变  即生成的Model对象不会有 setter方法，只有构造方法 -->
+            <property name="immutable" value="false"/>
+            <!-- 默认false 是否对类CHAR类型的列的数据进行trim操作 -->
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+        <!-- 生成映射文件的包名和位置-->
+        <sqlMapGenerator targetPackage="edu.hunau.mapper" targetProject="src/main/resources">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+        <!-- 生成DAO的包名和位置-->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="edu.hunau.mapper" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+        <!-- 要生成的表 tableName是数据库中的表名或视图名 domainObjectName是实体类名-->
+        <!-- <table tableName="risk_model_order" domainObjectName="DSRiskModelOrder" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
+         <table tableName="tel_bill_record" domainObjectName="DSTelBillRecord" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
+<!--        <table tableName="forum_token"></table>-->
+        <table tableName="forum_Image"></table>
+<!--        <table tableName="forum_audit"></table>-->
+<!--        <table tableName="ljq_cache"></table>-->
+<!--        <table tableName="ljq_comment"></table>-->
+<!--        <table tableName="ljq_follow"></table>-->
+<!--        <table tableName="ljq_image"></table>-->
+<!--        <table tableName="ljq_inbox"></table>-->
+<!--        <table tableName="ljq_notification"></table>-->
+<!--        <table tableName="ljq_option"></table>-->
+<!--        <table tableName="ljq_question"></table>-->
+<!--        <table tableName="ljq_report"></table>-->
+<!--        <table tableName="ljq_token"></table>-->
+<!--        <table tableName="ljq_topic"></table>-->
+<!--        <table tableName="ljq_topicable"></table>-->
+<!--        <table tableName="ljq_vote"></table>-->
+    </context>
+</generatorConfiguration>

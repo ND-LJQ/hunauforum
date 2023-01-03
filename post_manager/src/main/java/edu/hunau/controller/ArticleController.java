@@ -3,6 +3,7 @@ package edu.hunau.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
+import com.github.pagehelper.PageInfo;
 import com.github.yitter.idgen.YitIdHelper;
 import edu.hunau.entity.BackMessage;
 import edu.hunau.entity.ForumArticle;
@@ -59,7 +60,7 @@ public class ArticleController {
     public String getArticleBasicInfoByArticleId(@PathVariable Integer articleId) throws Exception{
         BackMessage backMessage = new BackMessage();
         try{
-            ForumArticle article = this.articleService.queryArticleBasicById(articleId).get(0);
+            ForumArticle article = this.articleService.queryArticleBasicById(articleId);
             backMessage.setMessage("查询成功!");
             backMessage.setCode(SELECT_SUCCESSFUL);
             backMessage.setData(article);
@@ -68,6 +69,30 @@ public class ArticleController {
             backMessage.setCode(SELECT_FAILED);
             backMessage.setMessage("查询失败,文章不存在或已经被删除!");
         }
+        return JSON.toJSONString(backMessage);
+    }
+
+    @PostMapping(value = {"/getarticlepage"})
+    public String getArticlePage(HttpServletRequest request){
+        BackMessage backMessage = new BackMessage();
+        String pageNumStr = request.getParameter("pageNum");
+        String pageSizeStr = request.getParameter("pageSize");
+        if(pageSizeStr!=null&&!pageSizeStr.equals("")){
+            if(pageNumStr==null){
+                pageNumStr = "1";
+            }
+            Integer pageSize = Integer.valueOf(pageSizeStr);
+            Integer pageNum = Integer.valueOf(pageNumStr);
+            PageInfo<ForumArticle> articles = this.articleService.selectAllArticlePage(pageNum,pageSize);
+            backMessage.setData(articles);
+            backMessage.setCode(SELECT_SUCCESSFUL);
+            backMessage.setMessage("查询成功");
+        }else {
+            backMessage.setCode(SELECT_SUCCESSFUL);
+            backMessage.setMessage("查询失败,请检查参数是否正确");
+        }
+
+
         return JSON.toJSONString(backMessage);
     }
 
@@ -132,7 +157,9 @@ public class ArticleController {
         String content = request.getParameter("content");
         String title = request.getParameter("title");
         String topicId = request.getParameter("topicId");
+        String topicableType = request.getParameter("topicableType");
         Long articleId = YitIdHelper.nextId();
+        System.out.println(articleId);
         Date nowDate = dateUtil.getNowSqlDate();
         ForumArticleWithBLOBs article = new ForumArticleWithBLOBs();
         ForumTopicable topicable = new ForumTopicable();
@@ -144,6 +171,7 @@ public class ArticleController {
         topicable.setTopicableId(articleId);
         topicable.setTopicId(Long.valueOf(topicId));
         topicable.setCreateTime(nowDate);
+        topicable.setTopicableType(Integer.valueOf(topicableType));
         try {
             this.articleService.insertArticle(article);
             this.topicService.insertTopicAble(topicable);
