@@ -17,7 +17,7 @@ public class App
     public static void main( String[] args )
     {
         //        配置类传入机器id
-        IdGeneratorOptions options = new IdGeneratorOptions((short) 1);
+        IdGeneratorOptions options = new IdGeneratorOptions((short) 3);
         // 默认值6，限定 WorkerId 最大值为2^6-1，即默认最多支持64个节点。
         // options.WorkerIdBitLength = 10;
 

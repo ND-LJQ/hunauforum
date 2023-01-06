@@ -41,6 +41,7 @@ public class FileController {
     @Autowired
     private ForumImageMapper forumImageMapper;
 
+    @Autowired
     private NonStaticResourceHttpRequestHandler nonStaticResourceHttpRequestHandler;
 
     FileUtil fileUtil = new FileUtil();
@@ -65,8 +66,9 @@ public class FileController {
         }
     }
 
-    @RequestMapping(value = "/uploadvideo")
-    public @ResponseBody String uploadVideo(@RequestParam MultipartFile file, HttpServletRequest request){
+    @PostMapping (value = "/uploadvideo")
+    @ResponseBody
+    public String uploadVideo(@RequestParam MultipartFile file, HttpServletRequest request){
         BackMessage backMessage = new BackMessage();
         if(!file.isEmpty()){
             String uploadPath = VIDEO_SAVE_PATH ;
@@ -115,7 +117,18 @@ public class FileController {
         }
     }
 
+    @DeleteMapping(value = {"/deletevideo/{videoId}"})
+    public Integer deleteVideo(@PathVariable String videoId) throws Exception{
+        ForumVideo video = new ForumVideo();
+        video.setVideoid(Long.valueOf(videoId));
+        video.setIsDelete(1);
+        return this.forumVideoMapper.updateByPrimaryKeySelective(video);
+    }
 
+    @GetMapping(value = {"/uservideo/{userId}"})
+    public String selectVideoByUserId(@PathVariable String userId){
+        return JSON.toJSONString(this.forumVideoMapper.selectByUserId(Long.valueOf(userId)));
+    }
 
 
 

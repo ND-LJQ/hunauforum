@@ -5,35 +5,29 @@ server:
 spring:
   application:
     name: fileManager
+  servlet:
+    multipart:
+      max-file-size: 64000MB
+      max-request-size: 6400MB
   cache:
     redis:
       cache-null-values: false
       use-key-prefix: true
   datasource:
-    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
     driverClassName: com.mysql.cj.jdbc.Driver
-    filters: stat,wall,log4j
-    initialSize: 5
-    maxActive: 200
-    maxPoolPreparedStatementPerConnectionSize: 20
-    maxWait: 60000
-    minIdle: 20
     username: root
     password: 123456
-    type: com.alibaba.druid.pool.DruidDataSource
     url: jdbc:mysql://127.0.0.1:3306/hunauforum?useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true
-    useGlobalDataSourceStat: true
-  mvc:
-    path match:
-      matching-strategy: ant-path-matcher
-
-swagger:
-  enable: true
-  application-name: ${spring.application.name}
-  application-version: 1.0
-  application-description: springfox swagger
-  try-host: http://localhost:${server.port}
-
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+      filters: stat,wall,log4j
+      initialSize: 5
+      maxActive: 200
+      maxPoolPreparedStatementPerConnectionSize: 20
+      maxWait: 60000
+      minIdle: 20
+      useGlobalDataSourceStat: true
   redis:
     database: 0
     host: 192.168.64.120
@@ -45,6 +39,18 @@ swagger:
         min-idle: 0
     password: ''
     port: 6379
+  mvc:
+    path match:
+      matching-strategy: ant-path-matcher
+
+swagger:
+  enable: true
+  application-name: ${spring.application.name}
+  application-version: 1.0
+  application-description: springfox swagger
+  try-host: http://localhost:${server.port}
+
+
 
 
 

@@ -7,10 +7,10 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>users_manager</artifactId>
+    <artifactId>economy_manager</artifactId>
     <packaging>jar</packaging>
 
-    <name>users_manager</name>
+    <name>economy_manager</name>
     <url>http://maven.apache.org</url>
 
     <properties>
@@ -106,12 +106,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-
-
-
-
     </dependencies>
-
 
     <build>
         <plugins>
@@ -130,5 +125,4 @@
 
 
     </build>
-
 </project>

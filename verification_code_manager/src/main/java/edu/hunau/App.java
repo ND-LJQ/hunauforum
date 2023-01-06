@@ -7,17 +7,17 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 /**
- * 发布管理
+ * Hello world!
  *
- * @author ND_LJQ
- * @date 2022/12/20
  */
 @SpringBootApplication
 @EnableEurekaClient
-public class PostManagerApp1 {
-    public static void main(String[] args) {
+public class App 
+{
+    public static void main( String[] args )
+    {
         //        配置类传入机器id
-        IdGeneratorOptions options = new IdGeneratorOptions((short) 2);
+        IdGeneratorOptions options = new IdGeneratorOptions((short) 5);
         // 默认值6，限定 WorkerId 最大值为2^6-1，即默认最多支持64个节点。
         // options.WorkerIdBitLength = 10;
 
@@ -30,6 +30,6 @@ public class PostManagerApp1 {
 
         // 保存参数（务必调用，否则参数设置不生效）：
         YitIdHelper.setIdGenerator(options);
-        SpringApplication.run(PostManagerApp1.class,args);
+        SpringApplication.run(App.class,args);
     }
 }

@@ -7,10 +7,10 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>users_manager</artifactId>
+    <artifactId>verification_code_manager</artifactId>
     <packaging>jar</packaging>
 
-    <name>users_manager</name>
+    <name>verification_code_manager</name>
     <url>http://maven.apache.org</url>
 
     <properties>
@@ -106,9 +106,16 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-
-
-
+        <!--mail依赖-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+        <!--thymeleaf依赖-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
 
     </dependencies>
 
@@ -130,5 +137,4 @@
 
 
     </build>
-
 </project>

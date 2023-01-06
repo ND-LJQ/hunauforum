@@ -13,6 +13,8 @@
     <module>post_manager</module>
     <module>forum_consumer</module>
       <module>file_manager</module>
+      <module>economy_manager</module>
+      <module>verification_code_manager</module>
   </modules>
   <name>hunauforum</name>
   <url>http://maven.apache.org</url>
@@ -65,8 +67,8 @@
     <!-- 连接池 -->
     <dependency>
       <groupId>com.alibaba</groupId>
-      <artifactId>druid</artifactId>
-      <version>1.2.9</version>
+      <artifactId>druid-spring-boot-starter</artifactId>
+      <version>1.1.21</version>
     </dependency>
 
     <!-- 通用的 实体类与 service接口 -->
