@@ -10,19 +10,35 @@ public class FinalData {
 
 
     /**
-     * 生产的验证码位数
+     * 邮箱验证码位数
      */
-    public static final int generateVerificationCodeLength = 4;
-
+    public static final int generateEmailVerificationCodeLength = 4;
 
     /**
-     * 验证码包含的字母和数字
+     * 手机验证码位数
      */
-    public static final String[] metaCode={"0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
+    public static final int generatePhoneVerificationCodeLength = 6;
+
+    /**
+     * 邮箱验证码包含的字母和数字
+     */
+    public static final String[] EMAIL_META_CODE ={"0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
             "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O",
             "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
 
+    /**
+     * 手机验证码包含的数字
+     */
+    public static final String[] PHONE_META_CODE ={"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
 
+
+    public static final String SERVICE_TYPE_REGISTER = "注册账号";
+
+    public static final String SERVICE_TYPE_LOGIN = "登录";
+
+    public static final String SERVICE_TYPE_CHANGE_PASSWORD = "修改密码";
+
+    public static final String SERVICE_TYPE_BACK_PASSWORD = "找回密码";
     /**
      * TOKEN 的默认过期时间
      */

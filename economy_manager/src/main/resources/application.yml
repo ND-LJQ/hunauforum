@@ -38,15 +38,27 @@ spring:
     timeout: 3000
     port: 6379
 
+alipay:
+  # 支付宝网关
+  url: https://openapi.alipaydev.com/gateway.do
+  # APPID 登录支付宝会生成
+  appid: 2021000118691681
+  # 应用私钥 生成密钥器生成
+  privateKey: MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDZIJJGe4b...
+  # 支付宝公钥 RSA2密钥(推荐) 配置好并启动会生成
+  publicKey: MIIBIjANBgkqhkiG9...
+  # 支付宝返回请求的接口，告诉我们支付成功的信息
+  notifyUrl: http://localhost:8800/notify
+  # 同步通知，支付成功，一般跳转到成功页
+  returnUrl: http://localhost:8800/return
+
+
 swagger:
   enable: true
   application-name: ${spring.application.name}
   application-version: 1.0
   application-description: springfox swagger 3.0
   try-host: http://localhost:${server.port}
-
-
-
 
 
 

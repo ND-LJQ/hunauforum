@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.hunau.mapper.ForumVideoMapper">
+  <resultMap id="BaseResultMap" type="edu.hunau.entity.ForumVideo">
+    <id column="videoId" jdbcType="BIGINT" property="videoid" />
+    <result column="video_absolute_path" jdbcType="VARCHAR" property="videoAbsolutePath" />
+    <result column="video_name" jdbcType="VARCHAR" property="videoName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="userId" jdbcType="BIGINT" property="userid" />
+    <result column="video_title" jdbcType="VARCHAR" property="videoTitle" />
+    <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
+    <result column="video_type" jdbcType="BIGINT" property="videoType" />
+  </resultMap>
+  <resultMap id="BackResultMap" type="edu.hunau.entity.ForumVideo">
+    <id column="videoId" jdbcType="BIGINT" property="videoid" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="video_title" jdbcType="VARCHAR" property="videoTitle" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    videoId, video_absolute_path, video_name, create_time, userId, video_title, is_delete, 
+    video_type
+  </sql>
+  <select id="selectByExample" parameterType="edu.hunau.entity.ForumVideoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from forum_video
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByUserId" parameterType="java.lang.Long"  resultMap="BackResultMap">
+    SELECT
+      videoId,
+      create_time,
+      video_title
+    FROM
+      forum_video
+    WHERE
+      userId = #{userId,jdbcType=BIGINT}
+      AND is_delete = 0;
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from forum_video
+    where videoId = #{videoid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from forum_video
+    where videoId = #{videoid,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="edu.hunau.entity.ForumVideoExample">
+    delete from forum_video
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="edu.hunau.entity.ForumVideo">
+    insert into forum_video (videoId, video_absolute_path, video_name, 
+      create_time, userId, video_title, 
+      is_delete, video_type)
+    values (#{videoid,jdbcType=BIGINT}, #{videoAbsolutePath,jdbcType=VARCHAR}, #{videoName,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{userid,jdbcType=BIGINT}, #{videoTitle,jdbcType=VARCHAR}, 
+      #{isDelete,jdbcType=INTEGER}, #{videoType,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="edu.hunau.entity.ForumVideo">
+    insert into forum_video
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="videoid != null">
+        videoId,
+      </if>
+      <if test="videoAbsolutePath != null">
+        video_absolute_path,
+      </if>
+      <if test="videoName != null">
+        video_name,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="userid != null">
+        userId,
+      </if>
+      <if test="videoTitle != null">
+        video_title,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+      <if test="videoType != null">
+        video_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="videoid != null">
+        #{videoid,jdbcType=BIGINT},
+      </if>
+      <if test="videoAbsolutePath != null">
+        #{videoAbsolutePath,jdbcType=VARCHAR},
+      </if>
+      <if test="videoName != null">
+        #{videoName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="videoTitle != null">
+        #{videoTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="videoType != null">
+        #{videoType,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="edu.hunau.entity.ForumVideoExample" resultType="java.lang.Long">
+    select count(*) from forum_video
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update forum_video
+    <set>
+      <if test="row.videoid != null">
+        videoId = #{row.videoid,jdbcType=BIGINT},
+      </if>
+      <if test="row.videoAbsolutePath != null">
+        video_absolute_path = #{row.videoAbsolutePath,jdbcType=VARCHAR},
+      </if>
+      <if test="row.videoName != null">
+        video_name = #{row.videoName,jdbcType=VARCHAR},
+      </if>
+      <if test="row.createTime != null">
+        create_time = #{row.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="row.userid != null">
+        userId = #{row.userid,jdbcType=BIGINT},
+      </if>
+      <if test="row.videoTitle != null">
+        video_title = #{row.videoTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="row.isDelete != null">
+        is_delete = #{row.isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="row.videoType != null">
+        video_type = #{row.videoType,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update forum_video
+    set videoId = #{row.videoid,jdbcType=BIGINT},
+      video_absolute_path = #{row.videoAbsolutePath,jdbcType=VARCHAR},
+      video_name = #{row.videoName,jdbcType=VARCHAR},
+      create_time = #{row.createTime,jdbcType=TIMESTAMP},
+      userId = #{row.userid,jdbcType=BIGINT},
+      video_title = #{row.videoTitle,jdbcType=VARCHAR},
+      is_delete = #{row.isDelete,jdbcType=INTEGER},
+      video_type = #{row.videoType,jdbcType=BIGINT}
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="edu.hunau.entity.ForumVideo">
+    update forum_video
+    <set>
+      <if test="videoAbsolutePath != null">
+        video_absolute_path = #{videoAbsolutePath,jdbcType=VARCHAR},
+      </if>
+      <if test="videoName != null">
+        video_name = #{videoName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userid != null">
+        userId = #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="videoTitle != null">
+        video_title = #{videoTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="videoType != null">
+        video_type = #{videoType,jdbcType=BIGINT},
+      </if>
+    </set>
+    where videoId = #{videoid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="edu.hunau.entity.ForumVideo">
+    update forum_video
+    set video_absolute_path = #{videoAbsolutePath,jdbcType=VARCHAR},
+      video_name = #{videoName,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      userId = #{userid,jdbcType=BIGINT},
+      video_title = #{videoTitle,jdbcType=VARCHAR},
+      is_delete = #{isDelete,jdbcType=INTEGER},
+      video_type = #{videoType,jdbcType=BIGINT}
+    where videoId = #{videoid,jdbcType=BIGINT}
+  </update>
+</mapper>

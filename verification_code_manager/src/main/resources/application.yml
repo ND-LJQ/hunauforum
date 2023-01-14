@@ -57,6 +57,9 @@ spring:
 
 
 
+
+
+
 swagger:
   enable: true
   application-name: ${spring.application.name}
@@ -110,3 +113,5 @@ page helper:
   reasonable: false
   rowBoundsWithCount: true
   supportMethodsArguments: false
+
+
