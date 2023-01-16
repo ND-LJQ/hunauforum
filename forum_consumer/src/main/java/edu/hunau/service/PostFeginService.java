@@ -9,5 +9,5 @@ import org.springframework.cloud.openfeign.FeignClient;
 @FeignClient(value = "postManager") //需要访问的远程微服务应用名称
 public interface PostFeginService {
 
-    public String getArticleInfo()
+    public String getArticleInfo();
 }

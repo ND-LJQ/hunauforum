@@ -32,6 +32,16 @@ public class FinalData {
     public static final String[] PHONE_META_CODE ={"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
 
 
+    /**
+     * 网页/移动支付类型
+     */
+    public static final String PAY_TYPE_WEB = "web";
+
+    /**
+     * 小程序支付类型
+     */
+    public static final String PAY_TYPE_APP = "app";
+
     public static final String SERVICE_TYPE_REGISTER = "注册账号";
 
     public static final String SERVICE_TYPE_LOGIN = "登录";

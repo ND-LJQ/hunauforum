@@ -60,6 +60,12 @@
             </exclusions>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
         <!-- mybatis boot starter 无需再使用mybatis.xml 所有配置均在application.properties中完成,另外在启动类中添加mapper扫描注解 -->
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
@@ -114,12 +120,29 @@
             <version>4.35.32.ALL</version>
         </dependency>
 
+        <!-- 微信支付 SDK-->
+        <dependency>
+            <groupId>com.github.binarywang</groupId>
+            <artifactId>weixin-java-pay</artifactId>
+            <version>4.4.7.B</version>
+        </dependency>
+
+
+
+        <!-- thymeleaf 依赖 用于渲染html页面 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
         <!--日志记录-->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>2.0.5</version>
+            <version>1.7.32</version>
         </dependency>
+
+
     </dependencies>
 
     <build>

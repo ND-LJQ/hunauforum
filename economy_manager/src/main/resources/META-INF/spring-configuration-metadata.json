@@ -1,0 +1,48 @@
+{
+  "properties": [
+    {
+      "name": "alipay.appId",
+      "type": "java.lang.String",
+      "description": "Description for alipay.appId."
+    },
+    {
+      "name": "alipay.privateKey",
+      "type": "java.lang.String",
+      "description": "Description for alipay.privateKey."
+    },
+    {
+      "name": "alipay.returnUrl",
+      "type": "java.lang.String",
+      "description": "Description for alipay.returnUrl."
+    },
+    {
+      "name": "alipay.publicKey",
+      "type": "java.lang.String",
+      "description": "Description for alipay.publicKey."
+    },
+    {
+      "name": "alipay.signType",
+      "type": "java.lang.String",
+      "description": "Description for alipay.signType."
+    },
+    {
+      "name": "alipay.charset",
+      "type": "java.lang.String",
+      "description": "Description for alipay.charset."
+    },
+    {
+      "name": "alipay.gatewayUrl",
+      "type": "java.lang.String",
+      "description": "Description for alipay.gatewayUrl."
+    },
+    {
+      "name": "alipay.refundNotifyUrl",
+      "type": "java.lang.String",
+      "description": "Description for alipay.refundNotifyUrl."
+    },
+    {
+      "name": "alipay.notifyUrl",
+      "type": "java.lang.String",
+      "description": "Description for alipay.notifyUrl."
+    }
+  ] }

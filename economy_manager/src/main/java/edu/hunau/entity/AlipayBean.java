@@ -9,7 +9,7 @@ import lombok.Data;
  * @date 2023/01/07
  */
 @Data
-public class AliPayBean {
+public class AlipayBean {
     /**
      * 商户订单号
      */
@@ -39,4 +39,13 @@ public class AliPayBean {
      * 产品编号
      */
     private String productCode = "FAST_INSTANT_TRADE_PAY";
+
+    public AlipayBean(String outTradeNo, String subject, String totalAmount, String body) {
+        this.outTradeNo = outTradeNo;
+        this.subject = subject;
+        this.totalAmount = totalAmount;
+        this.body = body;
+    }
+
+    public AlipayBean(){}
 }

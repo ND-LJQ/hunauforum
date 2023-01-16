@@ -70,9 +70,10 @@ public class TxSmsUtil {
     /**
      * 发送短信
      *
-     * @param properties 属性
-     * @param phone      电话
-     * @param code       验证码
+     * @param properties  属性
+     * @param phone       电话
+     * @param code        验证码
+     * @param serviceType 服务类型
      */
     public void sendSms(TxSmsProperties properties,String phone,String code,String serviceType){
 

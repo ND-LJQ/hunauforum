@@ -38,19 +38,19 @@ spring:
     timeout: 3000
     port: 6379
 
-alipay:
-  # 支付宝网关
-  url: https://openapi.alipaydev.com/gateway.do
-  # APPID 登录支付宝会生成
-  appid: 2021000118691681
-  # 应用私钥 生成密钥器生成
-  privateKey: MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDZIJJGe4b...
-  # 支付宝公钥 RSA2密钥(推荐) 配置好并启动会生成
-  publicKey: MIIBIjANBgkqhkiG9...
-  # 支付宝返回请求的接口，告诉我们支付成功的信息
-  notifyUrl: http://localhost:8800/notify
-  # 同步通知，支付成功，一般跳转到成功页
-  returnUrl: http://localhost:8800/return
+#alipay:
+#  # 支付宝网关
+#  url: https://openapi.alipaydev.com/gateway.do
+#  # APPID 登录支付宝会生成
+#  appid: 2021000118691681
+#  # 应用私钥 生成密钥器生成
+#  privateKey: MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDZIJJGe4b...
+#  # 支付宝公钥 RSA2密钥(推荐) 配置好并启动会生成
+#  publicKey: MIIBIjANBgkqhkiG9...
+#  # 支付宝返回请求的接口，告诉我们支付成功的信息
+#  notifyUrl: http://localhost:7080/notify
+#  # 同步通知，支付成功，一般跳转到成功页
+#  returnUrl: http://localhost:7080/return
 
 
 swagger:
@@ -103,3 +103,17 @@ page helper:
   reasonable: false
   rowBoundsWithCount: true
   supportMethodsArguments: false
+
+
+alipay:
+  appId: 2021000122603405
+  privateKey: MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCSk69V8lMt3iGNHMhw/MsXnI8c/fbuYzCVcv6KKfcP/1d2ll3vmWt/57nL1xFprwjHgk71IOQUHcpiFb6BYPttH0uz7TYW5xcaRLsyrerpj72Qi8UsXrvEIXmApvIugoJTE24+ryhOw0Wu8dcNJgtPbO3cQxmFcEwHCNHx4LJGVI/WLhJdSXgkNi8xNEEqdBWSyHGFDwRqm3FNQS3/aoNhOEdfnnVpZBTtl4OjfaAmWPlZhDf/VqyftKK8AIi4BEcXmY97BLE0Hmg2ngtTEO4m4++YmJYc5/wL9EkaQzDQAACUygF6zYoaTnj1JBXafGDkN8GYzcxpCY0yQUcdySVLAgMBAAECggEAQMb5zu7n6bZod3eH8b8WdhnfeX2XOmUlnHaUnTTMlgpPef4cB35y7rTW/InQjTcolxs0j8p4YZeE0HIxnfXhR6l0CFFF/Tslj5tea5hG3++BZDcQ7Xn0W0o76ypcj0doFxTYPOWl16Ee06DXXF061GAcgqI4zisBvn4cYlveDYw3b84UX3FmELM6Y6znTiM8IQihC13znMNObuFfMutmU+HbHA8cJ590eKndUO8czirDPK+l8GhDkAGqcMVy+/vDhhuZ8mfhmX94NQG1HIPuPLw/2Jj9BeyopR7mc+/B8AUZEQ/0GNXNMvAbmB5lMQuE9/0/+AGjEqFjshGL/jP+IQKBgQDWAJAcHYDiLcolpO8D4GW6hTlrrLsulFcW0JfJVnwprTAbj3YLjZEQqZgnQBRN5fdxwXYyd5Gi9uoIUzjqQ7sbChSTI9St/4w6JaA9KVGWGoix7mvv3t7tQzPeQBYPzwfaJgB1PcrPY77QA9Z+pW66t0Hswy9w/8rpN6JMUltaewKBgQCvV69og2uoiDvxumFWnL0mkwKOD4/DUnQpQLoiII9NzbvUd91RDyeu7OM1lCLi/obDpCf8EoCv47NPDdr4KjWkfgc8Fh4LBj70sGjwrUc3lgj7NOkh9e5FXbnRiynwb6q9FLgW8s8uSJga7TOy6cZ4Ogo0kN+WUdyfngypG6sPcQKBgGiZc9baMOHcob7OpCkP6IlHju5rSj6VMRAsutQlWqEATtBZycgR1QMA8ibVMld0/QJ0HjLCsMOnznJtQxd2LaEkxzO4Qr8ddkwBkhXy+TbWF1RpBgcDt5De1R5f0qi9d8gP5Q9pOZUu2thP1+qlL79BzY5NRQYFcQeXMtP9OTu7AoGAXkXixWqDY6V7tUfkNdEn0amQ4hhzzyxx0AxBB0BCTC6lImMf1wky6NXsg04WQ71db6q+5MR99BOUwJhOdsca+EnaUfACTyMYji6a/WvssnI0efvErMGxThJKaeNMtT0Uq3yMTapWwie9wBxwg201jEaIXiLWU9fHqvorDHEX08ECgYBQl1cLNpccyLw4j6LETnJu47J+eA0McmQwL60rOeS4rsHrso1EMmdAqhdL2PlDBDhtLp28spaUXRLymYAcRDlMgYImYDmejU097wA684Pq8oASyeApoeQA8ieLo/4/nXWZJJspOozyCSrAjVOpYbMF99fMGxMJTaCnD39RXg4OZg==
+  publicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtVGoA8UpZeQtgIMdsxeWkZUzlQxyEQHxHnZb/Wo8JoBCFp6Gb5eZwzy10NNoOdxllU8OWAh7xs1ZxBFxHx+Oo0KKg+ZBBka/9bIrgyUA3ykmnE5Ufh65KqX1MXxJvwY1k3mwAvgyO+b4qo20/1fGMlcjtJf0ZEBsiBPX/K9+kPghZSFW61pNNVgLDXw4Fz4RChZwvSyTLSiTzyMm0zhHg0cx4k4SRcua4FmKKTWoEQZMT6sGgFY0eF03cVkBIkzbKTzGCV6/rm9njFbtuimbo/iiwm/yW0dN1NrxjpTISicIfyvi+gIy8ATnh3RzyhhJ5a3D0MZxXR7WWD/s21kEpQIDAQAB
+  returnUrl: https://d66400h317.goho.co/economy/pay/redirect
+#  (异步回调地址，http/https开头必须外网能访问)
+  notifyUrl: https://d66400h317.goho.co/economy/pay/notify
+#  (同步回调地址，需要外网能够访问)
+  refundNotifyUrl: https://d66400h317.goho.co/economy/pay/notify
+  gatewayUrl: https://openapi.alipaydev.com/gateway.do
+  charset: utf-8
+  signType: RSA2

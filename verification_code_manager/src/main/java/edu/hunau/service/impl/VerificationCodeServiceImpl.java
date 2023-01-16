@@ -136,6 +136,6 @@ public class VerificationCodeServiceImpl implements VerificationCodeService {
 
     @Override
     public void sendTelVcode(String phone,String code,String serviceType) {
-        txSmsUtil.sendSms(properties,phone,code);
+        txSmsUtil.sendSms(properties,phone,code,serviceType);
     }
 }
