@@ -33,14 +33,19 @@ public class FinalData {
 
 
     /**
-     * 网页/移动支付类型
+     * PC端网页支付类型
      */
-    public static final String PAY_TYPE_WEB = "web";
+    public static final String PAY_TYPE_WEB_PC = "pc";
 
     /**
-     * 小程序支付类型
+     * 移动端网页支付类型
      */
-    public static final String PAY_TYPE_APP = "app";
+    public static final String PAY_TYPE_WEB_MOBILE = "mobile";
+
+    /**
+     * 应用程序支付类型
+     */
+    public static final String PAY_TYPE_WEB_APP = "app";
 
     public static final String SERVICE_TYPE_REGISTER = "注册账号";
 

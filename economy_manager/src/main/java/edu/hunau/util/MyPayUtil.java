@@ -1,6 +1,11 @@
 package edu.hunau.util;
 
+import com.alipay.api.AlipayClient;
+import com.alipay.api.DefaultAlipayClient;
+import edu.hunau.config.AlipayConfig;
 import org.springframework.beans.factory.annotation.Value;
+
+import javax.annotation.Resource;
 
 /**
  * 支付工具类
@@ -10,9 +15,11 @@ import org.springframework.beans.factory.annotation.Value;
  */
 public class MyPayUtil {
 
-
-
-    public void myTest(){
-//        System.out.println(url);
+    @Resource
+    private AlipayConfig alipayConfig;
+    public AlipayClient createAliPayClient(){
+        AlipayClient alipayClient = new DefaultAlipayClient(alipayConfig.getGatewayUrl(),alipayConfig.getAppId(),alipayConfig.getPrivateKey(),
+                "json",alipayConfig.getCharset(),alipayConfig.getPublicKey(),alipayConfig.getSignType());
+        return  alipayClient;
     }
 }

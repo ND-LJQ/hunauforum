@@ -111,9 +111,9 @@ alipay:
   publicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtVGoA8UpZeQtgIMdsxeWkZUzlQxyEQHxHnZb/Wo8JoBCFp6Gb5eZwzy10NNoOdxllU8OWAh7xs1ZxBFxHx+Oo0KKg+ZBBka/9bIrgyUA3ykmnE5Ufh65KqX1MXxJvwY1k3mwAvgyO+b4qo20/1fGMlcjtJf0ZEBsiBPX/K9+kPghZSFW61pNNVgLDXw4Fz4RChZwvSyTLSiTzyMm0zhHg0cx4k4SRcua4FmKKTWoEQZMT6sGgFY0eF03cVkBIkzbKTzGCV6/rm9njFbtuimbo/iiwm/yW0dN1NrxjpTISicIfyvi+gIy8ATnh3RzyhhJ5a3D0MZxXR7WWD/s21kEpQIDAQAB
   returnUrl: https://d66400h317.goho.co/economy/pay/redirect
 #  (异步回调地址，http/https开头必须外网能访问)
-  notifyUrl: https://d66400h317.goho.co/economy/pay/notify
+  notifyUrl: https://d66400h317.goho.co/economy/pay/alinotify
 #  (同步回调地址，需要外网能够访问)
-  refundNotifyUrl: https://d66400h317.goho.co/economy/pay/notify
+  refundNotifyUrl: https://d66400h317.goho.co/economy/pay/alinotify
   gatewayUrl: https://openapi.alipaydev.com/gateway.do
   charset: utf-8
   signType: RSA2

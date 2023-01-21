@@ -1,11 +1,15 @@
 package edu.hunau.conrtoller;
 
+import com.alibaba.fastjson.JSON;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.internal.util.AlipaySignature;
 import edu.hunau.config.AlipayConfig;
+import edu.hunau.entity.AliTradeCloseBean;
 import edu.hunau.entity.AlipayBean;
+import edu.hunau.entity.AlipayTradeRefundBean;
 import edu.hunau.service.EconomyService;
 import edu.hunau.util.MyPayUtil;
+import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,33 +46,40 @@ public class EconomyController {
     @Value("${alipay.appId}")
     private String test;
 
-    @GetMapping(value = {"/test"})
-    public void test(){
-        MyPayUtil myPayUtil = new MyPayUtil();
-        myPayUtil.myTest();
-        System.out.println(test);
-        System.out.println("配调用");
-    }
-
 
     /**
-     * 支付宝网页扫码跳转支付
+     * 支付宝支付
      *
      * @param outTradeNo  商户订单号
      * @param subject     订单名称
      * @param totalAmount 付款金额
-     * @param notice        商品描述
+     * @param notice      商品描述
+     * @param payType     支付类型
      * @return {@link String}
      * @throws AlipayApiException 支付宝api例外
      */
-    @PostMapping("/pay")
+    @PostMapping("/alipay")
     @ResponseBody
     public String alipay(@RequestParam String outTradeNo,@RequestParam String subject, @RequestParam String totalAmount, @RequestParam String notice,@RequestParam String payType) throws AlipayApiException {
         AlipayBean alipayBean = new AlipayBean(outTradeNo,subject,totalAmount,notice);
         return economyService.aliPay(alipayBean,payType);
     }
 
-//    public String
+    @PostMapping("/alipay/trade/close")
+    public String aliTradeClose(HttpServletRequest request) throws InvocationTargetException, IllegalAccessException, AlipayApiException {
+        AliTradeCloseBean aliTradeCloseBean = new AliTradeCloseBean();
+        Map<String,String[]> params = request.getParameterMap();
+        BeanUtils.populate(aliTradeCloseBean ,params);
+        return economyService.aliPayTradeClose(aliTradeCloseBean);
+    }
+
+    @PostMapping("/alipay/trade/refund")
+    public String aliTradeRefund(HttpServletRequest request ) throws InvocationTargetException, IllegalAccessException, AlipayApiException {
+        AlipayTradeRefundBean alipayTradeRefundBean = new AlipayTradeRefundBean();
+        Map<String,String[]> params = request.getParameterMap();
+        BeanUtils.populate(alipayTradeRefundBean ,params);
+        return economyService.aliPayFullRefund(alipayTradeRefundBean);
+    }
 
     @RequestMapping(value = {"/pay/alinotify"})
     @ResponseBody
