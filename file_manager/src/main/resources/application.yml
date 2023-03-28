@@ -30,7 +30,7 @@ spring:
       useGlobalDataSourceStat: true
   redis:
     database: 0
-    host: 192.168.64.120
+    host: 127.0.0.1
     lettuce:
       pool:
         max-active: 8

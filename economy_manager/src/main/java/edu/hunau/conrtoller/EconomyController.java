@@ -104,6 +104,7 @@ public class EconomyController {
         //调用SDK验证签名
         boolean signVerified = AlipaySignature.rsaCheckV1(params, alipayConfig.getPublicKey(), alipayConfig.getCharset(), alipayConfig.getSignType());
         //boolean类型signVerified为true时 则验证成功
+
         if(signVerified) {
             //获取到支付的状态 TRADE_SUCCESS则支付成功
             String trade_status =request.getParameter("trade_status");

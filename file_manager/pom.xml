@@ -8,9 +8,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>file_manager</artifactId>
-    <packaging>jar</packaging>
-
+<!--    <packaging>jar</packaging>  只有该子模块作为其他模块依赖时才使用jar-->
     <name>file_manager</name>
+    <version>1.0-SNAPSHOT</version>
     <url>http://maven.apache.org</url>
 
     <properties>
@@ -112,6 +112,7 @@
 
 
 <build>
+    <finalName>${project.name}-${project.version}</finalName>
 <plugins>
     <plugin>
         <groupId>org.mybatis.generator</groupId>
@@ -124,7 +125,24 @@
             <verbose>true</verbose>
         </configuration>
     </plugin>
+
+    <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+            <archive>
+                <manifest>
+                    <addClasspath>true</addClasspath>
+                    <classpathPrefix>lib/</classpathPrefix>
+                    <!-- 指定启动主类-->
+                    <mainClass>edu.hunau.FileApp</mainClass>
+                </manifest>
+            </archive>
+        </configuration>
+    </plugin>
 </plugins>
+
+
 
 
 </build>

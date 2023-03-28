@@ -2,21 +2,17 @@ package edu.hunau;
 
 import com.github.yitter.contract.IdGeneratorOptions;
 import com.github.yitter.idgen.YitIdHelper;
-import edu.hunau.util.MyPayUtil;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
-
 /**
- * 应用程序
+ * Hello world!
  *
- * @author ND_LJQ
- * @date 2023/01/07
  */
+@EnableEurekaClient  //作为Eureka客户端 微服务
 @SpringBootApplication
-@EnableEurekaClient
-public class App 
+public class FileApp
 {
     public static void main( String[] args )
     {
@@ -35,7 +31,6 @@ public class App
         // 保存参数（务必调用，否则参数设置不生效）：
         YitIdHelper.setIdGenerator(options);
         // 以上过程只需全局一次，且应在生成ID之前完成。
-        SpringApplication.run(App.class,args);
-
+        SpringApplication.run(FileApp.class,args);
     }
 }

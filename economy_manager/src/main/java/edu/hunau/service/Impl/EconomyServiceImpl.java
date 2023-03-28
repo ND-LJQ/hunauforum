@@ -32,10 +32,10 @@ import static edu.hunau.util.FinalData.*;
 public class EconomyServiceImpl implements EconomyService {
 
 
-    @Resource
+    @Autowired
     private AlipayConfig alipayConfig;
 
-    private MyPayUtil myPayUtil;
+    private MyPayUtil myPayUtil = new MyPayUtil();
 
     /**日志对象*/
     private static final Logger logger = LoggerFactory.getLogger(EconomyServiceImpl.class);
@@ -43,8 +43,9 @@ public class EconomyServiceImpl implements EconomyService {
     @Override
     public String aliPay(AlipayBean aliPayBean,String payType) throws AlipayApiException {
         String result = new String();
-        AlipayClient alipayClient = myPayUtil.createAliPayClient();
+        AlipayClient alipayClient = myPayUtil.createAliPayClient(alipayConfig);
         if (PAY_TYPE_WEB_PC.equals(payType)){
+            System.out.println(alipayConfig.getPrivateKey());
             AlipayTradePagePayRequest request = new AlipayTradePagePayRequest();
             //回调地址 结合业务更新我方数据库
             request.setNotifyUrl(alipayConfig.getNotifyUrl());
@@ -93,7 +94,7 @@ public class EconomyServiceImpl implements EconomyService {
 
     @Override
     public String aliPayFullRefund(AlipayTradeRefundBean alipayTradeRefundBean) throws AlipayApiException {
-        AlipayClient alipayClient = myPayUtil.createAliPayClient();
+        AlipayClient alipayClient = myPayUtil.createAliPayClient(alipayConfig);
         AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
         request.setBizContent(JSON.toJSONString(alipayTradeRefundBean));
         AlipayTradeRefundResponse response = alipayClient.execute(request);
@@ -107,7 +108,7 @@ public class EconomyServiceImpl implements EconomyService {
 
     @Override
     public String aliPayTradeClose(AliTradeCloseBean aliTradeCloseBean) throws AlipayApiException {
-        AlipayClient alipayClient = myPayUtil.createAliPayClient();
+        AlipayClient alipayClient = myPayUtil.createAliPayClient(alipayConfig);
         AlipayTradeCloseRequest request = new AlipayTradeCloseRequest();
         request.setBizContent(JSON.toJSONString(aliTradeCloseBean));
         AlipayTradeCloseResponse response = alipayClient.execute(request);
