@@ -151,4 +151,10 @@ public class FinalData {
      */
     public static final String VIDEO_SAVE_PATH = "D:\\WorkSpace\\StudySpace\\Study-WORK\\Java\\Project\\hunauforum\\video";
 
+
+    /**
+     * 搜索结果默认分页大小
+     */
+    public static final Integer SEARCH_PAGE_SIZE = 10;
+
 }

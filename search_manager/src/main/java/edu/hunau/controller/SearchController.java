@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+import static edu.hunau.util.FinalData.SEARCH_PAGE_SIZE;
+
 
 /**
  * 搜索控制器
@@ -44,8 +46,14 @@ public class SearchController {
     @ResponseBody
     public String searchArticleListByTitle(HttpServletRequest request){
         String keyword = request.getParameter("keyword");
-        Integer pageNum = Integer.valueOf(request.getParameter("pageNum"));
-        Integer pageSize = Integer.valueOf(request.getParameter("pageSize"));
+        Integer pageNum = 0;
+        Integer pageSize;
+        try{
+            pageNum = Integer.valueOf(request.getParameter("pageNum"));
+            pageSize = Integer.valueOf(request.getParameter("pageSize"));
+        }catch(NumberFormatException e){
+            pageSize = SEARCH_PAGE_SIZE;
+        }
 
         System.out.println(keyword);
         System.out.println(pageNum);

@@ -1,11 +1,9 @@
 package edu.hunau.repository.Impl;
 
-import edu.hunau.entity.ForumArticle;
 import edu.hunau.entity.ForumArticleWithBLOBs;
 import edu.hunau.repository.EsArticleRepository;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
@@ -24,9 +22,10 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilde
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
+import static edu.hunau.util.FinalData.SEARCH_PAGE_SIZE;
 
 /**
  * @author ND_LJQ
@@ -41,12 +40,12 @@ public class EsArticleRepositoryImpl implements EsArticleRepository {
     @Override
     public List<ForumArticleWithBLOBs> findByTitle(String keyword, Integer pageNumber, Integer pageSize) {
         // 页码
-        if (pageNumber == null || pageNumber < 0) {
+        if (pageNumber < 0) {
             pageNumber = 0;
         }
         // 页数
-        if (pageSize == null || pageSize < 1) {
-            pageSize = 10;
+        if (pageSize < 1) {
+            pageSize = SEARCH_PAGE_SIZE;
         }
         Page<ForumArticleWithBLOBs> page = null;
 
