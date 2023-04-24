@@ -1,14 +1,10 @@
 server:
-  port: 7075
+  port: 7090
 #spring:
 
 spring:
   application:
-    name: fileManager
-  servlet:
-    multipart:
-      max-file-size: 64000MB
-      max-request-size: 6400MB
+    name: searchManager
   cache:
     redis:
       cache-null-values: false
@@ -16,7 +12,7 @@ spring:
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
     username: root
-    password: 123
+    password: 123456
     url: jdbc:mysql://127.0.0.1:3306/hunauforum?useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
@@ -38,16 +34,20 @@ spring:
         max-wait: -1ms
         min-idle: 0
     password: ''
+    # 连接超时时间
+    timeout: 3000
     port: 6379
-  mvc:
-    path match:
-      matching-strategy: ant-path-matcher
+  elasticsearch:
+    uris: [localhost:9200]
+    UserName: elastic #账号
+    Password: 123456 #你的elasticsearch密码
+
 
 swagger:
   enable: true
   application-name: ${spring.application.name}
   application-version: 1.0
-  application-description: springfox swagger
+  application-description: springfox swagger 3.0
   try-host: http://localhost:${server.port}
 
 
@@ -82,6 +82,7 @@ logging:
   level:
     org:
       springframework: DEBUG
+      springframework.data.elasticsearch.repository: DEBUG
 
 mybatis:
   mapper-locations:
@@ -96,7 +97,3 @@ page helper:
   reasonable: false
   rowBoundsWithCount: true
   supportMethodsArguments: false
-
-
-
-
