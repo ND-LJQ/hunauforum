@@ -5,6 +5,7 @@ import com.github.yitter.idgen.YitIdHelper;
 import edu.hunau.entity.BackMessage;
 import edu.hunau.entity.ForumImage;
 import edu.hunau.entity.ForumVideo;
+import edu.hunau.entity.PathInfoBack;
 import edu.hunau.mapper.ForumImageMapper;
 import edu.hunau.mapper.ForumVideoMapper;
 import edu.hunau.util.DateUtil;
@@ -44,12 +45,17 @@ public class FileController {
     @Autowired
     private NonStaticResourceHttpRequestHandler nonStaticResourceHttpRequestHandler;
 
+
+//    String
+
     FileUtil fileUtil = new FileUtil();
     DateUtil dateUtil = new DateUtil();
 
-    @RequestMapping(value = "/uploadimg")
-    public @ResponseBody String uploadImg(@RequestParam MultipartFile file, HttpServletRequest request){
+
+    @PostMapping(value = "/uploadimg")
+    public @ResponseBody String uploadImg(@RequestParam(name = "file") MultipartFile file, @RequestParam(name = "userId") String userId ){
         if(!file.isEmpty()){
+            PathInfoBack pathInfoBack = new PathInfoBack();
             String uploadPath = IMAGES_SAVE_PATH ;
             String result = fileUtil.saveFile(uploadPath,file);
             String absolutePath = uploadPath + "\\" + result;
@@ -57,9 +63,14 @@ public class FileController {
             image.setFilename(result);
             image.setCreateTime(dateUtil.getNowSqlDate());
             image.setImgAbsolutePath(absolutePath);
+            image.setUserId(Long.valueOf(userId));
+            System.out.println(YitIdHelper.nextId());
             image.setKey(YitIdHelper.nextId());
             forumImageMapper.insertSelective(image);
-            return "";
+
+            pathInfoBack.setFilePath(absolutePath);
+            pathInfoBack.setDeclarative(result);
+            return JSON.toJSONString(pathInfoBack);
         }else{
             System.out.println("文件为空");
             return "";

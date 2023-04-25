@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="edu.hunau.mapper.ForumImageMapper">
   <resultMap id="BaseResultMap" type="edu.hunau.entity.ForumImage">
-    <id column="key" jdbcType="BIGINT" property="key" />
+    <id column="image_key" jdbcType="BIGINT" property="key" />
     <result column="filename" jdbcType="VARCHAR" property="filename" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="item_type" jdbcType="CHAR" property="itemType" />
@@ -69,7 +69,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    key, filename, create_time, item_type, item_id, user_id, img_absolute_path
+    image_key, filename, create_time, item_type, item_id, user_id, img_absolute_path
   </sql>
   <select id="selectByExample" parameterType="edu.hunau.entity.ForumImageExample" resultMap="BaseResultMap">
     select
@@ -89,11 +89,11 @@
     select 
     <include refid="Base_Column_List" />
     from forum_image
-    where key = #{key,jdbcType=BIGINT}
+    where image_key = #{key,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from forum_image
-    where key = #{key,jdbcType=BIGINT}
+    where image_key = #{key,jdbcType=BIGINT}
   </delete>
   <delete id="deleteByExample" parameterType="edu.hunau.entity.ForumImageExample">
     delete from forum_image
@@ -102,7 +102,7 @@
     </if>
   </delete>
   <insert id="insert" parameterType="edu.hunau.entity.ForumImage">
-    insert into forum_image (key, filename, create_time, 
+    insert into forum_image (image_key, filename, create_time,
       item_type, item_id, user_id, 
       img_absolute_path)
     values (#{key,jdbcType=BIGINT}, #{filename,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
@@ -113,7 +113,7 @@
     insert into forum_image
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="key != null">
-        key,
+        image_key,
       </if>
       <if test="filename != null">
         filename,
@@ -168,7 +168,7 @@
     update forum_image
     <set>
       <if test="row.key != null">
-        key = #{row.key,jdbcType=BIGINT},
+        image_key = #{row.key,jdbcType=BIGINT},
       </if>
       <if test="row.filename != null">
         filename = #{row.filename,jdbcType=VARCHAR},
@@ -195,7 +195,7 @@
   </update>
   <update id="updateByExample" parameterType="map">
     update forum_image
-    set key = #{row.key,jdbcType=BIGINT},
+    set image_key = #{row.key,jdbcType=BIGINT},
       filename = #{row.filename,jdbcType=VARCHAR},
       create_time = #{row.createTime,jdbcType=TIMESTAMP},
       item_type = #{row.itemType,jdbcType=CHAR},
@@ -228,7 +228,7 @@
         img_absolute_path = #{imgAbsolutePath,jdbcType=VARCHAR},
       </if>
     </set>
-    where key = #{key,jdbcType=BIGINT}
+    where image_key = #{key,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="edu.hunau.entity.ForumImage">
     update forum_image
@@ -238,6 +238,6 @@
       item_id = #{itemId,jdbcType=BIGINT},
       user_id = #{userId,jdbcType=BIGINT},
       img_absolute_path = #{imgAbsolutePath,jdbcType=VARCHAR}
-    where key = #{key,jdbcType=BIGINT}
+    where image_key = #{key,jdbcType=BIGINT}
   </update>
 </mapper>
