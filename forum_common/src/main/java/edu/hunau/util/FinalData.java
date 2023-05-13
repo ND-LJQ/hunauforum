@@ -33,6 +33,13 @@ public class FinalData {
 
 
     /**
+     * 手机验证码过期时间
+     * 单位为秒
+     */
+    public static final long PHONE_CODE_EXPIRY_TIME = 180;
+
+
+    /**
      * PC端网页支付类型
      */
     public static final String PAY_TYPE_WEB_PC = "pc";

@@ -2,7 +2,9 @@ package edu.hunau.config;
 
 import edu.hunau.Interceptor.CorsInterceptor;
 import edu.hunau.Interceptor.TokenInterceptor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
@@ -17,10 +19,21 @@ public class IntercepterConfig implements WebMvcConfigurer {
 
     private CorsInterceptor corsInterceptor;
 
+    @Value("${file.uploadFolder}")
+    private String uploadPath;
+
     //构造方法
     public IntercepterConfig(TokenInterceptor tokenInterceptor,CorsInterceptor corsInterceptor){
         this.tokenInterceptor = tokenInterceptor;
         this.corsInterceptor = corsInterceptor;
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+
+        //配置资源映射：设置虚拟路径，访问绝对路径下资源：访问 http://localhost:9090/api/file/xxx.txt访问d:///uploadFiles/下的资源
+        registry.addResourceHandler("/loadfile/**") //虚拟路径
+                .addResourceLocations("file:" + uploadPath); //绝对路径
     }
 
 

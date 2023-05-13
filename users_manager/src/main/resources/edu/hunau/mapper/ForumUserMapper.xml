@@ -31,8 +31,8 @@
     <result column="create_time" jdbcType="DATE" property="createTime" />
     <result column="update_time" jdbcType="DATE" property="updateTime" />
     <result column="disable_time" jdbcType="DATE" property="disableTime" />
-    <result column="tel" jdbcType="INTEGER" property="tel" />
-    <result column="qq_number" jdbcType="INTEGER" property="qqNumber" />
+    <result column="tel" jdbcType="VARCHAR" property="tel" />
+    <result column="qq_number" jdbcType="VARCHAR" property="qqNumber" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -130,11 +130,11 @@
     from forum_user
     where email = #{email,jdbcType=VARCHAR}
   </select>
-  <select id="selectByTel" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByTel" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from forum_user
-    where tel = #{tel,jdbcType=INTEGER}
+    where tel = #{tel,jdbcType=VARCHAR}
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
@@ -168,7 +168,7 @@
       #{answerCount,jdbcType=INTEGER}, #{notificationUnread,jdbcType=INTEGER}, #{inboxUnread,jdbcType=INTEGER}, 
       #{headline,jdbcType=VARCHAR}, #{bio,jdbcType=VARCHAR}, #{blog,jdbcType=VARCHAR}, 
       #{company,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, #{createTime,jdbcType=DATE}, 
-      #{updateTime,jdbcType=DATE}, #{disableTime,jdbcType=DATE}, #{tel,jdbcType=INTEGER}, 
+      #{updateTime,jdbcType=DATE}, #{disableTime,jdbcType=DATE}, #{tel,jdbcType=VARCHAR},
       #{qqNumber,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="edu.hunau.entity.ForumUser">
@@ -357,7 +357,7 @@
         #{disableTime,jdbcType=DATE},
       </if>
       <if test="tel != null">
-        #{tel,jdbcType=INTEGER},
+        #{tel,jdbcType=VARCHAR},
       </if>
       <if test="qqNumber != null">
         #{qqNumber,jdbcType=INTEGER},
@@ -461,10 +461,10 @@
         disable_time = #{row.disableTime,jdbcType=DATE},
       </if>
       <if test="row.tel != null">
-        tel = #{row.tel,jdbcType=INTEGER},
+        tel = #{row.tel,jdbcType=VARCHAR},
       </if>
       <if test="row.qqNumber != null">
-        qq_number = #{row.qqNumber,jdbcType=INTEGER},
+        qq_number = #{row.qqNumber,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="example != null">
@@ -502,8 +502,8 @@
       create_time = #{row.createTime,jdbcType=DATE},
       update_time = #{row.updateTime,jdbcType=DATE},
       disable_time = #{row.disableTime,jdbcType=DATE},
-      tel = #{row.tel,jdbcType=INTEGER},
-      qq_number = #{row.qqNumber,jdbcType=INTEGER}
+      tel = #{row.tel,jdbcType=VARCHAR},
+      qq_number = #{row.qqNumber,jdbcType=VARCHAR}
     <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -596,10 +596,10 @@
         disable_time = #{disableTime,jdbcType=DATE},
       </if>
       <if test="tel != null">
-        tel = #{tel,jdbcType=INTEGER},
+        tel = #{tel,jdbcType=VARCHAR},
       </if>
       <if test="qqNumber != null">
-        qq_number = #{qqNumber,jdbcType=INTEGER},
+        qq_number = #{qqNumber,jdbcType=VARCHAR},
       </if>
     </set>
     where user_id = #{userId,jdbcType=BIGINT}
@@ -634,8 +634,8 @@
       create_time = #{createTime,jdbcType=DATE},
       update_time = #{updateTime,jdbcType=DATE},
       disable_time = #{disableTime,jdbcType=DATE},
-      tel = #{tel,jdbcType=INTEGER},
-      qq_number = #{qqNumber,jdbcType=INTEGER}
+      tel = #{tel,jdbcType=VARCHAR},
+      qq_number = #{qqNumber,jdbcType=VARCHAR}
     where user_id = #{userId,jdbcType=BIGINT}
   </update>
 </mapper>

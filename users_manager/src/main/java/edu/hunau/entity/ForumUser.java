@@ -62,9 +62,9 @@ public class ForumUser implements Serializable {
 
     private Date disableTime;
 
-    private Integer tel;
+    private String tel;
 
-    private Integer qqNumber;
+    private String qqNumber;
 
     private static final long serialVersionUID = 1L;
 
@@ -300,19 +300,19 @@ public class ForumUser implements Serializable {
         this.disableTime = disableTime;
     }
 
-    public Integer getTel() {
+    public String getTel() {
         return tel;
     }
 
-    public void setTel(Integer tel) {
+    public void setTel(String tel) {
         this.tel = tel;
     }
 
-    public Integer getQqNumber() {
+    public String getQqNumber() {
         return qqNumber;
     }
 
-    public void setQqNumber(Integer qqNumber) {
+    public void setQqNumber(String qqNumber) {
         this.qqNumber = qqNumber;
     }
 

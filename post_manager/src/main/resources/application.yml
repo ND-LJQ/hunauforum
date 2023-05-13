@@ -12,7 +12,7 @@ spring:
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
     username: root
-    password: 123
+    password: 123456
     url: jdbc:mysql://127.0.0.1:3306/hunauforum?useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true
     type: com.alibaba.druid.pool.DruidDataSource
     druid:

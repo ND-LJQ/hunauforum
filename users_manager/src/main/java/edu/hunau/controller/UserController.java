@@ -8,6 +8,7 @@ import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 import com.github.yitter.idgen.YitIdHelper;
 import edu.hunau.entity.BackMessage;
 import edu.hunau.entity.ForumUser;
+import edu.hunau.repository.RedisRepository;
 import edu.hunau.service.UserService;
 import edu.hunau.util.DateUtil;
 import edu.hunau.util.TokenUtil;
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Date;
 import java.util.Map;
+import java.util.Objects;
 
 import static edu.hunau.util.FinalData.*;
 
@@ -38,6 +40,10 @@ public class UserController {
     private RestTemplate restTemplate;
     @Autowired
     private  UserService userService;
+
+    @Autowired
+    private RedisRepository redisRepository;
+
     TokenUtil tokenUtil = new TokenUtil();
 
     DateUtil dateUtil = new DateUtil();
@@ -85,6 +91,29 @@ public class UserController {
         }
         return JSON.toJSONString(back);
     }
+
+
+    @PostMapping(value = {"/login/tel/code"})
+    public String userLoginByTelCode(HttpServletRequest request) throws Exception {
+        String tel = request.getParameter("tel");
+        String code = request.getParameter("code");
+        ForumUser user = userService.queryUserByTel(tel);
+        String resultCode = redisRepository.getStringValue(tel).toString();
+        BackMessage back = new BackMessage();
+        if (code.equals(resultCode)){
+            String token = tokenUtil.sign(tel);
+            back.setCode(LOGIN_SUCCESSFUL);
+            back.setMessage("登录成功!");
+            back.setToken(token);
+            this.userService.insertLoginToken(user.getUserId(),token);
+            return JSON.toJSONString(back);
+        }else {
+            back.setCode(LOGIN_FAILED);
+            back.setMessage("验证码错误!");
+        }
+        return JSON.toJSONString(back);
+    }
+
 
     /**
      * 通过电子邮件作为账号登录
@@ -176,7 +205,7 @@ public class UserController {
     @PostMapping(value = {"/register/tel"})
     @ResponseBody
     public String userRegisterByTel(HttpServletRequest request) throws Exception{
-        Integer tel = Integer.parseInt(request.getParameter("tel"));
+        String tel = request.getParameter("tel");
         String password = request.getParameter("password");
         ForumUser checkUser = this.userService.queryUserByTel(String.valueOf(tel));
         BackMessage back = new BackMessage();

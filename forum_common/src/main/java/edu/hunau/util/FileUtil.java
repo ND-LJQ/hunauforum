@@ -2,6 +2,8 @@ package edu.hunau.util;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
@@ -29,6 +31,9 @@ public class FileUtil {
         try {
             //把上传的文件保存至本地
             file.transferTo(localFile);
+            /**
+             * 注意这里应该在linux系统中将文件设置为不可执行
+             **/
             /**
              * 这里应该把filename保存到数据库,供前端访问时使用
              */

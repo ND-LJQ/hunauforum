@@ -12,12 +12,15 @@ import edu.hunau.util.DateUtil;
 import edu.hunau.util.FileUtil;
 import edu.hunau.util.NonStaticResourceHttpRequestHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -46,6 +49,9 @@ public class FileController {
     private NonStaticResourceHttpRequestHandler nonStaticResourceHttpRequestHandler;
 
 
+    @Value("${file.uploadFolder}")
+    private String uploadPath;
+
 //    String
 
     FileUtil fileUtil = new FileUtil();
@@ -53,22 +59,35 @@ public class FileController {
 
 
     @PostMapping(value = "/uploadimg")
-    public @ResponseBody String uploadImg(@RequestParam(name = "file") MultipartFile file, @RequestParam(name = "userId") String userId ){
+    public @ResponseBody String uploadImg(@RequestParam(name = "file") MultipartFile file, @RequestParam(name = "userId") String userId ,HttpServletRequest request) throws UnknownHostException {
         if(!file.isEmpty()){
             PathInfoBack pathInfoBack = new PathInfoBack();
-            String uploadPath = IMAGES_SAVE_PATH ;
+//            String uploadPath = IMAGES_SAVE_PATH ;
             String result = fileUtil.saveFile(uploadPath,file);
-            String absolutePath = uploadPath + "\\" + result;
+//            String absolutePath = uploadPath + "\\" + result;
             ForumImage image = new ForumImage();
+
+            //将信息存入数据库
             image.setFilename(result);
             image.setCreateTime(dateUtil.getNowSqlDate());
-            image.setImgAbsolutePath(absolutePath);
+            image.setImgAbsolutePath(result);
             image.setUserId(Long.valueOf(userId));
-            System.out.println(YitIdHelper.nextId());
             image.setKey(YitIdHelper.nextId());
             forumImageMapper.insertSelective(image);
 
-            pathInfoBack.setFilePath(absolutePath);
+
+            //获得本机Ip（获取的是服务器的Ip）
+            InetAddress inetAddress = InetAddress.getLocalHost();
+            String ip = inetAddress.getHostAddress();
+
+//            System.out.println(ip);
+//            System.out.println(inetAddress);
+//            System.out.println(uploadPath);
+
+            //这里返回的路径是前端请求的路径,本地访问文件的格式是file://xxxx,所以这是使用拦截器做了映射将所有前端的预览请求映射到本地
+            String fileDownloadUrl = request.getScheme() + "://" + ip + ":" + request.getServerPort() + "/loadfile" + result;
+            pathInfoBack.setFilePath(fileDownloadUrl);
+            System.out.println(fileDownloadUrl);
             pathInfoBack.setDeclarative(result);
             return JSON.toJSONString(pathInfoBack);
         }else{
@@ -140,7 +159,6 @@ public class FileController {
     public String selectVideoByUserId(@PathVariable String userId){
         return JSON.toJSONString(this.forumVideoMapper.selectByUserId(Long.valueOf(userId)));
     }
-
 
 
 
