@@ -1,0 +1,226 @@
+server:
+  port: 8771
+#spring:
+
+spring:
+  application:
+    name: gatewayManager
+  servlet:
+    multipart:
+      max-file-size: 64000MB
+      max-request-size: 6400MB
+  cache:
+    redis:
+      cache-null-values: false
+      use-key-prefix: true
+#  datasource:
+#    driverClassName: com.mysql.cj.jdbc.Driver
+#    username: root
+#    password: 123456
+#    url: jdbc:mysql://127.0.0.1:3306/hunauforum?useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true
+#    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+      filters: stat,wall,log4j
+      initialSize: 5
+      maxActive: 200
+      maxPoolPreparedStatementPerConnectionSize: 20
+      maxWait: 60000
+      minIdle: 20
+      useGlobalDataSourceStat: true
+  cloud:
+    gateway:
+      # 配置示例表示将请求转发到http://localhost:9091/的目标URI，前提是请求的路径以/company/开头。换句话说，当请求的路径为/company/getCompany/12时，网关将把它转发到http://localhost:9091/company/getCompany/12。
+      #routes: #一.路由规则
+      # - id: api-consumer  #路由ID 唯一
+      #   uri: http://localhost:9091/ #目标URI
+      #   predicates:  #断言（匹配条件）
+      #    - Path=/company/** #路由规则1. Path规则 匹配对应URL，将匹配到的请求追加在目标URI之后
+      #如 http://localhost:8888/company/getCompany/12
+      #对应 http://localhost:9091/company/getCompany/12
+
+      # - id: api-consumerfeign
+      #   uri: http://localhost:9092/
+      #   predicates:
+      #     - Path=/feigncompany/**
+      #     - Query=name  #路由规则2. query 参数列表规则 必须包含name参数才能映射路由
+      #    - Query=name, j.* #参数值匹配正则表达式
+      #     - Query=age  #配置多个Query参数匹配
+      #   - Method=POST #路由规则3. 请求方式匹配规则
+      #如http://localhost:8888/feigncompany/getCompany/12?name=jack&age=18
+      #对应http://localhost:9092/feigncompany/getCompany/12?name=jack&age=18
+
+
+      # - id: api-consumer
+      #   uri: lb://serviceConsumer #路由规则4. lb://根据服务名称从注册中心获取服务请求地址
+      #   predicates:
+      #    - Path=/company/**
+      #如：http://localhost:8888/company/getCompany/10 会对应微服务service_consumer
+
+      #  discovery:   #二.不使用routes路由规则，使用服务名称转发
+      #    locator: #是否与服务发现组件进行结合，通过serviceID转发到躯体服务实例
+      #      enabled: true   #是否开启基于服务发现的路由规则
+      #      lower-case-service-id: true #是否将服务名称转小写
+      #如：http://localhost:8888/serviceconsumer/company/getCompany/10
+      #如: http://localhost:8888/serviceconsumerfeign/feigncompany/getCompany/12
+
+      routes:
+        #1.RewritePath 将/newurl/company/... 重写为/company/...
+        # - id: api-consumer
+        #   uri: lb://serviceConsumer
+        #   predicates:
+        #     - Path=/company/**,/newurl/** #第一个为目标URI 第二个为匹配URI
+        #   filters:  #网关过滤器
+        #    - RewritePath=/newurl(?<segment>/?.*),$\{segment}
+        #如http://localhost:8888/newurl/company/getCompany/12
+
+        #2.PrefixPath 为所有访问的路径加上/company前缀 ,此时Path配置为 - Path=/**
+        # - id: api-consumer
+        #   uri: lb://serviceConsumer
+        #   predicates:
+        #    - Path=/**
+        #   filters:
+        #     - PrefixPath=/company
+        #如:http://localhost:8888/getCompany/12
+
+        #3.StripPrefix 减除路径中的前面n级路径文件夹 /xxx/xxx/company/... --> /company/... 此时Path配置为 - Path=/**
+        #- id: api-consumer
+        #  uri: lb://serviceConsumer
+        #  predicates:
+        #     - Path=/**
+        #  filters:
+        #    - StripPrefix=2
+
+        #4.SetPath 将 /new/company/... 重写为 /company/...
+        #  - id: api-consumer
+        #    uri: lb://serviceConsumer
+        #    predicates:
+        #     - Path=/new/company/{segment}
+        #    filters:
+        #     - SetPath=/company/{segment}
+        #如http://localhost:8888/new/company/getEmps  注意此时{segment}只有一级
+
+        #5.AddRequestParameter 为映射路径添加参数，path可以是任意一种配置
+        #   - id: api-consumer
+        #     uri: lb://serviceConsumer
+        #     predicates:
+        #      - Path=/**
+        #     filters:
+        #      - PrefixPath=/company  #配合PrefixPath使用
+        #      - AddRequestParameter=name, yoyo
+        #      - AddRequestParameter=age, 18
+        #如http://localhost:8888/getCompany/12
+
+        #6.SetStatus 将响应结果设置为指定状态
+        #  - id: api-consumer
+        #    uri: lb://serviceConsumer
+        #    predicates:
+        #    - Path=/**
+        #    filters:
+        #    - PrefixPath=/company  #配合PrefixPath使用
+        #    - AddRequestParameter=name, yoyo
+        #    - SetStatus=404
+
+        #7 自定义GatewayFilter
+        #  - id: api-consumer
+        #    uri: lb://serviceConsumer
+        #    predicates:
+        #   - Path=/**
+        #    filters:
+        #    - PrefixPath=/company
+        #    - Customer #这里的Customer就是自定义过滤器工厂类名去掉GatewayFilterFactory后缀的名字
+        #      #8 限流过滤器
+        #    - name: RequestRateLimiter
+        #      args:
+        #        key-resolver: "#{@pathKeyResolver}" #使用SPEL表达式按名称引用Bean pathKeyResolver
+        #        redis-rate-limiter.replenishRate: 1 #令牌桶每秒填充速率
+        #        redis-rate-limiter.burstCapacity: 2 #令牌桶总容量
+
+        #网关集群转发
+        - id: user-consumer
+          uri: lb://serviceConsumer
+          predicates:
+            - Path=/forumuser/login/tel**
+        - id: api-consumerFeign
+          uri: lb://serviceConsumerFeign
+          predicates:
+            - Path=/feigncompany/**
+            - Query=name
+            - Query=age
+
+  #配合 lb:// 或服务名称转发 需要将gateway也注册至注册中心
+  redis:
+    database: 0
+    host: 127.0.0.1
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        max-wait: -1ms
+        min-idle: 0
+    password: ''
+    port: 6379
+  mvc:
+    path match:
+      matching-strategy: ant-path-matcher
+
+#swagger:
+#  enable: true
+#  application-name: ${spring.application.name}
+#  application-version: 1.0
+#  application-description: springfox swagger
+#  try-host: http://localhost:${server.port}
+#
+#file:
+#  uploadFolder: D:///WorkSpace/StudySpace/Study-WORK/Java/Project/hunauforum/images/
+
+
+
+
+
+
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+  client:
+    service-url:
+      defaultZone: http://root:123@localhost:8761/eureka/,http://root:123@localhost:8762/eureka/
+      #将provider注册到每个注册中心
+
+#度量指标监控与健康检查
+management:
+  endpoints:
+    web:
+      exposure:
+        include: shutdown #开启shutdown端点访问
+  endpoint:
+    shutdown:
+      enabled: true  #开启shutdown 实现优雅停服
+      # /actuator/shutdown 以post请求发送 则会停止该微服务
+
+
+
+logging:
+  level:
+    org:
+      springframework: DEBUG
+
+mybatis:
+  mapper-locations:
+    - classpath:mapper/*.xml
+    - classpath:com/**/mapper/*.xml
+
+
+page helper:
+  offsetAsPageNum: true
+  pageSizeZero: true
+  params: pageNum=pageHelperStart;pageSize=pageHelperRows;
+  reasonable: false
+  rowBoundsWithCount: true
+  supportMethodsArguments: false
+
+
+
+

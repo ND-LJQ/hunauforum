@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Date;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
 
@@ -345,4 +346,5 @@ public class UserController {
         System.out.println(string);
         return "";
     }
+
 }

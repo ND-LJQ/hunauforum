@@ -7,7 +7,9 @@
     <file url="file://$PROJECT_DIR$/file_manager/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/forum_common/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/forum_consumer/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/forum_gateway/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/forum_server_consumer/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/horum_geteway/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/post_manager/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/search_manager/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
