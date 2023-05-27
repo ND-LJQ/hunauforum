@@ -13,6 +13,11 @@ spring:
     redis:
       cache-null-values: false
       use-key-prefix: true
+    #  SBA监控地址
+  boot:
+    admin:
+      client:
+        url: http://localhost:9090
 #  datasource:
 #    driverClassName: com.mysql.cj.jdbc.Driver
 #    username: root
@@ -152,10 +157,15 @@ spring:
         transport:
           dashboard: localhost:8010  #sentinel控制台关联
           port: 8719 #sentinel内部与控制台连接端口
-
+#        datasource:
+#          dsl:
+#            file:
+#              file: classpath:flowRule.json
+#              data-type: json
+#              rule-type: flow
   redis:
     database: 0
-    host: 127.0.0.1
+    host: 192.168.64.101
     lettuce:
       pool:
         max-active: 8
@@ -198,8 +208,10 @@ management:
   endpoints:
     web:
       exposure:
-        include: shutdown #开启shutdown端点访问
+        include: "*" #开启shutdown端点访问
   endpoint:
+    health:
+      show-details: always
     shutdown:
       enabled: true  #开启shutdown 实现优雅停服
       # /actuator/shutdown 以post请求发送 则会停止该微服务

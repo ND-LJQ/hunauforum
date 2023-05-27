@@ -24,9 +24,14 @@ spring:
       maxWait: 60000
       minIdle: 20
       useGlobalDataSourceStat: true
+  #  SBA监控地址
+  boot:
+    admin:
+      client:
+        url: http://localhost:9090
   redis:
     database: 0
-    host: 127.0.0.1
+    host: 192.168.64.101
     lettuce:
       pool:
         max-active: 8
@@ -66,8 +71,10 @@ management:
   endpoints:
     web:
       exposure:
-        include: shutdown #开启shutdown端点访问
+        include: "*" #开启shutdown端点访问
   endpoint:
+    health:
+      show-details: always
     shutdown:
       enabled: true  #开启shutdown 实现优雅停服
       # /actuator/shutdown 以post请求发送 则会停止该微服务

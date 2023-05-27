@@ -17,6 +17,7 @@
       <module>verification_code_manager</module>
       <module>search_manager</module>
       <module>forum_gateway</module>
+    <module>forum_admin</module>
   </modules>
   <name>hunauforum</name>
   <url>http://maven.apache.org</url>

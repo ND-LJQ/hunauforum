@@ -100,6 +100,15 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-pool2</artifactId>
         </dependency>
+
+        <!--    SBA检查客户端-->
+        <dependency>
+            <groupId>de.codecentric</groupId>
+            <artifactId>spring-boot-admin-starter-client</artifactId>
+            <version>2.7.10</version>
+        </dependency>
+
+
         <!--健康检查端点  该微服务会增加/actuator 端点 以查看当前健康状态-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

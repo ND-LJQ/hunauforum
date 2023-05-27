@@ -1,0 +1,38 @@
+server:
+  port: 9090
+  compression: #客户端传输开启压缩模式
+    enabled: true
+    mime-types: application/xml,application/json,text/xml,text/html,text/plain
+
+spring:
+  application:
+    name: serviceAdmin
+
+#consumer微服务不提供服务 可以不用注册到注册中心 并设置去注册中心抓取服务信息的间隔时间
+#eureka:
+# client:
+#    register-with-eureka: true
+#    registry-fetch-interval-seconds: 10
+#    service-url:
+#      defaultZone: http://localhost:8761/eureka/,http://localhost:8762/eureka/
+
+
+
+
+
+
+#ribbon:                           #全局请求超时处理
+#  ReadTimeout:  2000      　　　　 #处理请求的超时时间，默认为5秒
+#  ConnectTimeout: 2000    　　　　 #连接建立的超时时长，默认5秒
+
+
+#serviceProvider:                   #针对特定微服务的局部请求超时处理
+#  ribbon:
+#    ConnectTimeout: 2000            #请求连接的超时时间
+#    ReadTimeout: 2000               #请求处理的超时时间
+#    OkToRetryOnAllOperations : true #对所有请求都进行重试
+#    MaxAutoRetries: 2               #对当前实例的重试次数
+#    MaxAutoRetriesNextServer: 0     #切换实例的重试次数
+
+
+
