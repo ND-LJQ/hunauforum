@@ -10,7 +10,7 @@
     <artifactId>forum_gateway</artifactId>
     <packaging>jar</packaging>
 
-    <name>forum_geteway</name>
+    <name>forum_gateway</name>
     <url>http://maven.apache.org</url>
 
     <properties>
@@ -28,6 +28,18 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+
+        <!--    spring cloud gateway整合sentinel的依赖-->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-alibaba-sentinel-gateway</artifactId>
+        </dependency>
+
+        <!--    sentinel的依赖-->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
         </dependency>
 
         <!-- redis-->

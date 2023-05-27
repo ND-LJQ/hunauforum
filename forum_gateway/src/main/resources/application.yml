@@ -136,19 +136,23 @@ spring:
         #        redis-rate-limiter.replenishRate: 1 #令牌桶每秒填充速率
         #        redis-rate-limiter.burstCapacity: 2 #令牌桶总容量
 
-        #网关集群转发
-        - id: user-consumer
-          uri: lb://serviceConsumer
+        #网关集群转发(测试)
+        - id: user-service
+          uri: lb://USERMANAGER
           predicates:
-            - Path=/forumuser/login/tel**
+            - Path=/forumuser/**
         - id: api-consumerFeign
           uri: lb://serviceConsumerFeign
           predicates:
             - Path=/feigncompany/**
             - Query=name
             - Query=age
+#配合 lb:// 或服务名称转发 需要将gateway也注册至注册中心
+    sentinel:
+        transport:
+          dashboard: localhost:8010  #sentinel控制台关联
+          port: 8719 #sentinel内部与控制台连接端口
 
-  #配合 lb:// 或服务名称转发 需要将gateway也注册至注册中心
   redis:
     database: 0
     host: 127.0.0.1
