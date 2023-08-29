@@ -5,11 +5,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 import com.github.pagehelper.PageInfo;
 import com.github.yitter.idgen.YitIdHelper;
-import edu.hunau.entity.BackMessage;
-import edu.hunau.entity.ForumArticle;
-import edu.hunau.entity.ForumArticleWithBLOBs;
-import edu.hunau.entity.ForumTopicable;
+import edu.hunau.entity.*;
 import edu.hunau.service.ArticleService;
+import edu.hunau.service.CommentService;
 import edu.hunau.service.TopicService;
 import edu.hunau.util.DateUtil;
 import io.swagger.annotations.Api;
@@ -39,6 +37,8 @@ public class ArticleController {
     @Autowired
     private ArticleService articleService;
 
+    @Autowired
+    private CommentService commentService;
 
     @Autowired
     private TopicService topicService;
@@ -88,7 +88,7 @@ public class ArticleController {
             backMessage.setCode(SELECT_SUCCESSFUL);
             backMessage.setMessage("查询成功");
         }else {
-            backMessage.setCode(SELECT_SUCCESSFUL);
+            backMessage.setCode(SELECT_FAILED);
             backMessage.setMessage("查询失败,请检查参数是否正确");
         }
 
@@ -109,13 +109,21 @@ public class ArticleController {
     @PostMapping(value = {"/article/{articleId}"})
     public String getArticleContentsById(@PathVariable Integer articleId) throws Exception{
         BackMessage backMessage = new BackMessage();
-        ForumArticleWithBLOBs forumArticleWithBLOBs = this.articleService.queryArticleContentById(articleId);
-        SimplePropertyPreFilter filter = new SimplePropertyPreFilter();
-        filter.getIncludes().add("contentRendered");
-        String content = JSON.toJSONString(forumArticleWithBLOBs,filter);
-        backMessage.setMessage("查询成功!");
-        backMessage.setCode(SELECT_SUCCESSFUL);
-        backMessage.setData(JSONObject.parseObject(content));
+        try{
+            ForumArticleWithBLOBs forumArticleWithBLOBs = this.articleService.queryArticleContentById(articleId);
+            List<ForumComment> forumCommentList = this.commentService.queryCommentListByArticleId(articleId);
+//        SimplePropertyPreFilter filter = new SimplePropertyPreFilter();
+//        filter.getIncludes().add("contentRendered");
+//        String content = JSON.toJSONString(forumArticleWithBLOBs,filter);
+            forumArticleWithBLOBs.setContentRendered("");
+            ForumArticleFull forumArticleFull = new ForumArticleFull(forumArticleWithBLOBs,forumCommentList);
+            backMessage.setMessage("查询成功!");
+            backMessage.setCode(SELECT_SUCCESSFUL);
+            backMessage.setData(forumArticleFull);
+        }catch (Exception e){
+            backMessage.setMessage("查询失败,请检查参数是否正确");
+            backMessage.setCode(SELECT_FAILED);
+        }
         return JSON.toJSONString(backMessage);
     }
 

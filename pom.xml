@@ -18,6 +18,7 @@
       <module>search_manager</module>
       <module>forum_gateway</module>
     <module>forum_admin</module>
+      <module>chat_manager</module>
   </modules>
   <name>hunauforum</name>
   <url>http://maven.apache.org</url>

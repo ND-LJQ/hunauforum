@@ -25,6 +25,14 @@ public interface CommentService {
      */
     public ForumComment  selectCommentByCommentId(String commentId) throws Exception;
 
+    /**
+     * 通过文章id查询评论列表
+     *
+     * @param articleId 文章id
+     * @return {@link List}<{@link ForumComment}>
+     * @throws Exception 异常
+     */
+    public List<ForumComment> queryCommentListByArticleId(Integer articleId) throws Exception;
 
     /**
      * 通过回答id查询评论

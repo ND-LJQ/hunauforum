@@ -27,12 +27,7 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public List<ForumArticleWithBLOBs> getArticleListByKeyWord(String keyword) {
-        return null;
-    }
-
     public Page<ForumArticleWithBLOBs> getArticleListByKeyWord(String keyword, Integer pageNumber, Integer pageSize) {
         return esArticleRepository.findByTitleOrContentMarkdownOrContentRendered(keyword,pageNumber,pageSize);
-
     }
 }

@@ -66,7 +66,18 @@ public class ForumUser implements Serializable {
 
     private String qqNumber;
 
+    private String salt;
+
+    private Integer state;
     private static final long serialVersionUID = 1L;
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
 
     public Long getUserId() {
         return userId;
@@ -75,6 +86,15 @@ public class ForumUser implements Serializable {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
 
     public String getUsername() {
         return username;
@@ -318,43 +338,40 @@ public class ForumUser implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", userId=").append(userId);
-        sb.append(", username=").append(username);
-        sb.append(", email=").append(email);
-        sb.append(", avatar=").append(avatar);
-        sb.append(", cover=").append(cover);
-        sb.append(", password=").append(password);
-        sb.append(", createIp=").append(createIp);
-        sb.append(", createLocation=").append(createLocation);
-        sb.append(", lastLoginTime=").append(lastLoginTime);
-        sb.append(", lastLoginIp=").append(lastLoginIp);
-        sb.append(", lastLoginLocation=").append(lastLoginLocation);
-        sb.append(", followerCount=").append(followerCount);
-        sb.append(", followeeCount=").append(followeeCount);
-        sb.append(", followingArticleCount=").append(followingArticleCount);
-        sb.append(", followingQuestionCount=").append(followingQuestionCount);
-        sb.append(", followingTopicCount=").append(followingTopicCount);
-        sb.append(", articleCount=").append(articleCount);
-        sb.append(", questionCount=").append(questionCount);
-        sb.append(", answerCount=").append(answerCount);
-        sb.append(", notificationUnread=").append(notificationUnread);
-        sb.append(", inboxUnread=").append(inboxUnread);
-        sb.append(", headline=").append(headline);
-        sb.append(", bio=").append(bio);
-        sb.append(", blog=").append(blog);
-        sb.append(", company=").append(company);
-        sb.append(", location=").append(location);
-        sb.append(", createTime=").append(createTime);
-        sb.append(", updateTime=").append(updateTime);
-        sb.append(", disableTime=").append(disableTime);
-        sb.append(", tel=").append(tel);
-        sb.append(", qqNumber=").append(qqNumber);
-        sb.append(", serialVersionUID=").append(serialVersionUID);
-        sb.append("]");
-        return sb.toString();
+        return "ForumUser{" +
+                "userId=" + userId +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", cover='" + cover + '\'' +
+                ", password='" + password + '\'' +
+                ", createIp='" + createIp + '\'' +
+                ", createLocation='" + createLocation + '\'' +
+                ", lastLoginTime=" + lastLoginTime +
+                ", lastLoginIp='" + lastLoginIp + '\'' +
+                ", lastLoginLocation='" + lastLoginLocation + '\'' +
+                ", followerCount=" + followerCount +
+                ", followeeCount=" + followeeCount +
+                ", followingArticleCount=" + followingArticleCount +
+                ", followingQuestionCount=" + followingQuestionCount +
+                ", followingTopicCount=" + followingTopicCount +
+                ", articleCount=" + articleCount +
+                ", questionCount=" + questionCount +
+                ", answerCount=" + answerCount +
+                ", notificationUnread=" + notificationUnread +
+                ", inboxUnread=" + inboxUnread +
+                ", headline='" + headline + '\'' +
+                ", bio='" + bio + '\'' +
+                ", blog='" + blog + '\'' +
+                ", company='" + company + '\'' +
+                ", location='" + location + '\'' +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", disableTime=" + disableTime +
+                ", tel='" + tel + '\'' +
+                ", qqNumber='" + qqNumber + '\'' +
+                ", salt='" + salt + '\'' +
+                ", state=" + state +
+                '}';
     }
 }

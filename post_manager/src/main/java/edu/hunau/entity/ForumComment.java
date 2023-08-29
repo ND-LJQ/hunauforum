@@ -30,7 +30,17 @@ public class ForumComment implements Serializable {
 
     private String content;
 
+    private Integer deleted;
+
     private static final long serialVersionUID = 1L;
+
+    public Integer getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Integer deleted) {
+        this.deleted = deleted;
+    }
 
     public Long getCommentId() {
         return commentId;
@@ -138,25 +148,21 @@ public class ForumComment implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", commentId=").append(commentId);
-        sb.append(", commentableId=").append(commentableId);
-        sb.append(", commentableType=").append(commentableType);
-        sb.append(", userId=").append(userId);
-        sb.append(", replyCount=").append(replyCount);
-        sb.append(", voteCount=").append(voteCount);
-        sb.append(", voteUpCount=").append(voteUpCount);
-        sb.append(", voteDownCount=").append(voteDownCount);
-        sb.append(", createTime=").append(createTime);
-        sb.append(", updateTime=").append(updateTime);
-        sb.append(", deleteTime=").append(deleteTime);
-        sb.append(", parentId=").append(parentId);
-        sb.append(", content=").append(content);
-        sb.append(", serialVersionUID=").append(serialVersionUID);
-        sb.append("]");
-        return sb.toString();
+        return "ForumComment{" +
+                "commentId=" + commentId +
+                ", commentableId=" + commentableId +
+                ", commentableType=" + commentableType +
+                ", userId=" + userId +
+                ", replyCount=" + replyCount +
+                ", voteCount=" + voteCount +
+                ", voteUpCount=" + voteUpCount +
+                ", voteDownCount=" + voteDownCount +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", deleteTime=" + deleteTime +
+                ", parentId=" + parentId +
+                ", content='" + content + '\'' +
+                ", deleted=" + deleted +
+                '}';
     }
 }

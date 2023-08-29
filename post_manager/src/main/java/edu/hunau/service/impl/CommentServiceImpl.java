@@ -29,6 +29,14 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    public List<ForumComment> queryCommentListByArticleId(Integer articleId) throws Exception {
+        ForumCommentExample forumCommentExample = new ForumCommentExample();
+        ForumCommentExample.Criteria criteria = forumCommentExample.createCriteria();
+        criteria.andCommentableIdEqualTo(Long.valueOf(articleId));
+        return this.forumCommentMapper.selectByExampleWithBLOBs(forumCommentExample);
+    }
+
+    @Override
     public List<ForumComment> selectCommentByCommentableId(String commentableId) throws Exception {
         ForumCommentExample forumCommentExample = new ForumCommentExample();
         ForumCommentExample.Criteria criteria = forumCommentExample.createCriteria();

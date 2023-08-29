@@ -33,6 +33,8 @@
     <result column="disable_time" jdbcType="DATE" property="disableTime" />
     <result column="tel" jdbcType="VARCHAR" property="tel" />
     <result column="qq_number" jdbcType="VARCHAR" property="qqNumber" />
+    <result column="salt" jdbcType="VARCHAR" property="salt" />
+    <result column="state" jdbcType="INTEGER" property="state" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -97,7 +99,7 @@
     last_login_ip, last_login_location, follower_count, followee_count, following_article_count, 
     following_question_count, following_topic_count, article_count, question_count, answer_count, 
     notification_unread, inbox_unread, headline, bio, blog, company, location, create_time, 
-    update_time, disable_time, tel, qq_number
+    update_time, disable_time, tel, qq_number,salt,state
   </sql>
   <select id="selectByExample" parameterType="edu.hunau.entity.ForumUserExample" resultMap="BaseResultMap">
     select
@@ -158,7 +160,7 @@
       headline, bio, blog, 
       company, location, create_time, 
       update_time, disable_time, tel, 
-      qq_number)
+      qq_number,salt,state)
     values (#{userId,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
       #{avatar,jdbcType=VARCHAR}, #{cover,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{createIp,jdbcType=VARCHAR}, #{createLocation,jdbcType=VARCHAR}, #{lastLoginTime,jdbcType=DATE}, 
@@ -169,7 +171,7 @@
       #{headline,jdbcType=VARCHAR}, #{bio,jdbcType=VARCHAR}, #{blog,jdbcType=VARCHAR}, 
       #{company,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, #{createTime,jdbcType=DATE}, 
       #{updateTime,jdbcType=DATE}, #{disableTime,jdbcType=DATE}, #{tel,jdbcType=VARCHAR},
-      #{qqNumber,jdbcType=INTEGER})
+      #{qqNumber,jdbcType=INTEGER},#{salt,jdbcType=VARCHAR},#{state,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="edu.hunau.entity.ForumUser">
     insert into forum_user
@@ -267,6 +269,12 @@
       <if test="qqNumber != null">
         qq_number,
       </if>
+      <if test="salt != null">
+        salt,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="userId != null">
@@ -361,6 +369,12 @@
       </if>
       <if test="qqNumber != null">
         #{qqNumber,jdbcType=INTEGER},
+      </if>
+      <if test="salt != null">
+        #{salt,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -466,6 +480,12 @@
       <if test="row.qqNumber != null">
         qq_number = #{row.qqNumber,jdbcType=VARCHAR},
       </if>
+      <if test="row.salt != null">
+        salt = #{row.salt,jdbcType=VARCHAR},
+      </if>
+      <if test="row.state != null">
+        salt = #{row.state,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -503,7 +523,9 @@
       update_time = #{row.updateTime,jdbcType=DATE},
       disable_time = #{row.disableTime,jdbcType=DATE},
       tel = #{row.tel,jdbcType=VARCHAR},
-      qq_number = #{row.qqNumber,jdbcType=VARCHAR}
+      qq_number = #{row.qqNumber,jdbcType=VARCHAR},
+      salt = #{row.salt,jdbcType=VARCHAR},
+      state = #{row.state,jdbcType=INTEGER}
     <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -601,6 +623,12 @@
       <if test="qqNumber != null">
         qq_number = #{qqNumber,jdbcType=VARCHAR},
       </if>
+      <if test="salt != null">
+        salt = #{salt,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=INTEGER},
+      </if>
     </set>
     where user_id = #{userId,jdbcType=BIGINT}
   </update>
@@ -635,7 +663,9 @@
       update_time = #{updateTime,jdbcType=DATE},
       disable_time = #{disableTime,jdbcType=DATE},
       tel = #{tel,jdbcType=VARCHAR},
-      qq_number = #{qqNumber,jdbcType=VARCHAR}
+      qq_number = #{qqNumber,jdbcType=VARCHAR},
+      salt = #{salt,jdbcType=VARCHAR},
+      state = #{state,jdbcType=INTEGER}
     where user_id = #{userId,jdbcType=BIGINT}
   </update>
 </mapper>
