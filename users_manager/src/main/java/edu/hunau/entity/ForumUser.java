@@ -1,8 +1,13 @@
 package edu.hunau.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.io.Serializable;
 import java.util.Date;
 
+//RestController返回Json格式时排除该对象中值为空的属性
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ForumUser implements Serializable {
     private Long userId;
 
@@ -14,8 +19,11 @@ public class ForumUser implements Serializable {
 
     private String cover;
 
+    //json序列化时忽略passwd属性
+    @JsonIgnore
     private String password;
 
+    @JsonIgnore
     private String createIp;
 
     private String createLocation;
@@ -66,6 +74,7 @@ public class ForumUser implements Serializable {
 
     private String qqNumber;
 
+    @JsonIgnore
     private String salt;
 
     private Integer state;
@@ -335,6 +344,32 @@ public class ForumUser implements Serializable {
     public void setQqNumber(String qqNumber) {
         this.qqNumber = qqNumber;
     }
+
+
+//    构造器
+
+    public ForumUser(){}
+
+    public ForumUser(Long userId,String email,String password,Date createTime,String salt,Integer state){
+        this.userId = userId;
+        this.email = email;
+        this.password = password;
+        this.createTime = createTime;
+        this.salt = salt;
+        this.state = state;
+    }
+
+    public ForumUser(Long userId,String password,Date createTime,String salt,String tel,Integer state){
+        this.userId = userId;
+        this.tel = tel;
+        this.password = password;
+        this.createTime = createTime;
+        this.salt = salt;
+        this.state = state;
+    }
+
+
+
 
     @Override
     public String toString() {

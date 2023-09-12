@@ -11,7 +11,9 @@ import edu.hunau.entity.ForumUser;
 import edu.hunau.repository.RedisRepository;
 import edu.hunau.service.UserService;
 import edu.hunau.util.DateUtil;
+import edu.hunau.util.MD5Utils;
 import edu.hunau.util.TokenUtil;
+import edu.hunau.utils.UserUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -70,49 +72,45 @@ public class UserController {
      */
 
     @PostMapping(value = {"/login/tel"})
-    public String userLoginByTel(HttpServletRequest request) throws Exception{
+    public BackMessage userLoginByTel(HttpServletRequest request) throws Exception{
         String tel = request.getParameter("tel");
         String password = request.getParameter("password");
         ForumUser user = this.userService.queryUserByTel(tel);
-        BackMessage back = new BackMessage();
         if(user!=null){
-            if(password.equals(user.getPassword())){
+            if(UserUtils.checkPwd(password,user.getPassword(),user.getSalt())){
                 String token = tokenUtil.sign(tel);
-                back.setCode(LOGIN_SUCCESSFUL);
-                back.setMessage("登录成功!");
-                back.setToken(token);
+                BackMessage backMessage = new BackMessage("登录成功!",token,LOGIN_SUCCESSFUL);
                 this.userService.insertLoginToken(user.getUserId(),token);
-                return JSON.toJSONString(back);
+                return backMessage;
             }
-            back.setCode(LOGIN_FAILED);
-            back.setMessage("密码错误!");
+            return new BackMessage("密码错误!",LOGIN_FAILED);
         }else {
-            back.setCode(LOGIN_FAILED);
-            back.setMessage("账号错误!");
+            return new BackMessage("账号错误!",LOGIN_FAILED);
         }
-        return JSON.toJSONString(back);
     }
 
 
+    /**
+     * 用户使用手机验证码登录
+     * @param request
+     * @return {@link String}
+     * @throws Exception
+     */
     @PostMapping(value = {"/login/tel/code"})
-    public String userLoginByTelCode(HttpServletRequest request) throws Exception {
+    public BackMessage userLoginByTelCode(HttpServletRequest request) throws Exception {
         String tel = request.getParameter("tel");
         String code = request.getParameter("code");
         ForumUser user = userService.queryUserByTel(tel);
         String resultCode = redisRepository.getStringValue(tel).toString();
-        BackMessage back = new BackMessage();
+
         if (code.equals(resultCode)){
             String token = tokenUtil.sign(tel);
-            back.setCode(LOGIN_SUCCESSFUL);
-            back.setMessage("登录成功!");
-            back.setToken(token);
+            BackMessage back = new BackMessage("登录成功!",token,LOGIN_SUCCESSFUL);
             this.userService.insertLoginToken(user.getUserId(),token);
-            return JSON.toJSONString(back);
+            return back;
         }else {
-            back.setCode(LOGIN_FAILED);
-            back.setMessage("验证码错误!");
+            return new BackMessage("验证码错误!",LOGIN_FAILED);
         }
-        return JSON.toJSONString(back);
     }
 
 
@@ -126,29 +124,22 @@ public class UserController {
 
     @PostMapping(value = {"/login/email"})
     @ResponseBody
-    public String userLoginByEmail(HttpServletRequest request) throws Exception{
+    public BackMessage userLoginByEmail(HttpServletRequest request) throws Exception{
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         ForumUser user = this.userService.queryUserByEmail(email);
-        BackMessage back = new BackMessage();
         if(user!=null){
-            if(password.equals(user.getPassword())){
+            if(UserUtils.checkPwd(password,user.getPassword(),user.getSalt())){
                 String token = tokenUtil.sign(email);
-                back.setCode(LOGIN_SUCCESSFUL);
-                back.setMessage("登录成功!");
-                back.setToken(token);
-                back.setData(user);
+                BackMessage back = new BackMessage("登录成功!",token,LOGIN_SUCCESSFUL,user);
                 this.userService.insertLoginToken(user.getUserId(),token);
-                return JSON.toJSONString(back);
+                return back;
             }
-            back.setCode(LOGIN_FAILED);
-            back.setMessage("密码错误!");
-
+            return new BackMessage("密码错误!",LOGIN_SUCCESSFUL);
         }else {
-            back.setCode(LOGIN_FAILED);
-            back.setMessage("账号错误!");
+            return new BackMessage("账号错误!",LOGIN_FAILED);
         }
-        return JSON.toJSONString(back);
+
     }
 
 
@@ -162,36 +153,24 @@ public class UserController {
 
     @PostMapping(value = {"/register/mail"})
     @ResponseBody
-    public String userRegisterByEmail(HttpServletRequest request) throws Exception{
+    public BackMessage userRegisterByEmail(HttpServletRequest request) throws Exception{
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        System.out.println(email);
-        System.out.println(password);
         ForumUser checkUser = this.userService.queryUserByEmail(email);
-        BackMessage back = new BackMessage();
         if(checkUser!=null){
-            back.setCode(REGISTER_FAILED);
-            back.setMessage("注册失败,该邮箱已被注册!");
-            return JSON.toJSONString(back);
+            return new BackMessage("注册失败,该邮箱已被注册!",REGISTER_FAILED);
         }
         long newId = YitIdHelper.nextId();
         Date date = dateUtil.getNowSqlDate();
-
-        ForumUser user = new ForumUser();
-        user.setUserId(newId);
-        user.setEmail(email);
-        user.setPassword(password);
-        user.setCreateTime(date);
-
+        String salt = MD5Utils.generateSalt();
+        // 这里的state为用户账号状态0为启用1为禁用,标记一下防止magic number
+        ForumUser user = new ForumUser(newId,email,MD5Utils.md5(password,salt),date,salt,0);
         boolean result = this.userService.userInsert(user);
         if(result){
-            back.setCode(REGISTER_SUCCESSFUL);
-            back.setMessage("注册成功!");
+            return new BackMessage("注册成功!",REGISTER_SUCCESSFUL);
         }else{
-            back.setCode(REGISTER_FAILED);
-            back.setMessage("注册失败,请检查网络是否有问题");
+            return new BackMessage("注册失败,请检查网络是否有问题",REGISTER_FAILED);
         }
-        return JSON.toJSONString(back);
     }
 
 
@@ -205,51 +184,38 @@ public class UserController {
 
     @PostMapping(value = {"/register/tel"})
     @ResponseBody
-    public String userRegisterByTel(HttpServletRequest request) throws Exception{
+    public BackMessage userRegisterByTel(HttpServletRequest request) throws Exception{
         String tel = request.getParameter("tel");
         String password = request.getParameter("password");
         ForumUser checkUser = this.userService.queryUserByTel(String.valueOf(tel));
-        BackMessage back = new BackMessage();
         if(checkUser!=null){
-            back.setCode(REGISTER_FAILED);
-            back.setMessage("注册失败,该邮箱已被注册!");
-            return JSON.toJSONString(back);
+            return new BackMessage("注册失败,该电话已被注册!",REGISTER_FAILED);
         }
-
+        long newId = YitIdHelper.nextId();
         Date date = dateUtil.getNowSqlDate();
-
-        ForumUser user = new ForumUser();
-        user.setTel(tel);
-        user.setPassword(password);
-        user.setCreateTime(date);
+        String salt = MD5Utils.generateSalt();
+        // 这里的state为用户账号状态0为启用1为禁用,标记一下防止magic number
+        ForumUser user = new ForumUser(newId,MD5Utils.md5(password,salt),date,salt,tel,0);
         boolean result = this.userService.userInsert(user);
-
         if(result){
-            back.setCode(REGISTER_SUCCESSFUL);
-            back.setMessage("注册成功!");
+            return new BackMessage("注册成功!",REGISTER_SUCCESSFUL);
         }else{
-            back.setCode(REGISTER_FAILED);
-            back.setMessage("注册失败,请检查网络是否有问题");
+            return new BackMessage("注册失败,请检查网络是否有问题",REGISTER_FAILED);
         }
-        return JSON.toJSONString(back);
     }
 
 
     @GetMapping(value = {"/queryToken/{token}"})
-    public String checkToken(@PathVariable String token){
-        BackMessage backMessage = new BackMessage();
+    public BackMessage checkToken(@PathVariable String token){
         System.out.println(token);
         Boolean result = TokenUtil.verify(token);
         if (result){
-            backMessage.setCode(TOKEN_EFFECTIVE);
-            backMessage.setMessage("登录信息有效");
-            return JSON.toJSONString(backMessage);
+            return new BackMessage("登录信息有效",TOKEN_EFFECTIVE);
         }else {
-            backMessage.setCode(TOKEN_INEFFECTIVE);
-            backMessage.setMessage("登录信息失效,请重新登录");
-            return JSON.toJSONString(backMessage);
+            return new BackMessage("登录信息失效,请重新登录",TOKEN_INEFFECTIVE);
         }
     }
+
 
     /**
      * 更改用户密码
@@ -261,22 +227,18 @@ public class UserController {
 
     @PostMapping(value = {"/changepwd"})
     @ResponseBody
-    public String changeUserPwd(HttpServletRequest request) throws Exception{
+    public BackMessage changeUserPwd(HttpServletRequest request) throws Exception{
         String password = request.getParameter("newPassword");
         String userId = request.getParameter("userId");
         ForumUser user = new ForumUser();
-        BackMessage back = new BackMessage();
         user.setPassword(password);
         user.setUserId(Long.valueOf(userId));
         Integer result =  this.userService.updateUserInfo(user);
         if(result==1){
-            back.setCode(UPDATE_SUCCESSFUL);
-            back.setMessage("修改成功!");
+            return new BackMessage("修改成功!",UPDATE_SUCCESSFUL);
         }else{
-            back.setCode(UPDATE_FAILED);
-            back.setMessage("修改失败,服务器繁忙!");
+            return new BackMessage("修改失败,服务器繁忙!",UPDATE_FAILED);
         }
-        return JSON.toJSONString(back);
     }
 
 
@@ -290,7 +252,7 @@ public class UserController {
 
     @PostMapping(value = {"/changeinfo"})
     @ResponseBody
-    public String changeUserInfo(HttpServletRequest request) throws Exception{
+    public BackMessage changeUserInfo(HttpServletRequest request) throws Exception{
 //        遍历Map的方法
 //        1.map的entry
 //        for(Map.Entry item : params.getParameterMap().entrySet()){
@@ -303,13 +265,10 @@ public class UserController {
         //将map中的值赋值给
         BeanUtils.populate(user, request.getParameterMap());
         if(this.userService.updateUserInfo(user)==1){
-            back.setCode(UPDATE_SUCCESSFUL);
-            back.setMessage("修改成功!");
+            return new BackMessage("修改成功!",UPDATE_SUCCESSFUL);
         }else{
-            back.setCode(UPDATE_SUCCESSFUL);
-            back.setMessage("修改失败!系统繁忙,请稍后修改!");
+            return new BackMessage("修改失败!系统繁忙,请稍后修改!",UPDATE_FAILED);
         }
-        return JSON.toJSONString(back);
     }
 
     /**
@@ -321,17 +280,14 @@ public class UserController {
      */
 
     @GetMapping(value = {"/user/{userId}"})
-    public String getUserInfo(@PathVariable String userId ) throws Exception{
+    public BackMessage getUserInfo(@PathVariable String userId ) throws Exception{
         long newId = YitIdHelper.nextId();
-        BackMessage back = new BackMessage();
         ForumUser user = this.userService.queryUserById(Long.valueOf(userId));
         SimplePropertyPreFilter filter = new SimplePropertyPreFilter();
         filter.getExcludes().add("password");
         String userInfo = JSON.toJSONString(user,filter);
-        back.setData(JSONObject.parseObject(userInfo));
-        back.setCode(SELECT_SUCCESSFUL);
-        back.setMessage("查询成功!");
-        return JSON.toJSONString(back);
+        BackMessage back = new BackMessage("查询成功!",SELECT_SUCCESSFUL,JSONObject.parseObject(userInfo));
+        return back;
     }
 
 
