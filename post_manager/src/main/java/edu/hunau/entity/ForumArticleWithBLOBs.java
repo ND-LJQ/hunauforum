@@ -1,6 +1,7 @@
 package edu.hunau.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class ForumArticleWithBLOBs extends ForumArticle implements Serializable {
     private String contentMarkdown;
@@ -24,6 +25,15 @@ public class ForumArticleWithBLOBs extends ForumArticle implements Serializable 
     public void setContentRendered(String contentRendered) {
         this.contentRendered = contentRendered == null ? null : contentRendered.trim();
     }
+
+    public ForumArticleWithBLOBs(){}
+
+    public ForumArticleWithBLOBs(Long articleId, Long userId, String title, Date createTime,String contentMarkdown) {
+        super(articleId,userId,title,createTime);
+        this.contentMarkdown = contentMarkdown;
+    }
+
+
 
     @Override
     public String toString() {

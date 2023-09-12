@@ -6,6 +6,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import edu.hunau.entity.*;
 import edu.hunau.mapper.ForumArticleMapper;
+import edu.hunau.mapper.ForumAuditMapper;
 import edu.hunau.mapper.ForumTopicMapper;
 import edu.hunau.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
     private ForumTopicMapper forumTopicMapper;
+
+    @Autowired
+    private ForumAuditMapper forumAuditMapper;
 
     @Override
     public ForumArticleWithBLOBs queryArticleBasicById(Integer articleId) throws Exception {
@@ -90,4 +94,16 @@ public class ArticleServiceImpl implements ArticleService {
     public Integer updateArticleExtraById(ForumArticle article) throws Exception {
         return this.forumArticleMapper.updateByPrimaryKey(article);
     }
+
+    @Override
+    public Integer insertArticleToAudit(ForumAudit forumAudit) throws Exception {
+        return this.forumAuditMapper.insertSelective(forumAudit);
+    }
+
+    @Override
+    public PageInfo<ForumArticle> selectAllNotAuditArticlePage(Long administratorId, Integer pageNum, Integer pageSize) {
+        return null;
+    }
+
+
 }

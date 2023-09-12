@@ -1,8 +1,11 @@
 package edu.hunau.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.io.Serializable;
 import java.util.Date;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ForumArticle implements Serializable {
     private String userName;
 
@@ -144,6 +147,14 @@ public class ForumArticle implements Serializable {
 
     public void setDeleteStatus(Integer deleteStatus) {
         this.deleteStatus = deleteStatus;
+    }
+
+    public ForumArticle(){}
+    public ForumArticle(Long articleId, Long userId, String title, Date createTime) {
+        this.articleId = articleId;
+        this.userId = userId;
+        this.title = title;
+        this.createTime = createTime;
     }
 
     @Override

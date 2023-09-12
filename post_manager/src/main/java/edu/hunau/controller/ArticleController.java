@@ -57,43 +57,31 @@ public class ArticleController {
     })
     @ApiOperation(value = "通过文章id来得到文章基础信息", notes = "通过文章id来得到文章基础信息", httpMethod = "GET")
     @GetMapping(value = {"/article/{articleId}"})
-    public String getArticleBasicInfoByArticleId(@PathVariable Integer articleId) throws Exception{
-        BackMessage backMessage = new BackMessage();
+    public BackMessage getArticleBasicInfoByArticleId(@PathVariable Integer articleId) throws Exception{
         try{
             ForumArticle article = this.articleService.queryArticleBasicById(articleId);
-            backMessage.setMessage("查询成功!");
-            backMessage.setCode(SELECT_SUCCESSFUL);
-            backMessage.setData(article);
-            return JSON.toJSONString(backMessage);
+            return new BackMessage("查询成功!",SELECT_SUCCESSFUL,article);
         }catch (IndexOutOfBoundsException e){
-            backMessage.setCode(SELECT_FAILED);
-            backMessage.setMessage("查询失败,文章不存在或已经被删除!");
+            return new BackMessage("查询失败,文章不存在或已经被删除!",SELECT_FAILED);
         }
-        return JSON.toJSONString(backMessage);
     }
 
     @PostMapping(value = {"/getarticlepage"})
-    public String getArticlePage(HttpServletRequest request){
+    public BackMessage getArticlePage(HttpServletRequest request){
         BackMessage backMessage = new BackMessage();
         String pageNumStr = request.getParameter("pageNum");
         String pageSizeStr = request.getParameter("pageSize");
-        if(pageSizeStr!=null&&!pageSizeStr.equals("")){
+        if(pageSizeStr!=null&&!"".equals(pageSizeStr)){
             if(pageNumStr==null){
                 pageNumStr = "1";
             }
             Integer pageSize = Integer.valueOf(pageSizeStr);
             Integer pageNum = Integer.valueOf(pageNumStr);
             PageInfo<ForumArticle> articles = this.articleService.selectAllArticlePage(pageNum,pageSize);
-            backMessage.setData(articles);
-            backMessage.setCode(SELECT_SUCCESSFUL);
-            backMessage.setMessage("查询成功");
+            return new BackMessage("查询成功",SELECT_SUCCESSFUL,articles);
         }else {
-            backMessage.setCode(SELECT_FAILED);
-            backMessage.setMessage("查询失败,请检查参数是否正确");
+            return new BackMessage("查询失败,请检查参数是否正确",SELECT_FAILED);
         }
-
-
-        return JSON.toJSONString(backMessage);
     }
 
     /**
@@ -107,24 +95,17 @@ public class ArticleController {
     })
     @ApiOperation(value = "通过id获取文章内容", notes = "通过id获取文章内容", httpMethod = "POST")
     @PostMapping(value = {"/article/{articleId}"})
-    public String getArticleContentsById(@PathVariable Integer articleId) throws Exception{
+    public BackMessage getArticleContentsById(@PathVariable Integer articleId) throws Exception{
         BackMessage backMessage = new BackMessage();
         try{
             ForumArticleWithBLOBs forumArticleWithBLOBs = this.articleService.queryArticleContentById(articleId);
             List<ForumComment> forumCommentList = this.commentService.queryCommentListByArticleId(articleId);
-//        SimplePropertyPreFilter filter = new SimplePropertyPreFilter();
-//        filter.getIncludes().add("contentRendered");
-//        String content = JSON.toJSONString(forumArticleWithBLOBs,filter);
             forumArticleWithBLOBs.setContentRendered("");
             ForumArticleFull forumArticleFull = new ForumArticleFull(forumArticleWithBLOBs,forumCommentList);
-            backMessage.setMessage("查询成功!");
-            backMessage.setCode(SELECT_SUCCESSFUL);
-            backMessage.setData(forumArticleFull);
+            return new BackMessage("查询成功",SELECT_SUCCESSFUL,forumArticleFull);
         }catch (Exception e){
-            backMessage.setMessage("查询失败,请检查参数是否正确");
-            backMessage.setCode(SELECT_FAILED);
+            return new BackMessage("查询失败,请检查参数是否正确",SELECT_FAILED);
         }
-        return JSON.toJSONString(backMessage);
     }
 
     /**
@@ -139,18 +120,17 @@ public class ArticleController {
     })
     @ApiOperation(value = "获取用户文章列表", notes = "获取用户文章列表", httpMethod = "GET")
     @GetMapping(value={"/article/user/{userId}"})
-    public String getUserArticles(@PathVariable String userId) throws Exception{
-        BackMessage backMessage = new BackMessage();
-        List<ForumArticle> userArticles = this.articleService.queryArticleBasicByUserId(Integer.valueOf(userId));
-        backMessage.setCode(SELECT_SUCCESSFUL);
-        backMessage.setMessage("查询成功!");
-        backMessage.setData(userArticles);
-        return JSON.toJSONString(backMessage);
+    public BackMessage getUserArticles(@PathVariable String userId) throws Exception{
+        try{
+            List<ForumArticle> userArticles = this.articleService.queryArticleBasicByUserId(Integer.valueOf(userId));
+            return new BackMessage("查询成功!",SELECT_SUCCESSFUL,userArticles);
+        }catch (Exception e){
+            return new BackMessage("查询失败!请检查参数是否正确",SELECT_SUCCESSFUL);
+        }
     }
 
     /**
      * 文章发布
-     *
      * @param request 请求
      * @return {@link String}
      */
@@ -159,38 +139,20 @@ public class ArticleController {
     })
     @ApiOperation(value = "文章发布", notes = "文章发布", httpMethod = "POST")
     @PostMapping(value = {"/postings"})
-    public String articlePublish(HttpServletRequest request) {
-        BackMessage backMessage = new BackMessage();
-        String userId = request.getParameter("userId");
-        String content = request.getParameter("content");
-        String title = request.getParameter("title");
-        String topicId = request.getParameter("topicId");
-        String topicableType = request.getParameter("topicableType");
-        Long articleId = YitIdHelper.nextId();
-        System.out.println(articleId);
-        Date nowDate = dateUtil.getNowSqlDate();
-        ForumArticleWithBLOBs article = new ForumArticleWithBLOBs();
-        ForumTopicable topicable = new ForumTopicable();
-        article.setCreateTime(nowDate);
-        article.setTitle(title);
-        article.setContentMarkdown(content);
-        article.setUserId(Long.valueOf(userId));
-        article.setArticleId(articleId);
-        topicable.setTopicableId(articleId);
-        topicable.setTopicId(Long.valueOf(topicId));
-        topicable.setCreateTime(nowDate);
-        topicable.setTopicableType(Integer.valueOf(topicableType));
+    public BackMessage articlePublish(HttpServletRequest request) throws Exception {
         try {
+            Long articleId = YitIdHelper.nextId();
+            Date nowDate = dateUtil.getNowSqlDate();
+            ForumArticleWithBLOBs article = new ForumArticleWithBLOBs(articleId,Long.valueOf(request.getParameter("userId")),request.getParameter("title"),nowDate,request.getParameter("content"));
+            ForumTopicable topicable = new ForumTopicable(Long.valueOf(request.getParameter("topicId")),articleId,Integer.valueOf(request.getParameter("topicableType")),nowDate);
+            ForumAudit forumAudit = new ForumAudit(YitIdHelper.nextId(),TYPE_ARTICLE,articleId,AUDIT_DEFAULT);
             this.articleService.insertArticle(article);
             this.topicService.insertTopicAble(topicable);
-            backMessage.setCode(INSERT_SUCCESSFUL);
-            backMessage.setMessage("发布成功!");
+            this.articleService.insertArticleToAudit(forumAudit);
+            return new BackMessage("发布成功!请等待管理员审核",INSERT_SUCCESSFUL);
         } catch (Exception e) {
-            backMessage.setCode(INSERT_FAILED);
-            backMessage.setMessage("发布失败,请检查参数格式是否正确!");
-            return JSON.toJSONString(backMessage);
+            return new BackMessage("发布失败,请检查参数格式是否正确!",INSERT_FAILED);
         }
-        return JSON.toJSONString(backMessage);
     }
 
     /**
@@ -205,15 +167,12 @@ public class ArticleController {
     })
     @ApiOperation(value = "删除文章", notes = "删除文章", httpMethod = "GET")
     @GetMapping (value = {"/movearticle/{articleId}"})
-    public String deleteArticle(@PathVariable Integer articleId) throws Exception{
+    public BackMessage deleteArticle(@PathVariable Integer articleId) throws Exception{
         ForumArticleWithBLOBs article = new ForumArticleWithBLOBs();
-        BackMessage backMessage = new BackMessage();
         article.setArticleId(Long.valueOf(articleId));
         article.setDeleteStatus(1);
         this.articleService.deleteArticle(article);
-        backMessage.setMessage("删除成功!");
-        backMessage.setCode(DELETE_SUCCESSFUL);
-        return JSON.toJSONString(backMessage);
+        return new BackMessage("删除成功!",DELETE_SUCCESSFUL);
     }
 
 
@@ -231,34 +190,33 @@ public class ArticleController {
     })
     @ApiOperation(value = "修改文章内容", notes = "修改文章内容", httpMethod = "POST")
     @PostMapping(value = {"/changearticlemain"})
-    public String changeArticleBasic(HttpServletRequest request){
-        BackMessage backMessage = new BackMessage();
-        String articleId = request.getParameter("articleId");
-        String content = request.getParameter("content");
-        String title = request.getParameter("title");
-        ForumArticleWithBLOBs article = new ForumArticleWithBLOBs();
-        article.setArticleId(Long.valueOf(articleId));
-
-        if(title != null && title.equals("")){
-            article.setTitle(title);
-        }
-
-        if(content != null && content.equals("")){
-            article.setContentMarkdown(content);
-        }
-
-
-        article.setUpdateTime(dateUtil.getNowSqlDate());
+    public BackMessage changeArticleBasic(HttpServletRequest request) throws Exception{
         try {
+            String articleId = request.getParameter("articleId");
+            String content = request.getParameter("content");
+            String title = request.getParameter("title");
+            ForumArticleWithBLOBs article = new ForumArticleWithBLOBs();
+            article.setArticleId(Long.valueOf(articleId));
+            if(title != null && !"".equals(title)){
+                article.setTitle(title);
+            }
+            if(content != null && !"".equals(content)){
+                article.setContentMarkdown(content);
+            }
+            article.setUpdateTime(dateUtil.getNowSqlDate());
+            System.out.println(article);
             this.articleService.updateArticleBasicById(article);
-            backMessage.setCode(UPDATE_SUCCESSFUL);
-            backMessage.setMessage("更新成功!");
+            return new BackMessage("更新成功!",UPDATE_SUCCESSFUL);
         } catch (Exception e) {
-            backMessage.setCode(UPDATE_FAILED);
-            backMessage.setMessage("更新失败,请检查参数格式");
-            return JSON.toJSONString(backMessage);
+            return new BackMessage("更新失败,请检查参数格式",UPDATE_FAILED);
         }
-        return JSON.toJSONString(backMessage);
     }
+
+
+
+
+
+
+
 
 }

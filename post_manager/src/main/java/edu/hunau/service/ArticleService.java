@@ -112,4 +112,18 @@ public interface ArticleService {
      * @throws Exception 异常
      */
     public Integer updateArticleExtraById(ForumArticle article) throws Exception;
+
+
+    public Integer insertArticleToAudit(ForumAudit forumAudit) throws Exception;
+
+
+    /**
+     * 分页查询未被审核的文章
+     *
+     * @param pageNum         页面
+     * @param pageSize        页面大小
+     * @param administratorId 管理员Id
+     * @return {@link PageInfo}<{@link ForumArticle}>
+     */
+    public PageInfo<ForumArticle> selectAllNotAuditArticlePage(Long administratorId,Integer pageNum,Integer pageSize);
 }

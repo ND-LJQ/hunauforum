@@ -46,6 +46,16 @@ public class ForumTopicable implements Serializable {
         this.createTime = createTime;
     }
 
+
+    public ForumTopicable(){}
+
+    public ForumTopicable(Long topicId, Long topicableId, Integer topicableType, Date createTime) {
+        this.topicId = topicId;
+        this.topicableId = topicableId;
+        this.topicableType = topicableType;
+        this.createTime = createTime;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

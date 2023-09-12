@@ -164,4 +164,41 @@ public class FinalData {
      */
     public static final Integer SEARCH_PAGE_SIZE = 10;
 
+
+    //  审核类型list
+    /**
+     * 文章类型
+     */
+    public static final Integer TYPE_ARTICLE = 0;
+
+    /**
+     * 评论类型
+     */
+    public static final Integer TYPE_COMMENT = 1;
+
+
+
+    //审核状态类型list
+    /**
+     *  待审核类型
+     */
+    public static final Integer AUDIT_DEFAULT = 0;
+
+
+    /**
+     *  审核成功类型
+     */
+    public static final Integer AUDIT_SUCCESS = 1;
+
+    /**
+     *  审核失败类型
+     */
+    public static final Integer AUDIT_FAILED = 2;
+
+
+//    逻辑删除类型
+    public static final Byte DELETE_IS_LOGIC = 1;
+
+    public  static final Byte DELETE_NO_LOGIC = 0;
+
 }

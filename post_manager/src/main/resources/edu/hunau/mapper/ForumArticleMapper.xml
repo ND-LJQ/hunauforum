@@ -449,4 +449,6 @@
       delete_status = #{deleteStatus,jdbcType=INTEGER}
     where article_id = #{articleId,jdbcType=BIGINT}
   </update>
+
+
 </mapper>
