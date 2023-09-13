@@ -1,0 +1,1441 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.hunau.mapper.ForumAuditMapper">
+  <resultMap id="BaseResultMap" type="edu.hunau.entity.ForumAudit">
+    <id column="audit_id" jdbcType="BIGINT" property="auditId" />
+    <result column="audit_type" jdbcType="INTEGER" property="auditType" />
+    <result column="audited_id" jdbcType="BIGINT" property="auditedId" />
+    <result column="audit_man_id" jdbcType="VARCHAR" property="auditManId" />
+    <result column="audit_starus" jdbcType="INTEGER" property="auditStarus" />
+    <result column="audit_date" jdbcType="DATE" property="auditDate" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="edu.hunau.entity.ForumAudit">
+    <result column="audit_reason" jdbcType="LONGVARCHAR" property="auditReason" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    audit_id, audit_type, audited_id, audit_man_id, audit_starus, audit_date
+  </sql>
+  <sql id="Blob_Column_List">
+    audit_reason
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="edu.hunau.entity.ForumAuditExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from forum_audit
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="edu.hunau.entity.ForumAuditExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from forum_audit
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from forum_audit
+    where audit_id = #{auditId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from forum_audit
+    where audit_id = #{auditId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="edu.hunau.entity.ForumAuditExample">
+    delete from forum_audit
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="edu.hunau.entity.ForumAudit">
+    insert into forum_audit (audit_id, audit_type, audited_id, 
+      audit_man_id, audit_starus, audit_date, 
+      audit_reason)
+    values (#{auditId,jdbcType=BIGINT}, #{auditType,jdbcType=INTEGER}, #{auditedId,jdbcType=BIGINT}, 
+      #{auditManId,jdbcType=VARCHAR}, #{auditStarus,jdbcType=INTEGER}, #{auditDate,jdbcType=DATE}, 
+      #{auditReason,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="edu.hunau.entity.ForumAudit">
+    insert into forum_audit
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="auditId != null">
+        audit_id,
+      </if>
+      <if test="auditType != null">
+        audit_type,
+      </if>
+      <if test="auditedId != null">
+        audited_id,
+      </if>
+      <if test="auditManId != null">
+        audit_man_id,
+      </if>
+      <if test="auditStarus != null">
+        audit_starus,
+      </if>
+      <if test="auditDate != null">
+        audit_date,
+      </if>
+      <if test="auditReason != null">
+        audit_reason,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="auditId != null">
+        #{auditId,jdbcType=BIGINT},
+      </if>
+      <if test="auditType != null">
+        #{auditType,jdbcType=INTEGER},
+      </if>
+      <if test="auditedId != null">
+        #{auditedId,jdbcType=BIGINT},
+      </if>
+      <if test="auditManId != null">
+        #{auditManId,jdbcType=VARCHAR},
+      </if>
+      <if test="auditStarus != null">
+        #{auditStarus,jdbcType=INTEGER},
+      </if>
+      <if test="auditDate != null">
+        #{auditDate,jdbcType=DATE},
+      </if>
+      <if test="auditReason != null">
+        #{auditReason,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="edu.hunau.entity.ForumAuditExample" resultType="java.lang.Long">
+    select count(*) from forum_audit
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update forum_audit
+    <set>
+      <if test="row.auditId != null">
+        audit_id = #{row.auditId,jdbcType=BIGINT},
+      </if>
+      <if test="row.auditType != null">
+        audit_type = #{row.auditType,jdbcType=INTEGER},
+      </if>
+      <if test="row.auditedId != null">
+        audited_id = #{row.auditedId,jdbcType=BIGINT},
+      </if>
+      <if test="row.auditManId != null">
+        audit_man_id = #{row.auditManId,jdbcType=VARCHAR},
+      </if>
+      <if test="row.auditStarus != null">
+        audit_starus = #{row.auditStarus,jdbcType=INTEGER},
+      </if>
+      <if test="row.auditDate != null">
+        audit_date = #{row.auditDate,jdbcType=DATE},
+      </if>
+      <if test="row.auditReason != null">
+        audit_reason = #{row.auditReason,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update forum_audit
+    set audit_id = #{row.auditId,jdbcType=BIGINT},
+      audit_type = #{row.auditType,jdbcType=INTEGER},
+      audited_id = #{row.auditedId,jdbcType=BIGINT},
+      audit_man_id = #{row.auditManId,jdbcType=VARCHAR},
+      audit_starus = #{row.auditStarus,jdbcType=INTEGER},
+      audit_date = #{row.auditDate,jdbcType=DATE},
+      audit_reason = #{row.auditReason,jdbcType=LONGVARCHAR}
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update forum_audit
+    set audit_id = #{row.auditId,jdbcType=BIGINT},
+      audit_type = #{row.auditType,jdbcType=INTEGER},
+      audited_id = #{row.auditedId,jdbcType=BIGINT},
+      audit_man_id = #{row.auditManId,jdbcType=VARCHAR},
+      audit_starus = #{row.auditStarus,jdbcType=INTEGER},
+      audit_date = #{row.auditDate,jdbcType=DATE}
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="edu.hunau.entity.ForumAudit">
+    update forum_audit
+    <set>
+      <if test="auditType != null">
+        audit_type = #{auditType,jdbcType=INTEGER},
+      </if>
+      <if test="auditedId != null">
+        audited_id = #{auditedId,jdbcType=BIGINT},
+      </if>
+      <if test="auditManId != null">
+        audit_man_id = #{auditManId,jdbcType=VARCHAR},
+      </if>
+      <if test="auditStarus != null">
+        audit_starus = #{auditStarus,jdbcType=INTEGER},
+      </if>
+      <if test="auditDate != null">
+        audit_date = #{auditDate,jdbcType=DATE},
+      </if>
+      <if test="auditReason != null">
+        audit_reason = #{auditReason,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where audit_id = #{auditId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="edu.hunau.entity.ForumAudit">
+    update forum_audit
+    set audit_type = #{auditType,jdbcType=INTEGER},
+      audited_id = #{auditedId,jdbcType=BIGINT},
+      audit_man_id = #{auditManId,jdbcType=VARCHAR},
+      audit_starus = #{auditStarus,jdbcType=INTEGER},
+      audit_date = #{auditDate,jdbcType=DATE},
+      audit_reason = #{auditReason,jdbcType=LONGVARCHAR}
+    where audit_id = #{auditId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="edu.hunau.entity.ForumAudit">
+    update forum_audit
+    set audit_type = #{auditType,jdbcType=INTEGER},
+      audited_id = #{auditedId,jdbcType=BIGINT},
+      audit_man_id = #{auditManId,jdbcType=VARCHAR},
+      audit_starus = #{auditStarus,jdbcType=INTEGER},
+      audit_date = #{auditDate,jdbcType=DATE}
+    where audit_id = #{auditId,jdbcType=BIGINT}
+  </update>
+  <resultMap id="BaseResultMap" type="edu.hunau.entity.ForumAudit">
+    <id column="audit_id" jdbcType="BIGINT" property="auditId" />
+    <result column="audit_type" jdbcType="INTEGER" property="auditType" />
+    <result column="audited_id" jdbcType="VARCHAR" property="auditedId" />
+    <result column="audit_man_id" jdbcType="VARCHAR" property="auditManId" />
+    <result column="audit_starus" jdbcType="INTEGER" property="auditStarus" />
+    <result column="audit_date" jdbcType="DATE" property="auditDate" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="edu.hunau.entity.ForumAudit">
+    <result column="audit_reason" jdbcType="LONGVARCHAR" property="auditReason" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    audit_id, audit_type, audited_id, audit_man_id, audit_starus, audit_date
+  </sql>
+  <sql id="Blob_Column_List">
+    audit_reason
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="edu.hunau.entity.ForumAuditExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from forum_audit
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="edu.hunau.entity.ForumAuditExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from forum_audit
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from forum_audit
+    where audit_id = #{auditId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from forum_audit
+    where audit_id = #{auditId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="edu.hunau.entity.ForumAuditExample">
+    delete from forum_audit
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="edu.hunau.entity.ForumAudit">
+    insert into forum_audit (audit_id, audit_type, audited_id, 
+      audit_man_id, audit_starus, audit_date, 
+      audit_reason)
+    values (#{auditId,jdbcType=BIGINT}, #{auditType,jdbcType=INTEGER}, #{auditedId,jdbcType=VARCHAR}, 
+      #{auditManId,jdbcType=VARCHAR}, #{auditStarus,jdbcType=INTEGER}, #{auditDate,jdbcType=DATE}, 
+      #{auditReason,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="edu.hunau.entity.ForumAudit">
+    insert into forum_audit
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="auditId != null">
+        audit_id,
+      </if>
+      <if test="auditType != null">
+        audit_type,
+      </if>
+      <if test="auditedId != null">
+        audited_id,
+      </if>
+      <if test="auditManId != null">
+        audit_man_id,
+      </if>
+      <if test="auditStarus != null">
+        audit_starus,
+      </if>
+      <if test="auditDate != null">
+        audit_date,
+      </if>
+      <if test="auditReason != null">
+        audit_reason,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="auditId != null">
+        #{auditId,jdbcType=BIGINT},
+      </if>
+      <if test="auditType != null">
+        #{auditType,jdbcType=INTEGER},
+      </if>
+      <if test="auditedId != null">
+        #{auditedId,jdbcType=VARCHAR},
+      </if>
+      <if test="auditManId != null">
+        #{auditManId,jdbcType=VARCHAR},
+      </if>
+      <if test="auditStarus != null">
+        #{auditStarus,jdbcType=INTEGER},
+      </if>
+      <if test="auditDate != null">
+        #{auditDate,jdbcType=DATE},
+      </if>
+      <if test="auditReason != null">
+        #{auditReason,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="edu.hunau.entity.ForumAuditExample" resultType="java.lang.Long">
+    select count(*) from forum_audit
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update forum_audit
+    <set>
+      <if test="row.auditId != null">
+        audit_id = #{row.auditId,jdbcType=BIGINT},
+      </if>
+      <if test="row.auditType != null">
+        audit_type = #{row.auditType,jdbcType=INTEGER},
+      </if>
+      <if test="row.auditedId != null">
+        audited_id = #{row.auditedId,jdbcType=VARCHAR},
+      </if>
+      <if test="row.auditManId != null">
+        audit_man_id = #{row.auditManId,jdbcType=VARCHAR},
+      </if>
+      <if test="row.auditStarus != null">
+        audit_starus = #{row.auditStarus,jdbcType=INTEGER},
+      </if>
+      <if test="row.auditDate != null">
+        audit_date = #{row.auditDate,jdbcType=DATE},
+      </if>
+      <if test="row.auditReason != null">
+        audit_reason = #{row.auditReason,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update forum_audit
+    set audit_id = #{row.auditId,jdbcType=BIGINT},
+      audit_type = #{row.auditType,jdbcType=INTEGER},
+      audited_id = #{row.auditedId,jdbcType=VARCHAR},
+      audit_man_id = #{row.auditManId,jdbcType=VARCHAR},
+      audit_starus = #{row.auditStarus,jdbcType=INTEGER},
+      audit_date = #{row.auditDate,jdbcType=DATE},
+      audit_reason = #{row.auditReason,jdbcType=LONGVARCHAR}
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update forum_audit
+    set audit_id = #{row.auditId,jdbcType=BIGINT},
+      audit_type = #{row.auditType,jdbcType=INTEGER},
+      audited_id = #{row.auditedId,jdbcType=VARCHAR},
+      audit_man_id = #{row.auditManId,jdbcType=VARCHAR},
+      audit_starus = #{row.auditStarus,jdbcType=INTEGER},
+      audit_date = #{row.auditDate,jdbcType=DATE}
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="edu.hunau.entity.ForumAudit">
+    update forum_audit
+    <set>
+      <if test="auditType != null">
+        audit_type = #{auditType,jdbcType=INTEGER},
+      </if>
+      <if test="auditedId != null">
+        audited_id = #{auditedId,jdbcType=VARCHAR},
+      </if>
+      <if test="auditManId != null">
+        audit_man_id = #{auditManId,jdbcType=VARCHAR},
+      </if>
+      <if test="auditStarus != null">
+        audit_starus = #{auditStarus,jdbcType=INTEGER},
+      </if>
+      <if test="auditDate != null">
+        audit_date = #{auditDate,jdbcType=DATE},
+      </if>
+      <if test="auditReason != null">
+        audit_reason = #{auditReason,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where audit_id = #{auditId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="edu.hunau.entity.ForumAudit">
+    update forum_audit
+    set audit_type = #{auditType,jdbcType=INTEGER},
+      audited_id = #{auditedId,jdbcType=VARCHAR},
+      audit_man_id = #{auditManId,jdbcType=VARCHAR},
+      audit_starus = #{auditStarus,jdbcType=INTEGER},
+      audit_date = #{auditDate,jdbcType=DATE},
+      audit_reason = #{auditReason,jdbcType=LONGVARCHAR}
+    where audit_id = #{auditId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="edu.hunau.entity.ForumAudit">
+    update forum_audit
+    set audit_type = #{auditType,jdbcType=INTEGER},
+      audited_id = #{auditedId,jdbcType=VARCHAR},
+      audit_man_id = #{auditManId,jdbcType=VARCHAR},
+      audit_starus = #{auditStarus,jdbcType=INTEGER},
+      audit_date = #{auditDate,jdbcType=DATE}
+    where audit_id = #{auditId,jdbcType=BIGINT}
+  </update>
+  <resultMap id="BaseResultMap" type="edu.hunau.entity.ForumAudit">
+    <id column="audit_id" jdbcType="BIGINT" property="auditId" />
+    <result column="audit_type" jdbcType="INTEGER" property="auditType" />
+    <result column=" audited_id" jdbcType="VARCHAR" property=" auditedId" />
+    <result column="audit_man_id" jdbcType="VARCHAR" property="auditManId" />
+    <result column="audit_starus" jdbcType="INTEGER" property="auditStarus" />
+    <result column="audit_date" jdbcType="DATE" property="auditDate" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="edu.hunau.entity.ForumAudit">
+    <result column="audit_reason" jdbcType="LONGVARCHAR" property="auditReason" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    audit_id, audit_type, 
+audited_id, audit_man_id, audit_starus, audit_date
+  </sql>
+  <sql id="Blob_Column_List">
+    audit_reason
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="edu.hunau.entity.ForumAuditExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from forum_audit
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="edu.hunau.entity.ForumAuditExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from forum_audit
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from forum_audit
+    where audit_id = #{auditId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from forum_audit
+    where audit_id = #{auditId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="edu.hunau.entity.ForumAuditExample">
+    delete from forum_audit
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="edu.hunau.entity.ForumAudit">
+    insert into forum_audit (audit_id, audit_type, 
+audited_id, 
+      audit_man_id, audit_starus, audit_date, 
+      audit_reason)
+    values (#{auditId,jdbcType=BIGINT}, #{auditType,jdbcType=INTEGER}, #{
+auditedId,jdbcType=VARCHAR}, 
+      #{auditManId,jdbcType=VARCHAR}, #{auditStarus,jdbcType=INTEGER}, #{auditDate,jdbcType=DATE}, 
+      #{auditReason,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="edu.hunau.entity.ForumAudit">
+    insert into forum_audit
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="auditId != null">
+        audit_id,
+      </if>
+      <if test="auditType != null">
+        audit_type,
+      </if>
+      <if test=" auditedId != null">
+        
+audited_id,
+      </if>
+      <if test="auditManId != null">
+        audit_man_id,
+      </if>
+      <if test="auditStarus != null">
+        audit_starus,
+      </if>
+      <if test="auditDate != null">
+        audit_date,
+      </if>
+      <if test="auditReason != null">
+        audit_reason,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="auditId != null">
+        #{auditId,jdbcType=BIGINT},
+      </if>
+      <if test="auditType != null">
+        #{auditType,jdbcType=INTEGER},
+      </if>
+      <if test=" auditedId != null">
+        #{
+auditedId,jdbcType=VARCHAR},
+      </if>
+      <if test="auditManId != null">
+        #{auditManId,jdbcType=VARCHAR},
+      </if>
+      <if test="auditStarus != null">
+        #{auditStarus,jdbcType=INTEGER},
+      </if>
+      <if test="auditDate != null">
+        #{auditDate,jdbcType=DATE},
+      </if>
+      <if test="auditReason != null">
+        #{auditReason,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="edu.hunau.entity.ForumAuditExample" resultType="java.lang.Long">
+    select count(*) from forum_audit
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update forum_audit
+    <set>
+      <if test="row.auditId != null">
+        audit_id = #{row.auditId,jdbcType=BIGINT},
+      </if>
+      <if test="row.auditType != null">
+        audit_type = #{row.auditType,jdbcType=INTEGER},
+      </if>
+      <if test="row. auditedId != null">
+        
+audited_id = #{row.
+auditedId,jdbcType=VARCHAR},
+      </if>
+      <if test="row.auditManId != null">
+        audit_man_id = #{row.auditManId,jdbcType=VARCHAR},
+      </if>
+      <if test="row.auditStarus != null">
+        audit_starus = #{row.auditStarus,jdbcType=INTEGER},
+      </if>
+      <if test="row.auditDate != null">
+        audit_date = #{row.auditDate,jdbcType=DATE},
+      </if>
+      <if test="row.auditReason != null">
+        audit_reason = #{row.auditReason,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update forum_audit
+    set audit_id = #{row.auditId,jdbcType=BIGINT},
+      audit_type = #{row.auditType,jdbcType=INTEGER},
+      
+audited_id = #{row.
+auditedId,jdbcType=VARCHAR},
+      audit_man_id = #{row.auditManId,jdbcType=VARCHAR},
+      audit_starus = #{row.auditStarus,jdbcType=INTEGER},
+      audit_date = #{row.auditDate,jdbcType=DATE},
+      audit_reason = #{row.auditReason,jdbcType=LONGVARCHAR}
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update forum_audit
+    set audit_id = #{row.auditId,jdbcType=BIGINT},
+      audit_type = #{row.auditType,jdbcType=INTEGER},
+      
+audited_id = #{row.
+auditedId,jdbcType=VARCHAR},
+      audit_man_id = #{row.auditManId,jdbcType=VARCHAR},
+      audit_starus = #{row.auditStarus,jdbcType=INTEGER},
+      audit_date = #{row.auditDate,jdbcType=DATE}
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="edu.hunau.entity.ForumAudit">
+    update forum_audit
+    <set>
+      <if test="auditType != null">
+        audit_type = #{auditType,jdbcType=INTEGER},
+      </if>
+      <if test=" auditedId != null">
+        
+audited_id = #{
+auditedId,jdbcType=VARCHAR},
+      </if>
+      <if test="auditManId != null">
+        audit_man_id = #{auditManId,jdbcType=VARCHAR},
+      </if>
+      <if test="auditStarus != null">
+        audit_starus = #{auditStarus,jdbcType=INTEGER},
+      </if>
+      <if test="auditDate != null">
+        audit_date = #{auditDate,jdbcType=DATE},
+      </if>
+      <if test="auditReason != null">
+        audit_reason = #{auditReason,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where audit_id = #{auditId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="edu.hunau.entity.ForumAudit">
+    update forum_audit
+    set audit_type = #{auditType,jdbcType=INTEGER},
+      
+audited_id = #{
+auditedId,jdbcType=VARCHAR},
+      audit_man_id = #{auditManId,jdbcType=VARCHAR},
+      audit_starus = #{auditStarus,jdbcType=INTEGER},
+      audit_date = #{auditDate,jdbcType=DATE},
+      audit_reason = #{auditReason,jdbcType=LONGVARCHAR}
+    where audit_id = #{auditId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="edu.hunau.entity.ForumAudit">
+    update forum_audit
+    set audit_type = #{auditType,jdbcType=INTEGER},
+      
+audited_id = #{
+auditedId,jdbcType=VARCHAR},
+      audit_man_id = #{auditManId,jdbcType=VARCHAR},
+      audit_starus = #{auditStarus,jdbcType=INTEGER},
+      audit_date = #{auditDate,jdbcType=DATE}
+    where audit_id = #{auditId,jdbcType=BIGINT}
+  </update>
+  <resultMap id="BaseResultMap" type="edu.hunau.entity.ForumAudit">
+    <id column="audit_id" jdbcType="BIGINT" property="auditId" />
+    <result column="audit_type" jdbcType="INTEGER" property="auditType" />
+    <result column="audit__id" jdbcType="VARCHAR" property="auditId" />
+    <result column="audit_man_id" jdbcType="VARCHAR" property="auditManId" />
+    <result column="audit_starus" jdbcType="INTEGER" property="auditStarus" />
+    <result column="audit_date" jdbcType="DATE" property="auditDate" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="edu.hunau.entity.ForumAudit">
+    <result column="audit_reason" jdbcType="LONGVARCHAR" property="auditReason" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    audit_id, audit_type, audit__id, audit_man_id, audit_starus, audit_date
+  </sql>
+  <sql id="Blob_Column_List">
+    audit_reason
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="edu.hunau.entity.ForumAuditExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from forum_audit
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="edu.hunau.entity.ForumAuditExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from forum_audit
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from forum_audit
+    where audit_id = #{auditId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from forum_audit
+    where audit_id = #{auditId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="edu.hunau.entity.ForumAuditExample">
+    delete from forum_audit
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="edu.hunau.entity.ForumAudit">
+    insert into forum_audit (audit_id, audit_type, audit__id, 
+      audit_man_id, audit_starus, audit_date, 
+      audit_reason)
+    values (#{auditId,jdbcType=BIGINT}, #{auditType,jdbcType=INTEGER}, #{auditId,jdbcType=VARCHAR}, 
+      #{auditManId,jdbcType=VARCHAR}, #{auditStarus,jdbcType=INTEGER}, #{auditDate,jdbcType=DATE}, 
+      #{auditReason,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="edu.hunau.entity.ForumAudit">
+    insert into forum_audit
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="auditId != null">
+        audit_id,
+      </if>
+      <if test="auditType != null">
+        audit_type,
+      </if>
+      <if test="auditId != null">
+        audit__id,
+      </if>
+      <if test="auditManId != null">
+        audit_man_id,
+      </if>
+      <if test="auditStarus != null">
+        audit_starus,
+      </if>
+      <if test="auditDate != null">
+        audit_date,
+      </if>
+      <if test="auditReason != null">
+        audit_reason,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="auditId != null">
+        #{auditId,jdbcType=BIGINT},
+      </if>
+      <if test="auditType != null">
+        #{auditType,jdbcType=INTEGER},
+      </if>
+      <if test="auditId != null">
+        #{auditId,jdbcType=VARCHAR},
+      </if>
+      <if test="auditManId != null">
+        #{auditManId,jdbcType=VARCHAR},
+      </if>
+      <if test="auditStarus != null">
+        #{auditStarus,jdbcType=INTEGER},
+      </if>
+      <if test="auditDate != null">
+        #{auditDate,jdbcType=DATE},
+      </if>
+      <if test="auditReason != null">
+        #{auditReason,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="edu.hunau.entity.ForumAuditExample" resultType="java.lang.Long">
+    select count(*) from forum_audit
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update forum_audit
+    <set>
+      <if test="row.auditId != null">
+        audit_id = #{row.auditId,jdbcType=BIGINT},
+      </if>
+      <if test="row.auditType != null">
+        audit_type = #{row.auditType,jdbcType=INTEGER},
+      </if>
+      <if test="row.auditId != null">
+        audit__id = #{row.auditId,jdbcType=VARCHAR},
+      </if>
+      <if test="row.auditManId != null">
+        audit_man_id = #{row.auditManId,jdbcType=VARCHAR},
+      </if>
+      <if test="row.auditStarus != null">
+        audit_starus = #{row.auditStarus,jdbcType=INTEGER},
+      </if>
+      <if test="row.auditDate != null">
+        audit_date = #{row.auditDate,jdbcType=DATE},
+      </if>
+      <if test="row.auditReason != null">
+        audit_reason = #{row.auditReason,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update forum_audit
+    set audit_id = #{row.auditId,jdbcType=BIGINT},
+      audit_type = #{row.auditType,jdbcType=INTEGER},
+      audit__id = #{row.auditId,jdbcType=VARCHAR},
+      audit_man_id = #{row.auditManId,jdbcType=VARCHAR},
+      audit_starus = #{row.auditStarus,jdbcType=INTEGER},
+      audit_date = #{row.auditDate,jdbcType=DATE},
+      audit_reason = #{row.auditReason,jdbcType=LONGVARCHAR}
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update forum_audit
+    set audit_id = #{row.auditId,jdbcType=BIGINT},
+      audit_type = #{row.auditType,jdbcType=INTEGER},
+      audit__id = #{row.auditId,jdbcType=VARCHAR},
+      audit_man_id = #{row.auditManId,jdbcType=VARCHAR},
+      audit_starus = #{row.auditStarus,jdbcType=INTEGER},
+      audit_date = #{row.auditDate,jdbcType=DATE}
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="edu.hunau.entity.ForumAudit">
+    update forum_audit
+    <set>
+      <if test="auditType != null">
+        audit_type = #{auditType,jdbcType=INTEGER},
+      </if>
+      <if test="auditId != null">
+        audit__id = #{auditId,jdbcType=VARCHAR},
+      </if>
+      <if test="auditManId != null">
+        audit_man_id = #{auditManId,jdbcType=VARCHAR},
+      </if>
+      <if test="auditStarus != null">
+        audit_starus = #{auditStarus,jdbcType=INTEGER},
+      </if>
+      <if test="auditDate != null">
+        audit_date = #{auditDate,jdbcType=DATE},
+      </if>
+      <if test="auditReason != null">
+        audit_reason = #{auditReason,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where audit_id = #{auditId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="edu.hunau.entity.ForumAudit">
+    update forum_audit
+    set audit_type = #{auditType,jdbcType=INTEGER},
+      audit__id = #{auditId,jdbcType=VARCHAR},
+      audit_man_id = #{auditManId,jdbcType=VARCHAR},
+      audit_starus = #{auditStarus,jdbcType=INTEGER},
+      audit_date = #{auditDate,jdbcType=DATE},
+      audit_reason = #{auditReason,jdbcType=LONGVARCHAR}
+    where audit_id = #{auditId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="edu.hunau.entity.ForumAudit">
+    update forum_audit
+    set audit_type = #{auditType,jdbcType=INTEGER},
+      audit__id = #{auditId,jdbcType=VARCHAR},
+      audit_man_id = #{auditManId,jdbcType=VARCHAR},
+      audit_starus = #{auditStarus,jdbcType=INTEGER},
+      audit_date = #{auditDate,jdbcType=DATE}
+    where audit_id = #{auditId,jdbcType=BIGINT}
+  </update>
+  <resultMap id="BaseResultMap" type="edu.hunau.entity.ForumAudit">
+    <id column="audit_id" jdbcType="BIGINT" property="auditId" />
+    <result column="audit_type" jdbcType="INTEGER" property="auditType" />
+    <result column="audit__id" jdbcType="VARCHAR" property="auditId" />
+    <result column="audit_man_id" jdbcType="VARCHAR" property="auditManId" />
+    <result column="audit_starus" jdbcType="INTEGER" property="auditStarus" />
+    <result column="audit_date" jdbcType="DATE" property="auditDate" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="edu.hunau.entity.ForumAudit">
+    <result column="audit_reason" jdbcType="LONGVARCHAR" property="auditReason" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    audit_id, audit_type, audit__id, audit_man_id, audit_starus, audit_date
+  </sql>
+  <sql id="Blob_Column_List">
+    audit_reason
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="edu.hunau.entity.ForumAuditExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from forum_audit
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="edu.hunau.entity.ForumAuditExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from forum_audit
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from forum_audit
+    where audit_id = #{auditId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from forum_audit
+    where audit_id = #{auditId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="edu.hunau.entity.ForumAuditExample">
+    delete from forum_audit
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="edu.hunau.entity.ForumAudit">
+    insert into forum_audit (audit_id, audit_type, audit__id, 
+      audit_man_id, audit_starus, audit_date, 
+      audit_reason)
+    values (#{auditId,jdbcType=BIGINT}, #{auditType,jdbcType=INTEGER}, #{auditId,jdbcType=VARCHAR}, 
+      #{auditManId,jdbcType=VARCHAR}, #{auditStarus,jdbcType=INTEGER}, #{auditDate,jdbcType=DATE}, 
+      #{auditReason,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="edu.hunau.entity.ForumAudit">
+    insert into forum_audit
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="auditId != null">
+        audit_id,
+      </if>
+      <if test="auditType != null">
+        audit_type,
+      </if>
+      <if test="auditId != null">
+        audit__id,
+      </if>
+      <if test="auditManId != null">
+        audit_man_id,
+      </if>
+      <if test="auditStarus != null">
+        audit_starus,
+      </if>
+      <if test="auditDate != null">
+        audit_date,
+      </if>
+      <if test="auditReason != null">
+        audit_reason,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="auditId != null">
+        #{auditId,jdbcType=BIGINT},
+      </if>
+      <if test="auditType != null">
+        #{auditType,jdbcType=INTEGER},
+      </if>
+      <if test="auditId != null">
+        #{auditId,jdbcType=VARCHAR},
+      </if>
+      <if test="auditManId != null">
+        #{auditManId,jdbcType=VARCHAR},
+      </if>
+      <if test="auditStarus != null">
+        #{auditStarus,jdbcType=INTEGER},
+      </if>
+      <if test="auditDate != null">
+        #{auditDate,jdbcType=DATE},
+      </if>
+      <if test="auditReason != null">
+        #{auditReason,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="edu.hunau.entity.ForumAuditExample" resultType="java.lang.Long">
+    select count(*) from forum_audit
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update forum_audit
+    <set>
+      <if test="row.auditId != null">
+        audit_id = #{row.auditId,jdbcType=BIGINT},
+      </if>
+      <if test="row.auditType != null">
+        audit_type = #{row.auditType,jdbcType=INTEGER},
+      </if>
+      <if test="row.auditId != null">
+        audit__id = #{row.auditId,jdbcType=VARCHAR},
+      </if>
+      <if test="row.auditManId != null">
+        audit_man_id = #{row.auditManId,jdbcType=VARCHAR},
+      </if>
+      <if test="row.auditStarus != null">
+        audit_starus = #{row.auditStarus,jdbcType=INTEGER},
+      </if>
+      <if test="row.auditDate != null">
+        audit_date = #{row.auditDate,jdbcType=DATE},
+      </if>
+      <if test="row.auditReason != null">
+        audit_reason = #{row.auditReason,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update forum_audit
+    set audit_id = #{row.auditId,jdbcType=BIGINT},
+      audit_type = #{row.auditType,jdbcType=INTEGER},
+      audit__id = #{row.auditId,jdbcType=VARCHAR},
+      audit_man_id = #{row.auditManId,jdbcType=VARCHAR},
+      audit_starus = #{row.auditStarus,jdbcType=INTEGER},
+      audit_date = #{row.auditDate,jdbcType=DATE},
+      audit_reason = #{row.auditReason,jdbcType=LONGVARCHAR}
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update forum_audit
+    set audit_id = #{row.auditId,jdbcType=BIGINT},
+      audit_type = #{row.auditType,jdbcType=INTEGER},
+      audit__id = #{row.auditId,jdbcType=VARCHAR},
+      audit_man_id = #{row.auditManId,jdbcType=VARCHAR},
+      audit_starus = #{row.auditStarus,jdbcType=INTEGER},
+      audit_date = #{row.auditDate,jdbcType=DATE}
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="edu.hunau.entity.ForumAudit">
+    update forum_audit
+    <set>
+      <if test="auditType != null">
+        audit_type = #{auditType,jdbcType=INTEGER},
+      </if>
+      <if test="auditId != null">
+        audit__id = #{auditId,jdbcType=VARCHAR},
+      </if>
+      <if test="auditManId != null">
+        audit_man_id = #{auditManId,jdbcType=VARCHAR},
+      </if>
+      <if test="auditStarus != null">
+        audit_starus = #{auditStarus,jdbcType=INTEGER},
+      </if>
+      <if test="auditDate != null">
+        audit_date = #{auditDate,jdbcType=DATE},
+      </if>
+      <if test="auditReason != null">
+        audit_reason = #{auditReason,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where audit_id = #{auditId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="edu.hunau.entity.ForumAudit">
+    update forum_audit
+    set audit_type = #{auditType,jdbcType=INTEGER},
+      audit__id = #{auditId,jdbcType=VARCHAR},
+      audit_man_id = #{auditManId,jdbcType=VARCHAR},
+      audit_starus = #{auditStarus,jdbcType=INTEGER},
+      audit_date = #{auditDate,jdbcType=DATE},
+      audit_reason = #{auditReason,jdbcType=LONGVARCHAR}
+    where audit_id = #{auditId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="edu.hunau.entity.ForumAudit">
+    update forum_audit
+    set audit_type = #{auditType,jdbcType=INTEGER},
+      audit__id = #{auditId,jdbcType=VARCHAR},
+      audit_man_id = #{auditManId,jdbcType=VARCHAR},
+      audit_starus = #{auditStarus,jdbcType=INTEGER},
+      audit_date = #{auditDate,jdbcType=DATE}
+    where audit_id = #{auditId,jdbcType=BIGINT}
+  </update>
+
+<!--  以上为mybatis自动生成-->
+
+
+
+</mapper>
