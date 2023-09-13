@@ -7,9 +7,6 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-/**
- * @author ND_LJQ
- */
 @Mapper
 public interface ForumPermissionsMapper {
     long countByExample(ForumPermissionsExample example);

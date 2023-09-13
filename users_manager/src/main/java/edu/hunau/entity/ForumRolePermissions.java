@@ -3,18 +3,12 @@ package edu.hunau.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-public class ForumRole implements Serializable {
+public class ForumRolePermissions implements Serializable {
     private Integer id;
 
-    private String code;
+    private Integer roleId;
 
-    private String name;
-
-    private String grade;
-
-    private String description;
-
-    private Byte state;
+    private Long permissionsId;
 
     private Byte isDeleted;
 
@@ -30,6 +24,9 @@ public class ForumRole implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+
+
+
     public Integer getId() {
         return id;
     }
@@ -38,44 +35,20 @@ public class ForumRole implements Serializable {
         this.id = id;
     }
 
-    public String getCode() {
-        return code;
+    public Integer getRoleId() {
+        return roleId;
     }
 
-    public void setCode(String code) {
-        this.code = code == null ? null : code.trim();
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
     }
 
-    public String getName() {
-        return name;
+    public Long getPermissionsId() {
+        return permissionsId;
     }
 
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
-    }
-
-    public String getGrade() {
-        return grade;
-    }
-
-    public void setGrade(String grade) {
-        this.grade = grade == null ? null : grade.trim();
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description == null ? null : description.trim();
-    }
-
-    public Byte getState() {
-        return state;
-    }
-
-    public void setState(Byte state) {
-        this.state = state;
+    public void setPermissionsId(Long permissionsId) {
+        this.permissionsId = permissionsId;
     }
 
     public Byte getIsDeleted() {
@@ -126,19 +99,15 @@ public class ForumRole implements Serializable {
         this.deleteTime = deleteTime;
     }
 
-    public ForumRole(){};
-
-    public ForumRole(Integer id, byte isDeleted) {
+    public ForumRolePermissions(Integer id, Byte deleteIsLogic) {
         this.id = id;
-        this.isDeleted = isDeleted;
+        this.isDeleted = deleteIsLogic;
     }
 
-    public ForumRole(String name, String grade, String description, Byte state,Byte isDeleted, Long createUser, Date createTime) {
-        this.name = name;
-        this.grade = grade;
-        this.description = description;
-        this.state = state;
-        this.createUser = createUser;
+    public ForumRolePermissions(Integer roleId, Long permissionsId, Long userId,Date createTime,Byte isDeleted) {
+        this.roleId = roleId;
+        this.permissionsId = permissionsId;
+        this.createUser = userId;
         this.createTime = createTime;
         this.isDeleted = isDeleted;
     }
@@ -150,11 +119,8 @@ public class ForumRole implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", code=").append(code);
-        sb.append(", name=").append(name);
-        sb.append(", grade=").append(grade);
-        sb.append(", description=").append(description);
-        sb.append(", state=").append(state);
+        sb.append(", roleId=").append(roleId);
+        sb.append(", permissionsId=").append(permissionsId);
         sb.append(", isDeleted=").append(isDeleted);
         sb.append(", createUser=").append(createUser);
         sb.append(", updateUser=").append(updateUser);

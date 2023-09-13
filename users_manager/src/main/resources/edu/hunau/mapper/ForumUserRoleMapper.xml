@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="edu.hunau.mapper.ForumPermissionsMapper">
-  <resultMap id="BaseResultMap" type="edu.hunau.entity.ForumPermissions">
-    <id column="permissions_id" jdbcType="BIGINT" property="permissionsId" />
-    <result column="permissions_level" jdbcType="INTEGER" property="permissionsLevel" />
-    <result column="permissions_name" jdbcType="VARCHAR" property="permissionsName" />
-    <result column="description" jdbcType="VARCHAR" property="description" />
-    <result column="state" jdbcType="TINYINT" property="state" />
+<mapper namespace="edu.hunau.mapper.ForumUserRoleMapper">
+  <resultMap id="BaseResultMap" type="edu.hunau.entity.ForumUserRole">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="role_id" jdbcType="INTEGER" property="roleId" />
     <result column="is_deleted" jdbcType="TINYINT" property="isDeleted" />
     <result column="create_user" jdbcType="BIGINT" property="createUser" />
     <result column="update_user" jdbcType="BIGINT" property="updateUser" />
@@ -73,16 +71,16 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    permissions_id, permissions_level, permissions_name, description, state, is_deleted, 
-    create_user, update_user, create_time, update_time, delete_time
+    id, user_id, role_id, is_deleted, create_user, update_user, create_time, update_time, 
+    delete_time
   </sql>
-  <select id="selectByExample" parameterType="edu.hunau.entity.ForumPermissionsExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="edu.hunau.entity.ForumUserRoleExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from forum_permissions
+    from forum_user_role
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -93,46 +91,40 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from forum_permissions
-    where permissions_id = #{permissionsId,jdbcType=BIGINT}
+    from forum_user_role
+    where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from forum_permissions
-    where permissions_id = #{permissionsId,jdbcType=BIGINT}
+    delete from forum_user_role
+    where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="edu.hunau.entity.ForumPermissionsExample">
-    delete from forum_permissions
+  <delete id="deleteByExample" parameterType="edu.hunau.entity.ForumUserRoleExample">
+    delete from forum_user_role
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="edu.hunau.entity.ForumPermissions">
-    insert into forum_permissions (permissions_id, permissions_level, permissions_name, 
-      description, state, is_deleted, 
-      create_user, update_user, create_time, 
-      update_time, delete_time)
-    values (#{permissionsId,jdbcType=BIGINT}, #{permissionsLevel,jdbcType=INTEGER}, #{permissionsName,jdbcType=VARCHAR}, 
-      #{description,jdbcType=VARCHAR}, #{state,jdbcType=TINYINT}, #{isDeleted,jdbcType=TINYINT}, 
-      #{createUser,jdbcType=BIGINT}, #{updateUser,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{deleteTime,jdbcType=TIMESTAMP})
+  <insert id="insert" parameterType="edu.hunau.entity.ForumUserRole">
+    insert into forum_user_role (id, user_id, role_id, 
+      is_deleted, create_user, update_user, 
+      create_time, update_time, delete_time
+      )
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{roleId,jdbcType=INTEGER}, 
+      #{isDeleted,jdbcType=TINYINT}, #{createUser,jdbcType=BIGINT}, #{updateUser,jdbcType=BIGINT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{deleteTime,jdbcType=TIMESTAMP}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="edu.hunau.entity.ForumPermissions">
-    insert into forum_permissions
+  <insert id="insertSelective" parameterType="edu.hunau.entity.ForumUserRole">
+    insert into forum_user_role
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="permissionsId != null">
-        permissions_id,
+      <if test="id != null">
+        id,
       </if>
-      <if test="permissionsLevel != null">
-        permissions_level,
+      <if test="userId != null">
+        user_id,
       </if>
-      <if test="permissionsName != null">
-        permissions_name,
-      </if>
-      <if test="description != null">
-        description,
-      </if>
-      <if test="state != null">
-        state,
+      <if test="roleId != null">
+        role_id,
       </if>
       <if test="isDeleted != null">
         is_deleted,
@@ -154,20 +146,14 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="permissionsId != null">
-        #{permissionsId,jdbcType=BIGINT},
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
       </if>
-      <if test="permissionsLevel != null">
-        #{permissionsLevel,jdbcType=INTEGER},
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
       </if>
-      <if test="permissionsName != null">
-        #{permissionsName,jdbcType=VARCHAR},
-      </if>
-      <if test="description != null">
-        #{description,jdbcType=VARCHAR},
-      </if>
-      <if test="state != null">
-        #{state,jdbcType=TINYINT},
+      <if test="roleId != null">
+        #{roleId,jdbcType=INTEGER},
       </if>
       <if test="isDeleted != null">
         #{isDeleted,jdbcType=TINYINT},
@@ -189,29 +175,23 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="edu.hunau.entity.ForumPermissionsExample" resultType="java.lang.Long">
-    select count(*) from forum_permissions
+  <select id="countByExample" parameterType="edu.hunau.entity.ForumUserRoleExample" resultType="java.lang.Long">
+    select count(*) from forum_user_role
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update forum_permissions
+    update forum_user_role
     <set>
-      <if test="row.permissionsId != null">
-        permissions_id = #{row.permissionsId,jdbcType=BIGINT},
+      <if test="row.id != null">
+        id = #{row.id,jdbcType=BIGINT},
       </if>
-      <if test="row.permissionsLevel != null">
-        permissions_level = #{row.permissionsLevel,jdbcType=INTEGER},
+      <if test="row.userId != null">
+        user_id = #{row.userId,jdbcType=BIGINT},
       </if>
-      <if test="row.permissionsName != null">
-        permissions_name = #{row.permissionsName,jdbcType=VARCHAR},
-      </if>
-      <if test="row.description != null">
-        description = #{row.description,jdbcType=VARCHAR},
-      </if>
-      <if test="row.state != null">
-        state = #{row.state,jdbcType=TINYINT},
+      <if test="row.roleId != null">
+        role_id = #{row.roleId,jdbcType=INTEGER},
       </if>
       <if test="row.isDeleted != null">
         is_deleted = #{row.isDeleted,jdbcType=TINYINT},
@@ -237,12 +217,10 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update forum_permissions
-    set permissions_id = #{row.permissionsId,jdbcType=BIGINT},
-      permissions_level = #{row.permissionsLevel,jdbcType=INTEGER},
-      permissions_name = #{row.permissionsName,jdbcType=VARCHAR},
-      description = #{row.description,jdbcType=VARCHAR},
-      state = #{row.state,jdbcType=TINYINT},
+    update forum_user_role
+    set id = #{row.id,jdbcType=BIGINT},
+      user_id = #{row.userId,jdbcType=BIGINT},
+      role_id = #{row.roleId,jdbcType=INTEGER},
       is_deleted = #{row.isDeleted,jdbcType=TINYINT},
       create_user = #{row.createUser,jdbcType=BIGINT},
       update_user = #{row.updateUser,jdbcType=BIGINT},
@@ -253,20 +231,14 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="edu.hunau.entity.ForumPermissions">
-    update forum_permissions
+  <update id="updateByPrimaryKeySelective" parameterType="edu.hunau.entity.ForumUserRole">
+    update forum_user_role
     <set>
-      <if test="permissionsLevel != null">
-        permissions_level = #{permissionsLevel,jdbcType=INTEGER},
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
       </if>
-      <if test="permissionsName != null">
-        permissions_name = #{permissionsName,jdbcType=VARCHAR},
-      </if>
-      <if test="description != null">
-        description = #{description,jdbcType=VARCHAR},
-      </if>
-      <if test="state != null">
-        state = #{state,jdbcType=TINYINT},
+      <if test="roleId != null">
+        role_id = #{roleId,jdbcType=INTEGER},
       </if>
       <if test="isDeleted != null">
         is_deleted = #{isDeleted,jdbcType=TINYINT},
@@ -287,20 +259,18 @@
         delete_time = #{deleteTime,jdbcType=TIMESTAMP},
       </if>
     </set>
-    where permissions_id = #{permissionsId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="edu.hunau.entity.ForumPermissions">
-    update forum_permissions
-    set permissions_level = #{permissionsLevel,jdbcType=INTEGER},
-      permissions_name = #{permissionsName,jdbcType=VARCHAR},
-      description = #{description,jdbcType=VARCHAR},
-      state = #{state,jdbcType=TINYINT},
+  <update id="updateByPrimaryKey" parameterType="edu.hunau.entity.ForumUserRole">
+    update forum_user_role
+    set user_id = #{userId,jdbcType=BIGINT},
+      role_id = #{roleId,jdbcType=INTEGER},
       is_deleted = #{isDeleted,jdbcType=TINYINT},
       create_user = #{createUser,jdbcType=BIGINT},
       update_user = #{updateUser,jdbcType=BIGINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       delete_time = #{deleteTime,jdbcType=TIMESTAMP}
-    where permissions_id = #{permissionsId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

@@ -10,7 +10,7 @@ public class ForumPermissions implements Serializable {
 
     private String permissionsName;
 
-    private String desc;
+    private String description;
 
     private Byte state;
 
@@ -52,12 +52,12 @@ public class ForumPermissions implements Serializable {
         this.permissionsName = permissionsName == null ? null : permissionsName.trim();
     }
 
-    public String getDesc() {
-        return desc;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc == null ? null : desc.trim();
+    public void setDescription(String description) {
+        this.description = description == null ? null : description.trim();
     }
 
     public Byte getState() {
@@ -123,15 +123,16 @@ public class ForumPermissions implements Serializable {
         this.isDeleted = isDeleted;
     }
 
-    public ForumPermissions(Integer level, String name, String desc, Long userId, java.sql.Date nowSqlDate, long permissionsId) {
+    public ForumPermissions(Integer level, String name, String desc, Long userId, java.sql.Date nowSqlDate, long permissionsId,Byte state,Byte isDeleted) {
         this.permissionsLevel = level;
         this.permissionsName = name;
-        this.desc = desc;
+        this.description = desc;
         this.createUser = userId;
         this.createTime = nowSqlDate;
         this.permissionsId = permissionsId;
+        this.state = state;
+        this.isDeleted = isDeleted;
     }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -141,7 +142,7 @@ public class ForumPermissions implements Serializable {
         sb.append(", permissionsId=").append(permissionsId);
         sb.append(", permissionsLevel=").append(permissionsLevel);
         sb.append(", permissionsName=").append(permissionsName);
-        sb.append(", desc=").append(desc);
+        sb.append(", description=").append(description);
         sb.append(", state=").append(state);
         sb.append(", isDeleted=").append(isDeleted);
         sb.append(", createUser=").append(createUser);
