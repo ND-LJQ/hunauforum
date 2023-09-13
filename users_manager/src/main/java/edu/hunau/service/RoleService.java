@@ -28,8 +28,9 @@ public interface RoleService {
 
     /**
      * 逻辑删除角色
-     * @param forumRole
-     * @return {@link Boolean}
+     *
+     * @param id id
+     * @return {@link Integer}
      */
     public Integer deleteRoleByKey(Integer id);
 

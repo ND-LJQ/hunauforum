@@ -58,8 +58,8 @@ public class UserController {
      */
 
     @PostMapping(value = {"/{userId}"})
-    public ForumUser getUserInfoById(@PathVariable String userId ) throws Exception{
-        return this.userService.queryUserById(Long.valueOf(userId));
+    public BackMessage getUserInfoById(@PathVariable String userId ) throws Exception{
+        return new BackMessage("查询成功!",SELECT_SUCCESSFUL,this.userService.queryUserById(Long.valueOf(userId)));
     }
 
 
@@ -260,7 +260,6 @@ public class UserController {
 //            item.getValue();
 //        }
 //        2.java8的lambda
-        BackMessage back = new BackMessage();
         ForumUser user = new ForumUser();
         //将map中的值赋值给
         BeanUtils.populate(user, request.getParameterMap());

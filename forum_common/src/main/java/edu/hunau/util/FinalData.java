@@ -201,4 +201,9 @@ public class FinalData {
 
     public  static final Byte DELETE_NO_LOGIC = 0;
 
+//    逻辑禁用与启用类型
+    public static final Byte DISABLED_LOGIC = 0;
+
+    public static final Byte ENABLED_LOGIC = 1;
+
 }

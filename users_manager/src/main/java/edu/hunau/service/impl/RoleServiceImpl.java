@@ -50,7 +50,7 @@ public class RoleServiceImpl implements RoleService {
      */
     @Override
     public Integer deleteRoleByKey(Integer id) {
-        return forumRoleMapper.updateByPrimaryKey(new ForumRole(id,DELETE_IS_LOGIC.toString()));
+        return forumRoleMapper.updateByPrimaryKeySelective(new ForumRole(id,DELETE_IS_LOGIC));
     }
 
     /**
@@ -83,7 +83,7 @@ public class RoleServiceImpl implements RoleService {
      */
     @Override
     public Integer deletePermission(Long id) {
-        return forumPermissionsMapper.insertSelective( new ForumPermissions(id,DELETE_IS_LOGIC));
+        return forumPermissionsMapper.updateByPrimaryKeySelective( new ForumPermissions(id,DELETE_IS_LOGIC));
     }
 
     /**
